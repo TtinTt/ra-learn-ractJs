@@ -4,20 +4,27 @@ import React from "react";
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { studentName: "Trung" };
-
-    this.changeStudentName = this.changeStudentName.bind(this);
+    this.state = { number: 0 };
   }
 
-  changeStudentName() {
-    this.setState({ studentName: "Changed" });
+  inceaseNumber() {
+    this.setState({
+      number: this.state.number + 1,
+    });
+  }
+
+  deNumber() {
+    this.setState({
+      number: this.state.number - 1,
+    });
   }
 
   render() {
     return (
       <div>
-        Tên học viên: {this.state.studentName}{" "}
-        <button onClick={this.changeStudentName}>Đổi tên</button>
+        <p>{this.state.number}</p>
+        <button onClick={() => this.inceaseNumber()}>Tăng lên 1</button>
+        <button onClick={() => this.deNumber()}>Giảm đi 1</button>
       </div>
     );
   }
