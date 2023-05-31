@@ -2,44 +2,38 @@ import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
 class App extends React.Component {
   constructor() {
     super();
-    this.state = { number: 0 };
+    this.state = { text: "hello", age: 29 };
   }
 
-  inceaseNumber() {
-    this.setState({
-      number: this.state.number + 1,
-    });
+  handleClick03() {
+    const { text, age } = this.state;
+    alert(text + " " + age);
+  }
+
+  handleClick(value) {
+    alert(value);
   }
 
   render() {
     return (
       <div>
-        <p>{this.state.number}</p>
-        <button onClick={() => this.inceaseNumber()}>Tăng lên 1</button>
+        <button onClick={() => this.handleClick("button 01 on clicked")}>
+          {" "}
+          Button 01
+        </button>
+
+        <button onClick={() => this.handleClick("button 02 on clicked")}>
+          {" "}
+          Button 02
+        </button>
+
+        <button onClick={() => this.handleClick03("button 02 on clicked")}>
+          {" "}
+          Button 03
+        </button>
       </div>
     );
   }
