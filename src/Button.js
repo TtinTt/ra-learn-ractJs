@@ -4,7 +4,11 @@ import React, { Component } from "react";
 
 class Button extends React.Component {
   render() {
-    return <button></button>;
+    return (
+      <div>
+        <button></button>
+      </div>
+    );
   }
 }
 export default Button;
