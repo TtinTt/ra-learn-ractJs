@@ -6,7 +6,14 @@ class Button extends React.Component {
   render() {
     return (
       <div>
-        <button></button>
+        <button
+          style={{
+            color: this.props.color,
+            backgroundColor: this.props.background,
+          }}
+        >
+          {this.props.text}
+        </button>
       </div>
     );
   }
