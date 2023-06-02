@@ -11,8 +11,7 @@ class App extends React.Component {
       <div>
         <Header />
         <ListItem />
-
-        <Item />
+        {/* <Item /> */}
       </div>
     );
   }
