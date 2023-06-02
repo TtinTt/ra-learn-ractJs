@@ -2,46 +2,24 @@ import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-class App extends React.Component {
+export default class App extends React.Component {
   constructor() {
     super();
-    this.state = { number: 0 };
+    this.state = { count: 0 };
   }
 
-  inceaseNumber() {
+  handleCount() {
     this.setState({
-      number: this.state.number + 1,
+      count: this.state.count + 1,
     });
   }
 
   render() {
     return (
       <div>
-        <p>{this.state.number}</p>
-        <button onClick={() => this.inceaseNumber()}>Tăng lên 1</button>
+        <p>Số lần bấm của bạn là: {this.state.count}</p>
+        <button onClick={() => this.handleCount()}>Click</button>
       </div>
     );
   }
 }
-export default App;
