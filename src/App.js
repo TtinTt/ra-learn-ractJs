@@ -1,47 +1,27 @@
-import logo from "./logo.svg";
-import "./App.css";
-import React from "react";
+import { useState, useEffect } from "react";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+function App() {
+  const [count, setCount] = useState(0);
+  // const [count2, setCount2] = useState(0);
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = { number: 0 };
-  }
+  const handleIncrease = () => {
+    setCount(count + 1);
+  };
 
-  inceaseNumber() {
-    this.setState({
-      number: this.state.number + 1,
-    });
-  }
+  useEffect(
+    function () {
+      document.title = `You clicked ${count} times`;
+      console.log(count, 0);
+    },
+    [count]
+  );
 
-  render() {
-    return (
-      <div>
-        <p>{this.state.number}</p>
-        <button onClick={() => this.inceaseNumber()}>Tăng lên 1</button>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <h1>You clicked {count} times</h1>
+      <button onClick={handleIncrease}>Click me</button>
+    </div>
+  );
 }
+
 export default App;
