@@ -1,47 +1,42 @@
-import logo from "./logo.svg";
 import "./App.css";
 import React from "react";
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+import Child from "./Child";
 
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = { number: 0 };
+  constructor(props) {
+    super(props);
+    this.state = { age: 26, isShowChild: true };
+    console.log("constructor đã chạy");
+    this.handleChangeAge = this.handleChangeAge.bind(this);
   }
-
-  inceaseNumber() {
+  componentWillMount() {
+    console.log("componentWillMount đã chạy");
+  }
+  handleChangeAge() {
+    this.setState({ age: 29 });
+  }
+  handleShowChild() {
     this.setState({
-      number: this.state.number + 1,
+      isShowChild: !this.state.isShowChild,
     });
   }
-
   render() {
+    console.log("render đã chạy");
+
     return (
       <div>
-        <p>{this.state.number}</p>
-        <button onClick={() => this.inceaseNumber()}>Tăng lên 1</button>
+        <h1>App component</h1>
+        <button onClick={this.handleChangeAge}>Change age</button>
+        <button onClick={this.handleShowChild.bind(this)}>
+          Toggle show child
+        </button>
+        {this.state.isShowChild ? <Child age={this.state.age} /> : null}
       </div>
     );
+  }
+
+  componentDidMount() {
+    console.log("componentDidMount đã chạy");
   }
 }
 export default App;
