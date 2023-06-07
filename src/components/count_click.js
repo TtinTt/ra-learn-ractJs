@@ -1,10 +1,11 @@
 import { useState, useReducer } from "react";
 
-function countClick() {
-  const click = "click ";
+function CountClick() {
+  const CLICK = "CLICK";
+  const DOWN = "DOWN";
 
   const reducer = (state, action) => {
-    if (action === click) {
+    if (action === CLICK) {
       return state + 1;
     }
   };
@@ -12,12 +13,12 @@ function countClick() {
   const [count, dispatch] = useReducer(reducer, 0);
 
   return (
-    <div className="App">
-      <h1>Đếm số lần click</h1>
+    <div>
+      <h1>Ứng dụng đếm số lần click</h1>
       <p>Bạn đã click: {count} lần</p>
-      <button onClick={() => dispatch(click)}>click </button>
+      <button onClick={() => dispatch(CLICK)}>Click</button>
     </div>
   );
 }
 
-export default countClick;
+export default CountClick;
