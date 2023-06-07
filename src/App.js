@@ -5,6 +5,15 @@ import List from "./components/checklist";
 import Table from "react-bootstrap/Table";
 
 class App extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      todoList: [],
+      newtodo: { id: 0, value: false, content: "" },
+      todo: { id: 0, value: false, content: "test" },
+    };
+  }
+
   render() {
     return (
       <div className="App">
@@ -22,10 +31,9 @@ class App extends React.Component {
             <tr>
               <td>1</td>
               <td>
-                {" "}
-                <List></List>
+                <List todo={this.state.todo}></List>
               </td>
-              <td>@mdo</td>
+              <td>TTT</td>
             </tr>
           </tbody>
         </Table>
