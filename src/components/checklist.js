@@ -9,30 +9,33 @@ class List extends React.Component {
   }
 
   render() {
-    console.log(this.props.todo.value);
+    // console.log(this.props.todo.value);
 
     return (
-      <div>
-        <Form>
-          <div key={`keytodo`} className="mb-3">
-            <Form.Check // prettier-ignore
-              type="checkbox"
-              id={this.props.todo.id}
-              label={this.props.todo.content}
-              defaultChecked={this.props.todo.value}
-            />
-          </div>
-          <div className="infoTodo">
-            <Button variant="secondary" size="sm">
-              Sửa
-            </Button>
-            <Button variant="secondary" size="sm">
-              Xóa
-            </Button>
-            <p id="time">{this.props.todo.time}</p>
-          </div>
-        </Form>
-      </div>
+      <tr>
+        <td>{this.props.todo.id}</td>
+        <td>
+          <Form>
+            <div key={`keytodo`} className="mb-3">
+              <Form.Check // prettier-ignore
+                type="checkbox"
+                id={this.props.todo.id}
+                label={this.props.todo.content}
+                defaultChecked={this.props.todo.value}
+              />
+            </div>
+            <div className="infoTodo">
+              <Button variant="secondary" size="sm">
+                Sửa
+              </Button>
+              <Button variant="secondary" size="sm">
+                Xóa
+              </Button>
+              <p id="time">{this.props.todo.time}</p>
+            </div>
+          </Form>
+        </td>
+      </tr>
     );
   }
 }

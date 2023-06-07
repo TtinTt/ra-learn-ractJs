@@ -3,29 +3,42 @@
   width: 800px;
   margin: auto;
 }
-label {
+.todovalue {
   float: left;
   padding-left: 5px;
   text-align: left;
+  display: block;
+  width: 100%;
+  margin-bottom: 0;
 }
 #buttonXN:hover {
   background-color: #6c757d;
   color: white;
 }
-
+.infoTodo {
+  width: 100%;
+}
 #time {
   display: inline-block;
   color: gray;
   font-size: 12px;
   float: left;
   padding-right: 5px;
+  margin-bottom: 0;
 }
 .infoTodo Button {
-  position: relative;
-  bottom: 5px;
-  padding: -8px !important;
+  /* position: relative;
+  bottom: 5px; */
+  /* padding: -8px !important; */
   margin-left: 5px;
   float: right;
+  font-size: 14px;
+  /* letter-spacing: 1px; */
+  font-weight: 300;
+  height: 30px;
+  /* padding-bottom: 9px; */
+  background-color: #a9a9a9;
+  border: 1 solid #a9a9a9;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
