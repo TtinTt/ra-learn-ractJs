@@ -1,8 +1,32 @@
 .App {
   text-align: center;
-  width: 400px;
+  width: 800px;
+  margin: auto;
+}
+label {
+  float: left;
+  padding-left: 5px;
+  text-align: left;
+}
+#buttonXN:hover {
+  background-color: #6c757d;
+  color: white;
 }
 
+#time {
+  display: inline-block;
+  color: gray;
+  font-size: 12px;
+  float: left;
+  padding-right: 5px;
+}
+.infoTodo Button {
+  position: relative;
+  bottom: 5px;
+  padding: -8px !important;
+  margin-left: 5px;
+  float: right;
+}
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
