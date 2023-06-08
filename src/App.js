@@ -7,6 +7,7 @@ import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
+import { v4 as uuidv4 } from "uuid";
 
 class App extends React.Component {
   constructor() {
@@ -14,22 +15,19 @@ class App extends React.Component {
     this.state = {
       todoList: [],
       newtodo: { id: 0, value: false, content: "", time: "" },
-      // todo: {
-      //   id: 0,
-      //   value: true,
-      //   content: "Thử nội dung nhiều chữ xem sao nào các bạn ơi",
-      //   time: "10:24 12/6/2023",
-      // },
     };
   }
 
-  handleChange = (event) => {
+  handleChange = async (event) => {
     let inputTodo = {};
-
     inputTodo.content = event.target.value;
+    await this.setState({ todo: inputTodo });
+    await console.log(this.state.todo);
+  };
 
-    inputTodo.value = false;
-    inputTodo.time =
+  handleGettime = () => {
+    let thistime = "";
+    thistime =
       new Date().toLocaleTimeString("vi-VI", {
         timeZone: "GMT",
       }) +
@@ -41,27 +39,25 @@ class App extends React.Component {
         day: "numeric",
         timeZone: "GMT",
       });
-    this.setState({ todo: inputTodo });
-    console.log(this.state.todo);
+    return thistime;
   };
 
   handleSubmit = async (event) => {
     event.preventDefault();
 
-    let todoListPush = this.state.todoList;
-    let inputTodo = this.state.todo;
-    if (todoListPush.length == 0) {
-      inputTodo.id = 1;
-    } else {
-      Number((inputTodo.id = todoListPush[todoListPush.length - 1].id + 1));
+    let inputTodo = this.state.todo ?? {};
+    if (!inputTodo.content) {
+      inputTodo.content = "Không có nội dung";
     }
-
+    let todoListPush = this.state.todoList;
+    inputTodo.id = uuidv4();
+    inputTodo.value = false;
+    inputTodo.time = this.handleGettime();
     await todoListPush.push(inputTodo);
     await this.setState({
       todoList: todoListPush,
     });
-
-    await console.log(this.state.todoList);
+    this.setState({ todo: {} });
   };
   handleTickCheckbox = (event) => {
     let ListUpdate = this.state.todoList;
@@ -76,7 +72,7 @@ class App extends React.Component {
   handleDelete = (event) => {
     let ListDelete = this.state.todoList;
     ListDelete.forEach((item, index) => {
-      if (item.id == event.target.name) {
+      if (item.id === event.target.name) {
         ListDelete.splice(index, 1);
       }
     });
@@ -111,7 +107,7 @@ class App extends React.Component {
             <tr>
               <th>#</th>
               <th> </th>
-              <th>Nội dung công việc</th>
+              <th style={{ width: "85%" }}>Nội dung công việc</th>
             </tr>
           </thead>
           <tbody>
@@ -124,28 +120,33 @@ class App extends React.Component {
               function (item, index) {
                 return (
                   <tr>
-                    <td>{item.id}</td>
+                    <td>{index + 1}</td>
                     <td>
                       <Form>
                         <div key={`keytodo`} className="mb-3">
                           <Form.Check
                             type="checkbox"
-                            id={item.id}
+                            id={this.state.todoList[index].id}
                             onChange={this.handleTickCheckbox}
-                            // label={item.content}
-                            defaultChecked={item.value}
+                            // label={this.state.todoList[index].content}
+                            defaultChecked={this.state.todoList[index].value}
                           />
                         </div>
                       </Form>
                     </td>
                     <td>
-                      <p className="todovalue">
-                        {item.value == true ? (
+                      {item.value == true ? (
+                        <p className="todovalue" style={{ color: "#858585" }}>
+                          {" "}
                           <strike>{item.content}</strike>
-                        ) : (
-                          item.content
-                        )}
-                      </p>
+                          <span style={{ float: "right", fontSize: "12px" }}>
+                            {" "}
+                            (Hoàn thành {this.handleGettime()})
+                          </span>{" "}
+                        </p>
+                      ) : (
+                        <p className="todovalue">{item.content} </p>
+                      )}
                       <div className="infoTodo">
                         <Button
                           onClick={this.handleEdit}
