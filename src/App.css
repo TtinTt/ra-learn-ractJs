@@ -2,6 +2,7 @@
   text-align: center;
   width: 800px;
   margin: auto;
+  padding-top: 40px;
 }
 .todovalue {
   float: left;
@@ -21,10 +22,14 @@
 #time {
   display: inline-block;
   color: gray;
-  font-size: 12px;
+  font-size: 16px;
   float: left;
   padding-right: 5px;
   margin-bottom: 0;
+}
+.form-check-input {
+  position: relative;
+  top: 10px;
 }
 .infoTodo Button {
   /* position: relative;
@@ -37,8 +42,9 @@
   font-weight: 300;
   height: 30px;
   /* padding-bottom: 9px; */
-  background-color: #a9a9a9;
-  border: 1 solid #a9a9a9;
+  color: black;
+  background-color: #f8f9fa;
+  border: 1px solid #e3e7ea !important;
 }
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

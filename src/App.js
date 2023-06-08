@@ -1,13 +1,13 @@
 import "./App.css";
 import React from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import List from "./components/checklist";
 import Table from "react-bootstrap/Table";
 import Form from "react-bootstrap/Form";
 import InputGroup from "react-bootstrap/InputGroup";
 import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+
 import { v4 as uuidv4 } from "uuid";
+import Badge from "react-bootstrap/Badge";
 
 class App extends React.Component {
   constructor() {
@@ -15,6 +15,11 @@ class App extends React.Component {
     this.state = {
       todoList: [],
       newtodo: { id: 0, value: false, content: "", time: "" },
+      todo: { content: "" },
+      editID: "",
+      editContent: "",
+      valueSearch: "",
+      todoListSearch: [],
     };
   }
 
@@ -22,7 +27,7 @@ class App extends React.Component {
     let inputTodo = {};
     inputTodo.content = event.target.value;
     await this.setState({ todo: inputTodo });
-    await console.log(this.state.todo);
+    // await console.log(this.state.todo);
   };
 
   handleGettime = () => {
@@ -52,18 +57,63 @@ class App extends React.Component {
     let todoListPush = this.state.todoList;
     inputTodo.id = uuidv4();
     inputTodo.value = false;
-    inputTodo.time = this.handleGettime();
+    inputTodo.time = [this.handleGettime()];
     await todoListPush.push(inputTodo);
     await this.setState({
       todoList: todoListPush,
     });
-    this.setState({ todo: {} });
+    await this.setState({ todo: { content: "" } });
   };
+  handleChangeEdit = async (event) => {
+    await this.setState({ editContent: event.target.value });
+  };
+
+  removeAccents = (str) => {
+    return str
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/đ/g, "d")
+      .replace(/Đ/g, "D");
+  };
+
+  handleChangeSearch = async (event) => {
+    await this.setState({ valueSearch: event.target.value });
+    let SearchList = [];
+    this.state.todoList.forEach((item) => {
+      if (
+        this.removeAccents(item.content)
+          .toUpperCase()
+          .includes(this.removeAccents(event.target.value).toUpperCase())
+      ) {
+        SearchList.push(item);
+      }
+    });
+    this.setState({ todoListSearch: SearchList });
+    console.log(SearchList);
+  };
+
+  handleSubmitEdit = async (event) => {
+    event.preventDefault();
+    let EditedList = this.state.todoList;
+    await EditedList.forEach((element) => {
+      if (element.id == this.state.editID) {
+        element.content = this.state.editContent;
+      }
+    });
+    await this.setState({ todoList: EditedList });
+    await this.setState({ editID: "", editContent: "" });
+  };
+
   handleTickCheckbox = (event) => {
     let ListUpdate = this.state.todoList;
     ListUpdate.forEach((item, index) => {
       if (item.id == event.target.id) {
         item.value = !item.value;
+        if (item.value) {
+          item.finishTime = [this.handleGettime()];
+        } else {
+          item.finishTime = "";
+        }
       }
     });
 
@@ -79,18 +129,25 @@ class App extends React.Component {
 
     this.setState({ todoList: ListDelete });
   };
-  handleEdit = () => {
-    console.log("a");
+  handleShowEdit = (event) => {
+    this.setState({ editID: event.target.name });
+    this.setState({ editContent: event.target.id });
   };
 
   render() {
     return (
       <div className="App">
-        <h3>MINI PROJECT TODO LIST</h3>
+        <h3>
+          Mini Project <Badge bg="secondary">TODO LIST</Badge>
+        </h3>
         <form onSubmit={this.handleSubmit}>
           <InputGroup className="mb-3">
             <InputGroup.Text>Thêm công việc</InputGroup.Text>
-            <Form.Control onChange={this.handleChange} aria-label="newtodo" />
+            <Form.Control
+              value={this.state.todo.content}
+              onChange={this.handleChange}
+              aria-label="newtodo"
+            />
             <InputGroup.Text
               onClick={this.handleSubmit}
               type="submit"
@@ -105,72 +162,244 @@ class App extends React.Component {
         <Table striped="columns">
           <thead>
             <tr>
-              <th>#</th>
+              <th
+                style={{
+                  position: "relative",
+                  top: "-15px",
+                  width: "10%",
+                }}
+              >
+                #
+              </th>
               <th> </th>
-              <th style={{ width: "85%" }}>Nội dung công việc</th>
+              <th style={{ width: "85%" }}>
+                <p
+                  style={{
+                    float: "left",
+                    display: "inline-block",
+                    paddingTop: "5px",
+                  }}
+                >
+                  Nội dung công việc
+                </p>
+                <Form.Control
+                  style={{
+                    float: "right",
+                    display: "inline-block",
+                    width: "30%",
+                  }}
+                  placeholder="Tìm kiếm"
+                  // value={this.state.valueSearch}
+                  onChange={this.handleChangeSearch}
+                  aria-label="newtodo"
+                />
+              </th>
             </tr>
           </thead>
           <tbody>
-            {/* {this.state.todoList.map(
-              function (name, index) {
-                return <List todo={name} />;
-              }.bind(this)
-            )} */}
-            {this.state.todoList.map(
-              function (item, index) {
-                return (
-                  <tr>
-                    <td>{index + 1}</td>
-                    <td>
-                      <Form>
-                        <div key={`keytodo`} className="mb-3">
-                          <Form.Check
-                            type="checkbox"
-                            id={this.state.todoList[index].id}
-                            onChange={this.handleTickCheckbox}
-                            // label={this.state.todoList[index].content}
-                            defaultChecked={this.state.todoList[index].value}
-                          />
-                        </div>
-                      </Form>
-                    </td>
-                    <td>
-                      {item.value == true ? (
-                        <p className="todovalue" style={{ color: "#858585" }}>
-                          {" "}
-                          <strike>{item.content}</strike>
-                          <span style={{ float: "right", fontSize: "12px" }}>
-                            {" "}
-                            (Hoàn thành {this.handleGettime()})
-                          </span>{" "}
-                        </p>
-                      ) : (
-                        <p className="todovalue">{item.content} </p>
-                      )}
-                      <div className="infoTodo">
-                        <Button
-                          onClick={this.handleEdit}
-                          variant="secondary"
-                          size="sm"
-                          name={item.id}
+            {this.state.valueSearch === ""
+              ? this.state.todoList.map(
+                  function (item, index) {
+                    return (
+                      <tr>
+                        <td
+                          style={{
+                            position: "relative",
+                            top: "10px",
+                          }}
                         >
-                          Sửa
-                        </Button>
-                        <Button
-                          onClick={this.handleDelete}
-                          variant="secondary"
-                          size="sm"
-                          name={item.id}
+                          {index + 1}
+                        </td>
+                        <td>
+                          <Form>
+                            <div key={`keytodo`} className="mb-3">
+                              <Form.Check
+                                type="checkbox"
+                                id={this.state.todoList[index].id}
+                                onChange={this.handleTickCheckbox}
+                                // label={this.state.todoList[index].content}
+                                defaultChecked={
+                                  this.state.todoList[index].value
+                                }
+                              />
+                            </div>
+                          </Form>
+                        </td>
+                        <td>
+                          {item.id === this.state.editID ? (
+                            <InputGroup className="mb-3">
+                              <Form.Control
+                                onChange={this.handleChangeEdit}
+                                value={this.state.editContent}
+                                aria-label="newtodo"
+                              />
+                              <InputGroup.Text
+                                onClick={this.handleSubmitEdit}
+                                type="submit"
+                                id="buttonXN"
+                                name={item.id}
+                              >
+                                Xác nhận
+                              </InputGroup.Text>
+                            </InputGroup>
+                          ) : item.value == true ? (
+                            <p
+                              className="todovalue mb-3 "
+                              style={{
+                                paddingTop: "9px",
+                                paddingBottom: "5px",
+                                color: "#858585",
+                              }}
+                            >
+                              <strike>{item.content}</strike>
+                              <span
+                                style={{
+                                  float: "right",
+                                  fontSize: "16px",
+                                }}
+                              >
+                                (Hoàn thành {item.finishTime})
+                              </span>
+                            </p>
+                          ) : (
+                            <p
+                              style={{
+                                paddingTop: "9px",
+                                paddingBottom: "5px",
+                                fontWeight: "600",
+                              }}
+                              className="todovalue mb-3 "
+                            >
+                              {item.content}{" "}
+                            </p>
+                          )}
+
+                          <div className="infoTodo">
+                            <Button
+                              onClick={this.handleShowEdit}
+                              variant="secondary"
+                              size="sm"
+                              id={item.content}
+                              name={item.id}
+                            >
+                              Sửa
+                            </Button>
+                            <Button
+                              onClick={this.handleDelete}
+                              variant="secondary"
+                              size="sm"
+                              name={item.id}
+                            >
+                              Xóa
+                            </Button>
+                            <p id="time">{item.time}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }.bind(this)
+                )
+              : this.state.todoListSearch.map(
+                  function (item, index) {
+                    return (
+                      <tr>
+                        <td
+                          style={{
+                            position: "relative",
+                            top: "10px",
+                          }}
                         >
-                          Xóa
-                        </Button>
-                        <p id="time">{item.time}</p>
-                      </div>
-                    </td>
-                  </tr>
-                );
-              }.bind(this)
-            )}
+                          {index + 1}
+                        </td>
+                        <td>
+                          <Form>
+                            <div key={`keytodo`} className="mb-3">
+                              <Form.Check
+                                type="checkbox"
+                                id={this.state.todoList[index].id}
+                                onChange={this.handleTickCheckbox}
+                                // label={this.state.todoList[index].content}
+                                defaultChecked={
+                                  this.state.todoList[index].value
+                                }
+                              />
+                            </div>
+                          </Form>
+                        </td>
+                        <td>
+                          {item.id === this.state.editID ? (
+                            <InputGroup className="mb-3">
+                              <Form.Control
+                                onChange={this.handleChangeEdit}
+                                value={this.state.editContent}
+                                aria-label="newtodo"
+                              />
+                              <InputGroup.Text
+                                onClick={this.handleSubmitEdit}
+                                type="submit"
+                                id="buttonXN"
+                                name={item.id}
+                              >
+                                Xác nhận
+                              </InputGroup.Text>
+                            </InputGroup>
+                          ) : item.value == true ? (
+                            <p
+                              className="todovalue mb-3 "
+                              style={{
+                                paddingTop: "9px",
+                                paddingBottom: "5px",
+                                color: "#858585",
+                              }}
+                            >
+                              <strike>{item.content}</strike>
+                              <span
+                                style={{
+                                  float: "right",
+                                  fontSize: "12px",
+                                }}
+                              >
+                                (Hoàn thành {item.finishTime})
+                              </span>
+                            </p>
+                          ) : (
+                            <p
+                              style={{
+                                paddingTop: "9px",
+                                paddingBottom: "5px",
+                                fontWeight: "600",
+                              }}
+                              className="todovalue mb-3 "
+                            >
+                              {item.content}{" "}
+                            </p>
+                          )}
+
+                          <div className="infoTodo">
+                            <Button
+                              onClick={this.handleShowEdit}
+                              variant="secondary"
+                              size="sm"
+                              id={item.content}
+                              name={item.id}
+                            >
+                              Sửa
+                            </Button>
+                            <Button
+                              onClick={this.handleDelete}
+                              variant="secondary"
+                              size="sm"
+                              name={item.id}
+                            >
+                              Xóa
+                            </Button>
+                            <p id="time">{item.time}</p>
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  }.bind(this)
+                )}
           </tbody>
         </Table>
       </div>
