@@ -54,7 +54,9 @@ class App extends React.Component {
     if (!inputTodo.content) {
       inputTodo.content = "Không có nội dung";
     }
+
     let todoListPush = this.state.todoList;
+
     inputTodo.id = uuidv4();
     inputTodo.value = false;
     inputTodo.time = [this.handleGettime()];
