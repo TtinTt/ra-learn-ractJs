@@ -50,6 +50,7 @@ class App extends React.Component {
     event.preventDefault();
 
     let inputTodo = this.state.todo ?? {};
+
     if (!inputTodo.content) {
       inputTodo.content = "Không có nội dung";
     }
@@ -62,6 +63,7 @@ class App extends React.Component {
       todoList: todoListPush,
     });
     await this.setState({ todo: { content: "" } });
+    console.log(inputTodo.id);
   };
 
   handleChangeEdit = async (event) => {
