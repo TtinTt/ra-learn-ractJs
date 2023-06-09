@@ -27,7 +27,6 @@ class App extends React.Component {
     let inputTodo = {};
     inputTodo.content = event.target.value;
     await this.setState({ todo: inputTodo });
-    // await console.log(this.state.todo);
   };
 
   handleGettime = () => {
@@ -64,6 +63,7 @@ class App extends React.Component {
     });
     await this.setState({ todo: { content: "" } });
   };
+
   handleChangeEdit = async (event) => {
     await this.setState({ editContent: event.target.value });
   };
@@ -119,6 +119,7 @@ class App extends React.Component {
 
     this.setState({ todoList: ListUpdate });
   };
+
   handleDelete = (event) => {
     let ListDelete = this.state.todoList;
     ListDelete.forEach((item, index) => {
@@ -129,6 +130,7 @@ class App extends React.Component {
 
     this.setState({ todoList: ListDelete });
   };
+
   handleShowEdit = (event) => {
     this.setState({ editID: event.target.name });
     this.setState({ editContent: event.target.id });
@@ -227,21 +229,24 @@ class App extends React.Component {
                         </td>
                         <td>
                           {item.id === this.state.editID ? (
-                            <InputGroup className="mb-3">
-                              <Form.Control
-                                onChange={this.handleChangeEdit}
-                                value={this.state.editContent}
-                                aria-label="newtodo"
-                              />
-                              <InputGroup.Text
-                                onClick={this.handleSubmitEdit}
-                                type="submit"
-                                id="buttonXN"
-                                name={item.id}
-                              >
-                                Xác nhận
-                              </InputGroup.Text>
-                            </InputGroup>
+                            <form onSubmit={this.handleSubmitEdit}>
+                              {" "}
+                              <InputGroup className="mb-3">
+                                <Form.Control
+                                  onChange={this.handleChangeEdit}
+                                  value={this.state.editContent}
+                                  aria-label="newtodo"
+                                />
+                                <InputGroup.Text
+                                  onClick={this.handleSubmitEdit}
+                                  type="submit"
+                                  id="buttonXN"
+                                  name={item.id}
+                                >
+                                  Xác nhận
+                                </InputGroup.Text>
+                              </InputGroup>
+                            </form>
                           ) : item.value == true ? (
                             <p
                               className="todovalue mb-3 "
@@ -328,21 +333,24 @@ class App extends React.Component {
                         </td>
                         <td>
                           {item.id === this.state.editID ? (
-                            <InputGroup className="mb-3">
-                              <Form.Control
-                                onChange={this.handleChangeEdit}
-                                value={this.state.editContent}
-                                aria-label="newtodo"
-                              />
-                              <InputGroup.Text
-                                onClick={this.handleSubmitEdit}
-                                type="submit"
-                                id="buttonXN"
-                                name={item.id}
-                              >
-                                Xác nhận
-                              </InputGroup.Text>
-                            </InputGroup>
+                            <form onSubmit={this.handleSubmitEdit}>
+                              {" "}
+                              <InputGroup className="mb-3">
+                                <Form.Control
+                                  onChange={this.handleChangeEdit}
+                                  value={this.state.editContent}
+                                  aria-label="newtodo"
+                                />
+                                <InputGroup.Text
+                                  onClick={this.handleSubmitEdit}
+                                  type="submit"
+                                  id="buttonXN"
+                                  name={item.id}
+                                >
+                                  Xác nhận
+                                </InputGroup.Text>
+                              </InputGroup>
+                            </form>
                           ) : item.value == true ? (
                             <p
                               className="todovalue mb-3 "
