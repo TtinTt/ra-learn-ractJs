@@ -1,16 +1,17 @@
+import logo from "./logo.svg";
 import React from "react";
+import "./App.css";
+
+let a = 3;
+let b = 4;
+let c = a + b;
+const text = "Tổng của " + a + " và " + b + " là " + c;
 
 class App extends React.Component {
-  sum(num1, num2) {
-    return num1 + num2;
-  }
   render() {
-    const num1 = 7;
-    const num2 = 4;
-
     return (
-      <div>
-        Tổng của {num1} và {num2} là {this.sum(num1, num2)}
+      <div className="App">
+        <h1>{text}</h1>
       </div>
     );
   }
