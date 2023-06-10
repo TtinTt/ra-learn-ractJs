@@ -2,7 +2,7 @@
   text-align: center;
   width: 800px;
   margin: auto;
-  padding-top: 40px;
+  /* padding-top: 40px; */
 }
 .todovalue {
   float: left;
@@ -19,6 +19,51 @@
 .infoTodo {
   width: 100%;
 }
+.btn:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+}
+.progress {
+  margin-top: 5px !important;
+  margin-bottom: 10px;
+}
+.show {
+  color: #ffffff !important;
+  background: rgb(0, 93, 184) !important;
+  background: linear-gradient(
+    0deg,
+    rgb(34, 55, 195) 0%,
+    rgba(45, 129, 253, 1) 100%
+  ) !important;
+  --bs-alert-padding-y: 0.1rem !important;
+  margin-bottom: 5px !important;
+  margin-top: -10px !important;
+}
+
+td input {
+  cursor: auto;
+}
+#deleteBtn {
+  background-color: rgb(199, 199, 199);
+  color: white;
+}
+#deleteBtn:hover {
+  background-color: rgb(49, 49, 49) !important;
+  color: white !important;
+}
+.topPage {
+  position: fixed;
+  text-align: center;
+  width: 800px;
+  margin: auto;
+  margin-top: -80px;
+  padding-top: 120px;
+  background-color: white;
+  z-index: 10;
+}
+main {
+  padding-top: 170px;
+  width: 100%;
+}
 #time {
   display: inline-block;
   color: gray;
@@ -27,29 +72,34 @@
   padding-right: 5px;
   margin-bottom: 0;
 }
+
 .form-check-input {
   position: relative;
   top: 10px;
 }
 .infoTodo Button {
-  /* position: relative;
-  bottom: 5px; */
-  /* padding: -8px !important; */
   margin-left: 5px;
   float: right;
   font-size: 14px;
-  /* letter-spacing: 1px; */
   font-weight: 300;
   height: 30px;
-  /* padding-bottom: 9px; */
-  color: black;
-  background-color: #f8f9fa;
+  color: black !important;
+  background-color: #f8f9fa !important;
   border: 1px solid #e3e7ea !important;
 }
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+
+span button {
+  margin-left: 5px;
+  float: right;
+  font-size: 14px;
+  font-weight: 300;
+  height: 30px;
+  color: rgb(165, 165, 165) !important;
+  background-color: #f8f9fa !important;
+  border: 1px solid #ffffff !important;
+  position: relative;
+  top: -2px;
+  left: 5px;
 }
 
 .App-header {
