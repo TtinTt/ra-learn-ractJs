@@ -27,14 +27,11 @@
   margin-bottom: 10px;
   --bs-progress-bar-bg: rgb(0, 194, 113) !important;
 }
+
 .show {
   color: #ffffff !important;
-  background: rgb(0, 93, 184) !important;
-  background: linear-gradient(
-    0deg,
-    rgb(29, 183, 255) 0%,
-    rgb(0, 194, 113) 100%
-  ) !important;
+  background: rgb(184, 163, 0) !important;
+  background: linear-gradient(0deg, #cb011c 0%, #ff4800 100%) !important;
   --bs-alert-padding-y: 0.1rem !important;
   margin-bottom: 5px !important;
   margin-top: -10px !important;
@@ -49,13 +46,31 @@
 }
 .UncheckDiv,
 .CheckedDiv {
+  cursor: pointer;
   background-size: cover;
   width: 40px;
   height: 40px;
   position: relative;
   top: 15px;
   left: 13px;
+  border-radius: 6px;
+  box-shadow: rgba(0, 255, 55, 0.25) 0px 54px 55px,
+    rgba(0, 255, 68, 0.17) 0px 3px 15px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
+.inputEdit {
+  position: relative;
+  top: 3px;
+}
+.todovalue span {
+  box-shadow: rgba(0, 99, 12, 0.2) 0px 2px 8px 0px;
+  float: right;
+  font-size: 16px;
+  color: white;
+  background-color: #5fbc80 !important;
+  padding: 0 10px;
+  border-radius: 10px;
+}
+
 .btn-update button {
   background-color: #c3c3c3;
   border: 0;

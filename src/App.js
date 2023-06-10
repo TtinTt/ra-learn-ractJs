@@ -394,7 +394,7 @@ class App extends React.Component {
                             {item.id === this.state.editID ? (
                               <form onSubmit={this.handleSubmitEdit}>
                                 {" "}
-                                <InputGroup className="mb-3">
+                                <InputGroup className="inputEdit mb-3">
                                   <Form.Control
                                     onChange={this.handleChangeEdit}
                                     value={this.state.editContent}
@@ -417,7 +417,7 @@ class App extends React.Component {
                                   paddingTop: "9px",
                                   paddingBottom: "5px",
                                   color: "#8A8A8A",
-                                  letterSpacing: "1px",
+                                  // letterSpacing: "1px",
                                 }}
                               >
                                 <strike>{item.content}</strike>
@@ -431,7 +431,7 @@ class App extends React.Component {
                                     borderRadius: "10px",
                                   }}
                                 >
-                                  Hoàn thành lúc {item.finishTime}
+                                  Hoàn thành {item.finishTime}
                                 </span>
                               </p>
                             ) : (
@@ -547,7 +547,7 @@ class App extends React.Component {
                             {item.id === this.state.editID ? (
                               <form onSubmit={this.handleSubmitEdit}>
                                 {" "}
-                                <InputGroup className="mb-3">
+                                <InputGroup className="inputEdit mb-3">
                                   <Form.Control
                                     onChange={this.handleChangeEdit}
                                     value={this.state.editContent}
@@ -570,30 +570,10 @@ class App extends React.Component {
                                   paddingTop: "9px",
                                   paddingBottom: "5px",
                                   color: "#8A8A8A",
-                                  letterSpacing: "1px",
                                 }}
                               >
                                 <strike>{item.content}</strike>
-                                <span
-                                  style={{
-                                    float: "right",
-                                    fontSize: "16px",
-                                    color: "white",
-                                    backgroundColor: "#c3c3c3",
-                                    padding: "0 10px",
-                                    borderRadius: "10px",
-                                  }}
-                                >
-                                  Hoàn thành{" "}
-                                  <span
-                                    style={{
-                                      // color: "white",
-                                      fontWeight: 600,
-                                    }}
-                                  >
-                                    {item.finishTime}
-                                  </span>
-                                </span>
+                                <span>Hoàn thành {item.finishTime}</span>
                               </p>
                             ) : (
                               <p
