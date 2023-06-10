@@ -25,23 +25,52 @@
 .progress {
   margin-top: 5px !important;
   margin-bottom: 10px;
+  --bs-progress-bar-bg: rgb(0, 194, 113) !important;
 }
 .show {
   color: #ffffff !important;
   background: rgb(0, 93, 184) !important;
   background: linear-gradient(
     0deg,
-    rgb(34, 55, 195) 0%,
-    rgba(45, 129, 253, 1) 100%
+    rgb(29, 183, 255) 0%,
+    rgb(0, 194, 113) 100%
   ) !important;
   --bs-alert-padding-y: 0.1rem !important;
   margin-bottom: 5px !important;
   margin-top: -10px !important;
+  border: 0 !important;
+}
+.UncheckDiv {
+  background-image: url(/imgs/box.png);
 }
 
-td input {
-  cursor: auto;
+.CheckedDiv {
+  background-image: url(/imgs/check.png);
 }
+.UncheckDiv,
+.CheckedDiv {
+  background-size: cover;
+  width: 40px;
+  height: 40px;
+  position: relative;
+  top: 15px;
+  left: 13px;
+}
+.btn-update button {
+  background-color: #c3c3c3;
+  border: 0;
+  position: relative;
+  top: 15px;
+}
+.alert {
+  position: relative;
+  top: 5px;
+}
+.btn-update button:hover {
+  background-color: #606060 !important;
+  border: 0;
+}
+
 #deleteBtn {
   background-color: rgb(199, 199, 199);
   color: white;
@@ -72,6 +101,10 @@ main {
   padding-right: 5px;
   margin-bottom: 0;
 }
+.badge {
+  background-color: rgb(0, 0, 0) !important;
+  --bs-secondary-rgb: 0, 0, 0;
+}
 
 .form-check-input {
   position: relative;
@@ -80,12 +113,16 @@ main {
 .infoTodo Button {
   margin-left: 5px;
   float: right;
-  font-size: 14px;
-  font-weight: 300;
-  height: 30px;
-  color: black !important;
-  background-color: #f8f9fa !important;
+  font-size: 16px;
+  font-weight: 500;
+  height: 32px;
+  color: rgb(101, 101, 101) !important;
+  background-color: #e0e0e0 !important;
   border: 1px solid #e3e7ea !important;
+}
+.infoTodo Button:hover {
+  background-color: #787878 !important;
+  color: white !important;
 }
 
 span button {

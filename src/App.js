@@ -24,9 +24,22 @@ class App extends React.Component {
       todoListSearch: [],
       loadingValue: "",
       sort: true,
+      listRender: [],
     };
   }
-  handleSort = () => {
+
+  handleRefreshList = async () => {
+    if (this.state.valueSearch == "") {
+      await this.setState({
+        valueSearch: "sort",
+      });
+      await this.setState({
+        valueSearch: "",
+      });
+    }
+  };
+
+  handleSort = async () => {
     let doneList = [];
     let processingList = [];
 
@@ -49,6 +62,22 @@ class App extends React.Component {
         sort: true,
       });
     }
+
+    if (!this.state.valueSearch == "") {
+      let SearchList = [];
+      this.state.todoList.forEach((item) => {
+        if (
+          this.removeAccents(item.content)
+            .toUpperCase()
+            .includes(this.removeAccents(this.state.valueSearch).toUpperCase())
+        ) {
+          SearchList.push(item);
+        }
+      });
+      this.setState({ todoListSearch: SearchList });
+    }
+
+    this.handleRefreshList();
   };
 
   handleChange = async (event) => {
@@ -63,12 +92,12 @@ class App extends React.Component {
       new Date().toLocaleTimeString("vi-VI", {
         timeZone: "GMT",
       }) +
-      " " +
+      ", " +
       new Date().toLocaleString("vi-VI", {
-        weekday: "long",
-        year: "numeric",
-        month: "numeric",
-        day: "numeric",
+        // weekday: "narrow",
+        year: "2-digit",
+        month: "2-digit",
+        day: "2-digit",
         timeZone: "GMT",
       });
     return thistime;
@@ -93,7 +122,6 @@ class App extends React.Component {
       todoList: todoListPush,
     });
     await this.setState({ todo: { content: "" } });
-    // console.log(inputTodo.id);
     this.handleCheckLoading();
   };
 
@@ -116,13 +144,13 @@ class App extends React.Component {
       if (
         this.removeAccents(item.content)
           .toUpperCase()
-          .includes(this.removeAccents(event.target.value).toUpperCase())
+          .includes(this.removeAccents(this.state.valueSearch).toUpperCase())
       ) {
         SearchList.push(item);
       }
     });
-    this.setState({ todoListSearch: SearchList });
-    console.log(SearchList);
+    await this.setState({ todoListSearch: SearchList });
+    this.handleRefreshList();
   };
 
   handleSubmitEdit = async (event) => {
@@ -163,9 +191,15 @@ class App extends React.Component {
     await this.setState({
       loadingValue: (count / this.state.todoList.length) * 100,
     });
-    console.log(this.state.loadingValue);
-    // console.log(count);
-    // console.log(this.state.todoList.length);
+  };
+
+  handleGetColor = (b) => {
+    if (b == true) {
+      return "red";
+    }
+    {
+      return "green";
+    }
   };
 
   handleTickCheckbox = (event) => {
@@ -175,8 +209,10 @@ class App extends React.Component {
         item.value = !item.value;
         if (item.value == true) {
           item.finishTime = [this.handleGettime()];
+          // event.target.style.backgroundColor = "red";
         } else {
           item.finishTime = "";
+          // event.target.style.backgroundColor = "blue";
         }
       }
     });
@@ -191,7 +227,6 @@ class App extends React.Component {
         ListDelete.splice(index, 1);
       }
     });
-    this.setState({ todoList: ListDelete });
 
     if (!this.state.valueSearch == "") {
       let ListSearchDelete = this.state.todoListSearch;
@@ -204,12 +239,10 @@ class App extends React.Component {
     }
 
     this.handleCheckLoading();
-    console.log(this.state.todoListSearch);
   };
 
   handleSetDeleteID = (event) => {
     this.setState({ deleteID: event.target.name });
-    console.log(this.setState.editID);
   };
 
   resetDeleteID = () => {
@@ -256,13 +289,6 @@ class App extends React.Component {
           ) : (
             <ProgressBar animated now={this.state.loadingValue} />
           )}
-          {/* {this.state.loadingValue == 100 ? (
-          <Alert key="secondary" variant="secondary">
-            Xin chúc mừng, bạn đã hoàn thành tất cả các công việc của mình!
-          </Alert>
-        ) : null}
-        <ProgressBar animated now={this.state.loadingValue} /> */}
-          {/* <hr></hr> */}
         </div>
         <main>
           {" "}
@@ -272,36 +298,47 @@ class App extends React.Component {
                 <th
                   style={{
                     position: "relative",
-                    top: "-15px",
-                    width: "10%",
+                    top: "-9px",
+                    width: "3%",
+                    fontWeight: "800",
+                    color: "#c3c3c3",
                   }}
                 >
                   #
                 </th>
-                <th> </th>
+                <th
+                  style={{
+                    width: "9%",
+                  }}
+                >
+                  {" "}
+                </th>
                 <th style={{ width: "85%" }}>
                   <p
                     style={{
                       float: "left",
                       display: "inline-block",
                       paddingTop: "5px",
+                      margin: 0,
+                      color: "#787878",
                     }}
                   >
-                    Nội dung công việc{" "}
+                    NỘI DUNG CÔNG VIỆC{" "}
                     <span>
-                      <Button
-                        onClick={this.handleSort}
-                        variant="secondary"
-                        size="sm"
-                        style={{
-                          position: "relative",
-                          top: "-2px",
-                          left: "5px",
-                        }}
-                      >
-                        Sắp xếp thứ tự `đang bị lỗi không cập nhật checkbox theo
-                        khi sort`
-                      </Button>
+                      {this.state.valueSearch === "" ? (
+                        <Button
+                          onClick={this.handleSort}
+                          variant="secondary"
+                          size="sm"
+                          style={{
+                            position: "relative",
+                            top: "-1px",
+                            left: "5px",
+                          }}
+                        >
+                          Sắp xếp
+                        </Button>
+                      ) : null}
                     </span>
                   </p>
                   <Form.Control
@@ -311,7 +348,6 @@ class App extends React.Component {
                       width: "30%",
                     }}
                     placeholder="Tìm kiếm"
-                    // value={this.state.valueSearch}
                     onChange={this.handleChangeSearch}
                     aria-label="newtodo"
                   />
@@ -327,25 +363,32 @@ class App extends React.Component {
                           <td
                             style={{
                               position: "relative",
-                              top: "10px",
+                              top: "18px",
+                              color: "#c3c3c3",
+                              fontWeight: "600",
+                              fontSize: "19px",
                             }}
                           >
                             {index + 1}
                           </td>
                           <td>
-                            <Form>
-                              <div key={`keytodo`} className="mb-3">
-                                <Form.Check
-                                  type="checkbox"
-                                  id={this.state.todoList[index].id}
-                                  onChange={this.handleTickCheckbox}
-                                  // label={this.state.todoList[index].content}
-                                  defaultChecked={
-                                    this.state.todoList[index].value
-                                  }
-                                />
-                              </div>
-                            </Form>
+                            {this.state.todoList[index].value === false ? (
+                              <div
+                                onClick={this.handleTickCheckbox}
+                                variant="secondary"
+                                size="sm"
+                                id={this.state.todoList[index].id}
+                                className="UncheckDiv"
+                              ></div>
+                            ) : (
+                              <div
+                                onClick={this.handleTickCheckbox}
+                                variant="secondary"
+                                size="sm"
+                                id={this.state.todoList[index].id}
+                                className="CheckedDiv"
+                              ></div>
+                            )}
                           </td>
                           <td>
                             {item.id === this.state.editID ? (
@@ -363,7 +406,7 @@ class App extends React.Component {
                                     id="buttonXN"
                                     name={item.id}
                                   >
-                                    Cập nhật
+                                    Lưu
                                   </InputGroup.Text>
                                 </InputGroup>
                               </form>
@@ -373,7 +416,8 @@ class App extends React.Component {
                                 style={{
                                   paddingTop: "9px",
                                   paddingBottom: "5px",
-                                  color: "#858585",
+                                  color: "#8A8A8A",
+                                  letterSpacing: "1px",
                                 }}
                               >
                                 <strike>{item.content}</strike>
@@ -381,9 +425,13 @@ class App extends React.Component {
                                   style={{
                                     float: "right",
                                     fontSize: "16px",
+                                    color: "white",
+                                    backgroundColor: "#c3c3c3",
+                                    padding: "0 10px",
+                                    borderRadius: "10px",
                                   }}
                                 >
-                                  (Hoàn thành {item.finishTime})
+                                  Hoàn thành lúc {item.finishTime}
                                 </span>
                               </p>
                             ) : (
@@ -468,25 +516,32 @@ class App extends React.Component {
                           <td
                             style={{
                               position: "relative",
-                              top: "10px",
+                              top: "18px",
+                              color: "#c3c3c3",
+                              fontWeight: "600",
+                              fontSize: "19px",
                             }}
                           >
                             {index + 1}
                           </td>
                           <td>
-                            <Form>
-                              <div key={`keytodo`} className="mb-3">
-                                <Form.Check
-                                  type="checkbox"
-                                  id={this.state.todoList[index].id}
-                                  onChange={this.handleTickCheckbox}
-                                  // label={this.state.todoList[index].content}
-                                  defaultChecked={
-                                    this.state.todoList[index].value
-                                  }
-                                />
-                              </div>
-                            </Form>
+                            {this.state.todoList[index].value === false ? (
+                              <div
+                                onClick={this.handleTickCheckbox}
+                                variant="secondary"
+                                size="sm"
+                                id={this.state.todoList[index].id}
+                                className="UncheckDiv"
+                              ></div>
+                            ) : (
+                              <div
+                                onClick={this.handleTickCheckbox}
+                                variant="secondary"
+                                size="sm"
+                                id={this.state.todoList[index].id}
+                                className="CheckedDiv"
+                              ></div>
+                            )}
                           </td>
                           <td>
                             {item.id === this.state.editID ? (
@@ -504,7 +559,7 @@ class App extends React.Component {
                                     id="buttonXN"
                                     name={item.id}
                                   >
-                                    Cập nhật
+                                    Lưu
                                   </InputGroup.Text>
                                 </InputGroup>
                               </form>
@@ -514,17 +569,30 @@ class App extends React.Component {
                                 style={{
                                   paddingTop: "9px",
                                   paddingBottom: "5px",
-                                  color: "#858585",
+                                  color: "#8A8A8A",
+                                  letterSpacing: "1px",
                                 }}
                               >
                                 <strike>{item.content}</strike>
                                 <span
                                   style={{
                                     float: "right",
-                                    fontSize: "12px",
+                                    fontSize: "16px",
+                                    color: "white",
+                                    backgroundColor: "#c3c3c3",
+                                    padding: "0 10px",
+                                    borderRadius: "10px",
                                   }}
                                 >
-                                  (Hoàn thành {item.finishTime})
+                                  Hoàn thành{" "}
+                                  <span
+                                    style={{
+                                      // color: "white",
+                                      fontWeight: 600,
+                                    }}
+                                  >
+                                    {item.finishTime}
+                                  </span>
                                 </span>
                               </p>
                             ) : (
