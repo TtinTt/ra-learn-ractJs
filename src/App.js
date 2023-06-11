@@ -89,16 +89,13 @@ class App extends React.Component {
   handleGettime = () => {
     let thistime = "";
     thistime =
-      new Date().toLocaleTimeString("vi-VI", {
-        timeZone: "GMT",
-      }) +
+      new Date().toLocaleTimeString("vi-VI", {}) +
       ", " +
       new Date().toLocaleString("vi-VI", {
         // weekday: "narrow",
         year: "2-digit",
         month: "2-digit",
         day: "2-digit",
-        timeZone: "GMT",
       });
     return thistime;
   };
@@ -134,7 +131,8 @@ class App extends React.Component {
       .normalize("NFD")
       .replace(/[\u0300-\u036f]/g, "")
       .replace(/đ/g, "d")
-      .replace(/Đ/g, "D");
+      .replace(/Đ/g, "D")
+      .toUpperCase();
   };
 
   handleChangeSearch = async (event) => {
@@ -142,9 +140,9 @@ class App extends React.Component {
     let SearchList = [];
     this.state.todoList.forEach((item) => {
       if (
-        this.removeAccents(item.content)
-          .toUpperCase()
-          .includes(this.removeAccents(this.state.valueSearch).toUpperCase())
+        this.removeAccents(item.content).includes(
+          this.removeAccents(this.state.valueSearch)
+        )
       ) {
         SearchList.push(item);
       }
@@ -193,14 +191,14 @@ class App extends React.Component {
     });
   };
 
-  handleGetColor = (b) => {
-    if (b == true) {
-      return "red";
-    }
-    {
-      return "green";
-    }
-  };
+  // handleGetColor = (b) => {
+  //   if (b == true) {
+  //     return "red";
+  //   }
+  //   {
+  //     return "green";
+  //   }
+  // };
 
   handleTickCheckbox = (event) => {
     let ListUpdate = this.state.todoList;
@@ -363,7 +361,7 @@ class App extends React.Component {
                           <td
                             style={{
                               position: "relative",
-                              top: "18px",
+                              top: "6px",
                               color: "#c3c3c3",
                               fontWeight: "600",
                               fontSize: "19px",
@@ -516,7 +514,7 @@ class App extends React.Component {
                           <td
                             style={{
                               position: "relative",
-                              top: "18px",
+                              top: "6px",
                               color: "#c3c3c3",
                               fontWeight: "600",
                               fontSize: "19px",

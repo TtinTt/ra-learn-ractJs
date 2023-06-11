@@ -31,7 +31,11 @@
 .show {
   color: #ffffff !important;
   background: rgb(184, 163, 0) !important;
-  background: linear-gradient(0deg, #cb011c 0%, #ff4800 100%) !important;
+  background: linear-gradient(
+    0deg,
+    rgb(0, 194, 113) 0%,
+    #00d5ff 100%
+  ) !important;
   --bs-alert-padding-y: 0.1rem !important;
   margin-bottom: 5px !important;
   margin-top: -10px !important;
@@ -48,11 +52,11 @@
 .CheckedDiv {
   cursor: pointer;
   background-size: cover;
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   position: relative;
-  top: 15px;
-  left: 13px;
+  top: 8px;
+  left: 15px;
   border-radius: 6px;
   box-shadow: rgba(0, 255, 55, 0.25) 0px 54px 55px,
     rgba(0, 255, 68, 0.17) 0px 3px 15px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
