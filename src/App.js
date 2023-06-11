@@ -14,7 +14,7 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      todoList: [],
+      // todoList: [],
       newtodo: { id: 0, value: false, content: "", time: "" },
       todo: { content: "" },
       editID: "",
@@ -25,6 +25,7 @@ class App extends React.Component {
       loadingValue: "",
       sort: true,
       listRender: [],
+      save: true,
     };
   }
 
@@ -78,6 +79,7 @@ class App extends React.Component {
     }
 
     this.handleRefreshList();
+    await this.setState({ save: false });
   };
 
   handleChange = async (event) => {
@@ -120,6 +122,7 @@ class App extends React.Component {
     });
     await this.setState({ todo: { content: "" } });
     this.handleCheckLoading();
+    await this.setState({ save: false });
   };
 
   handleChangeEdit = async (event) => {
@@ -176,6 +179,7 @@ class App extends React.Component {
 
       await this.setState({ todoListSearch: SearchList });
     }
+    await this.setState({ save: false });
   };
 
   handleCheckLoading = async () => {
@@ -191,16 +195,7 @@ class App extends React.Component {
     });
   };
 
-  // handleGetColor = (b) => {
-  //   if (b == true) {
-  //     return "red";
-  //   }
-  //   {
-  //     return "green";
-  //   }
-  // };
-
-  handleTickCheckbox = (event) => {
+  handleTickCheckbox = async (event) => {
     let ListUpdate = this.state.todoList;
     ListUpdate.forEach((item, index) => {
       if (item.id == event.target.id) {
@@ -214,11 +209,12 @@ class App extends React.Component {
         }
       }
     });
-    this.setState({ todoList: ListUpdate });
+    await this.setState({ todoList: ListUpdate });
     this.handleCheckLoading();
+    await this.setState({ save: false });
   };
 
-  handleDelete = (event) => {
+  handleDelete = async (event) => {
     let ListDelete = this.state.todoList;
     ListDelete.forEach((item, index) => {
       if (item.id === event.target.name) {
@@ -233,10 +229,11 @@ class App extends React.Component {
           ListSearchDelete.splice(index, 1);
         }
       });
-      this.setState({ todoListSearch: ListSearchDelete });
+      await this.setState({ todoListSearch: ListSearchDelete });
     }
-
+    await this.setState({ deleteID: "" });
     this.handleCheckLoading();
+    await this.setState({ save: false });
   };
 
   handleSetDeleteID = (event) => {
@@ -246,23 +243,38 @@ class App extends React.Component {
   resetDeleteID = () => {
     this.setState({ deleteID: "" });
   };
+
   handleShowEdit = (event) => {
     this.setState({ editID: event.target.name });
     this.setState({ editContent: event.target.id });
+  };
+
+  handleSave = async () => {
+    let stateData = this.state;
+    localStorage.setItem("stateData", JSON.stringify(stateData));
+    await this.setState({ save: true });
+  };
+
+  componentWillMount = async () => {
+    let stateData = JSON.parse(localStorage.getItem("stateData"));
+
+    if (stateData == null) {
+      await this.setState({ todoList: [] });
+    } else {
+      await this.setState({ todoList: stateData.todoList });
+    }
   };
 
   render() {
     return (
       <div className="App">
         <div className="topPage">
-          {" "}
           <h3>
             Mini Project <Badge bg="secondary">TODO LIST</Badge>
           </h3>
           <form onSubmit={this.handleSubmit}>
             <InputGroup className="mb-3">
               <label for="newtodo">
-                {" "}
                 <InputGroup.Text>Thêm công việc</InputGroup.Text>
               </label>
               <Form.Control
@@ -651,6 +663,21 @@ class App extends React.Component {
             </tbody>
           </Table>
         </main>
+        {this.state.save ? (
+          <p style={{ color: "#5fbc80", fontSize: "18px" }}>
+            {" "}
+            Danh sách đã được lưu !
+          </p>
+        ) : (
+          <Button
+            style={{ backgroundColor: "#5fbc80", fontSize: "18px", border: 0 }}
+            onClick={this.handleSave}
+            variant="secondary"
+            size="sm"
+          >
+            Lưu danh sách
+          </Button>
+        )}
       </div>
     );
   }
