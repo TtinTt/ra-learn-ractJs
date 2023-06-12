@@ -159,7 +159,11 @@ class App extends React.Component {
     let EditedList = this.state.todoList;
     EditedList.forEach((element) => {
       if (element.id == this.state.editID) {
-        element.content = this.state.editContent;
+        if (this.state.editContent == "") {
+          element.content = "Không có nội dung";
+        } else {
+          element.content = this.state.editContent;
+        }
       }
     });
     await this.setState({ todoList: EditedList });
@@ -246,7 +250,11 @@ class App extends React.Component {
 
   handleShowEdit = (event) => {
     this.setState({ editID: event.target.name });
-    this.setState({ editContent: event.target.id });
+    if (event.target.id == "Không có nội dung") {
+      this.setState({ editContent: "" });
+    } else {
+      this.setState({ editContent: event.target.id });
+    }
   };
 
   handleSave = async () => {
