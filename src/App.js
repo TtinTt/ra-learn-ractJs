@@ -691,7 +691,3 @@ class App extends React.Component {
   }
 }
 export default App;
-
-{
-  /* <input type="checkbox" value="true"></input> */
-}
