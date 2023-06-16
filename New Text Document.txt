@@ -1,0 +1,14 @@
+Cấu hình:
+index.js: <Provider> truyền vào store={countStore}
+countStore.js: const countStore=createStore(countReducer)
+countReducer.js: render ra state{count: số đếm} (lắng nghe action.type là UP_COUNT hay DOWN_COUNT)
+https://media.discordapp.net/attachments/1119256606744510635/1119256610842357792/image.png?width=906&height=468
+
+
+Luồng chạy dispatch:
+countReducer.js: nơi khai báo count ban đầu, return ra state = {count}
+countAction.js: chứa function upCount và downCount -> vd upCount thì return {type: UP_COUNT, payload:value}
+Count.js(chứa html): Click button -> handleUp , handleDown -> dispatch(upCount(1)),  dispatch(downCount(1))
+https://media.discordapp.net/attachments/1119256606744510635/1119262725562957976/image.png?width=883&height=468
+
+
