@@ -1,10 +1,10 @@
 import "./App.css";
-import Count from "./components/Count";
+import listToDo from "./components/listToDo";
 
 function App() {
   return (
     <div className="App">
-      <Count />
+      <listToDo />
     </div>
   );
 }

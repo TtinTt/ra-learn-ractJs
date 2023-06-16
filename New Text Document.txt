@@ -1,6 +1,6 @@
 Cấu hình:
 index.js: <Provider> truyền vào store={countStore}
-countStore.js: const countStore=createStore(countReducer)
+countStore.js: const countStore=createStore(countReducer) -> đẩy lên store của redux
 countReducer.js: render ra state{count: số đếm} (lắng nghe action.type là UP_COUNT hay DOWN_COUNT)
 https://media.discordapp.net/attachments/1119256606744510635/1119256610842357792/image.png?width=906&height=468
 

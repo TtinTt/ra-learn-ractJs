@@ -1,6 +1,6 @@
-import countReducer from "../reducers/countReducer";
+import todoReducer from "../reducers/todoReducer";
 import { createStore } from "redux";
 
-const countStore = createStore(countReducer);
+const todoStore = createStore(todoReducer);
 
-export default countStore;
+export default todoStore;
