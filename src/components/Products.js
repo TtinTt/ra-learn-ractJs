@@ -34,12 +34,12 @@ export default function Products() {
           <img className="productPhoto" src={product.photo}></img>
         </td>
         <td>
-          <h2>{product.title}</h2>
-          <p>{product.description}</p>
+          <h4>{product.title}</h4>
+          <p className="productDes">{product.description}</p>
         </td>
         <td>
-          <div className="groupQ">
-            <h3 className="priceP">{product.quantity}</h3>
+          <div className="groupQ buttonSet">
+            <p className="priceP">{product.quantity}</p>
             <div className="buttonQ">
               <button onClick={() => handleDecrement(product.id)}>-</button>
               <button

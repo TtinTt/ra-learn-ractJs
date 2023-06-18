@@ -3,6 +3,7 @@
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-evenly;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .App-logo {

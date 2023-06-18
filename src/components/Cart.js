@@ -3,15 +3,16 @@ import {
   incrementQuantityCart,
   decrementQuantityCart,
   deleteProductCart,
+  saveProductCart,
 } from "../actions/CartAction";
 import React, { useState } from "react";
 import "./Components.css";
 
 export default function Cart() {
-  let isSave = true;
-
   // lấy về state.todos từ store
   let cart = useSelector((state) => state.cartReducer.cart);
+  let isSaved = useSelector((state) => state.cartReducer.isSaved);
+
   const dispatch = useDispatch();
   const handleIncrementCart = async (productID) => {
     dispatch(incrementQuantityCart(productID));
@@ -25,15 +26,25 @@ export default function Cart() {
     dispatch(deleteProductCart(productID));
     await console.log(productID);
   };
+
+  const handleSave = async (cart) => {
+    dispatch(saveProductCart(cart));
+    await console.log("saved");
+  };
   const cartProducts = cart.map((product, index) => {
     return (
       <tr className="cartInfo">
         <td style={{ width: "5%" }}>{index + 1}</td>
-        <td style={{ width: "25%" }}>{product.title}</td>
+        <td style={{ width: "37%" }}>
+          <div className="groupImg">
+            <img className="productPhotoThumb" src={product.photo}></img>
+            {product.title}
+          </div>
+        </td>
         <td style={{ width: "10%" }}>{product.price}</td>
         <td style={{ width: "25%" }}>
           <div className="groupQ">
-            <h3 className="priceP">{product.quantity}</h3>
+            <p className="priceP">{product.quantity}</p>
             <div className="buttonQ">
               <button onClick={() => handleDecrementCart(product.id)}>-</button>
               <button
@@ -45,8 +56,8 @@ export default function Cart() {
             </div>
           </div>
         </td>
-        <td style={{ width: "15%" }}>{product.quantity * product.price}</td>
-        <td style={{ width: "20%" }}>
+        <td style={{ width: "10%" }}>{product.quantity * product.price}</td>
+        <td style={{ width: "18%" }}>
           {/* <button onClick={() => handleComplete(product)}>Update</button> */}
           <button
             className="buttonMain"
@@ -59,27 +70,12 @@ export default function Cart() {
     );
   });
 
-  let handleCheckSave = () => {
-    let savedData = JSON.parse(localStorage.getItem("cart")) ?? [];
-    if (savedData == cart) {
-      isSave = true;
-    } else {
-      isSave = false;
-    }
-  };
-
-  let handleSave = () => {
-    localStorage.setItem("cart", JSON.stringify(cart));
-    handleCheckSave();
-  };
-
   let cartQlt = 0;
   let cartSum = 0;
 
   cart.forEach((product) => {
     cartQlt = cartQlt + product.quantity;
     cartSum = cartSum + product.quantity * product.price;
-    handleCheckSave();
   });
 
   return (
@@ -89,31 +85,35 @@ export default function Cart() {
         <thead>
           <tr>
             <th style={{ width: "5%" }}>#</th>
-            <th style={{ width: "25%" }}>Name</th>
+            <th style={{ width: "37%", textAlign: "left" }}>Name</th>
             <th style={{ width: "10%" }}>Price</th>
             <th style={{ width: "25%" }}>Quantity</th>
-            <th style={{ width: "15%" }}>Subtotal</th>
-            <th style={{ width: "20%" }}>Action</th>
+            <th style={{ width: "10%" }}>Total</th>
+            <th style={{ width: "18%" }}>Action</th>
           </tr>
         </thead>
         <tbody>{cartProducts}</tbody>
       </table>
 
       {cart.length == 0 ? (
-        <h2>Empty product in your cart</h2>
+        <p>Empty product in your cart</p>
       ) : (
-        <h2>
+        <p>
           There are <span>{cartQlt}</span> items in your cart:{" "}
           <span>{cartSum}</span> USD
-        </h2>
+        </p>
       )}
 
-      {isSave ? (
-        <p>saved</p>
+      {isSaved ? (
+        <p
+          style={{ color: "grey", letterSpacing: "1px", marginBottom: "44px" }}
+        >
+          Your cart has been saved!
+        </p>
       ) : (
         <button
-          onClick={() => handleSave()}
-          style={{ width: "90px" }}
+          onClick={() => handleSave(cart)}
+          style={{ width: "230px", marginBottom: "30px" }}
           className="buttonMain"
         >
           Update Cart

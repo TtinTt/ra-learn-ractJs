@@ -1,5 +1,8 @@
+// let cartData = JSON.parse(localStorage.getItem("cart")) ?? [];
+
 const initialState = {
   cart: JSON.parse(localStorage.getItem("cart")) ?? [],
+  isSaved: true,
 };
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
@@ -10,6 +13,7 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: updateCartList2,
+        isSaved: false,
       };
     case "INCREMENT_QUANTITY_CART":
       const updatedProductList = state.cart.map((product) => {
@@ -25,6 +29,7 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: updatedProductList,
+        isSaved: false,
       };
     case "DECREMENT_QUANTITY_CART":
       const updateCartListDecrement = state.cart.map((product) => {
@@ -47,6 +52,7 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: updateCartListDecrement,
+        isSaved: false,
       };
 
     case "ADD_TO_CART":
@@ -66,7 +72,15 @@ const cartReducer = (state = initialState, action) => {
       return {
         ...state,
         cart: updatedATC,
+        isSaved: false,
       };
+
+    case "SAVE_PRODUCT_CART":
+      return {
+        ...state,
+        isSaved: true,
+      };
+
     default:
       return state;
   }
