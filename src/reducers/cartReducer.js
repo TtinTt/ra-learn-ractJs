@@ -1,22 +1,6 @@
 const initialState = {
-  cart: [
-    {
-      id: 1,
-      title: "sản phẩm 1",
-      description: "mô tả sp1",
-      quantity: 1,
-      price: "12",
-    },
-    {
-      id: 2,
-      title: "sản phẩm 2",
-      description: "mô tả sp2",
-      quantity: 2,
-      price: "13",
-    },
-  ],
+  cart: JSON.parse(localStorage.getItem("cart")) ?? [],
 };
-
 const cartReducer = (state = initialState, action) => {
   switch (action.type) {
     case "DELETE_PRODUCT_CART":
@@ -66,9 +50,22 @@ const cartReducer = (state = initialState, action) => {
       };
 
     case "ADD_TO_CART":
+      let flag = false;
+      let updatedATC = state.cart.map((product) => {
+        if (product.id === action.payload.id) {
+          flag = true;
+          product.quantity = product.quantity + action.payload.quantity;
+        }
+
+        return product;
+      });
+
+      if (!flag) {
+        updatedATC = [...updatedATC, action.payload];
+      }
       return {
         ...state,
-        cart: [...state.cart, action.payload],
+        cart: updatedATC,
       };
     default:
       return state;

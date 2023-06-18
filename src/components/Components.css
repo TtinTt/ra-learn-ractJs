@@ -1,0 +1,112 @@
+.productPhoto {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+}
+.productInfo td {
+  height: 200px;
+  vertical-align: middle;
+  border-bottom: 3px solid salmon;
+  padding: 10px;
+}
+.priceP {
+  margin: 0;
+  display: inline-block;
+}
+.groupQ {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+}
+.buttonQ {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: flex-end;
+  width: 38px;
+  margin-left: 10px;
+}
+.buttonQ button {
+  border: 0;
+  background-color: salmon;
+  color: white;
+  border-radius: 3px;
+  width: 18px;
+  height: 20px;
+  text-align: center;
+  /* font-size: 10px; */
+}
+
+.buttonMain {
+  border: 0;
+  background-color: salmon;
+  color: white;
+  border-radius: 3px;
+  width: 60px;
+  height: 25px;
+  text-align: center;
+  vertical-align: middle;
+  margin: 10px 0;
+}
+.List-Products {
+  border: 5px solid salmon;
+  display: inline-block;
+  width: 50%;
+}
+
+.List-Products h1 {
+  background-color: salmon;
+  margin-top: 0;
+  color: white;
+  text-align: left;
+  padding: 10px 50px;
+  letter-spacing: 14px;
+}
+table {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.List-Cart h1 {
+  background-color: salmon;
+  margin-top: 0;
+  color: white;
+  text-align: left;
+  padding: 10px 50px;
+  letter-spacing: 14px;
+}
+
+.List-Cart {
+  border: 5px solid salmon;
+  display: inline-block;
+  width: 40%;
+  height: fit-content;
+}
+.cartInfo td {
+  height: 100px;
+  vertical-align: middle;
+  border-bottom: 3px solid salmon;
+  padding: 10px;
+  width: 100%;
+}
+thead th {
+  border-bottom: 3px solid salmon;
+
+  padding: 10px;
+  width: 100%;
+}
+button:hover {
+  background-color: antiquewhite;
+  color: salmon;
+  box-shadow: rgb(255, 87, 87) 0px 0px 0px 2px;
+}
+
+.List-Cart h2 {
+  color: salmon;
+  font-size: 18px;
+  letter-spacing: 1px;
+}
+
+h2 span {
+  color: rgb(224, 43, 43);
+}

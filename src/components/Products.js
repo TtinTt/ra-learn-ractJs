@@ -5,10 +5,12 @@ import {
   addToCart,
 } from "../actions/productsAction";
 import React, { useState } from "react";
+import "./Components.css";
 
 export default function Products() {
   // lấy về state.todos từ store
   const products = useSelector((state) => state.listProductReducer.products);
+
   const dispatch = useDispatch();
 
   const handleIncrement = async (productID) => {
@@ -21,28 +23,35 @@ export default function Products() {
   };
 
   const handleATC = async (product) => {
-    addToCart(addToCart(product));
+    await dispatch(addToCart(product));
     await console.log(product);
   };
 
   const productlist = products.map((product) => {
     return (
-      <tr>
+      <tr className="productInfo">
         <td>
-          <img src={product.photo}></img>
+          <img className="productPhoto" src={product.photo}></img>
         </td>
         <td>
           <h2>{product.title}</h2>
           <p>{product.description}</p>
         </td>
         <td>
-          <input value={product.quantity}></input>
-          <div>
-            <button onClick={() => handleDecrement(product.id)}>-</button>
-
-            <button onClick={() => handleIncrement(product.id)}>+</button>
+          <div className="groupQ">
+            <h3 className="priceP">{product.quantity}</h3>
+            <div className="buttonQ">
+              <button onClick={() => handleDecrement(product.id)}>-</button>
+              <button
+                style={{ marginLeft: "3px" }}
+                onClick={() => handleIncrement(product.id)}
+              >
+                +
+              </button>
+            </div>
           </div>
-          <button onClick={() => handleATC(product)}>
+
+          <button className="buttonMain" onClick={() => handleATC(product)}>
             {product.quantity * product.price} USD
           </button>
         </td>
@@ -51,7 +60,7 @@ export default function Products() {
   });
 
   return (
-    <div>
+    <div className="List-Products">
       <h1>List Products</h1>
       <div>{productlist}</div>
     </div>
