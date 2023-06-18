@@ -1,12 +1,20 @@
 import React from "react";
+import App from "./App";
 import ReactDOM from "react-dom";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import todoReducer from "./reducers/todoReducer";
-import App from "./App";
+import listProductReducer from "./reducers/listProductReducer";
+import cartReducer from "./reducers/cartReducer";
+import { combineReducers } from "redux";
 
-// tạo store chứa todoReducer
-const store = createStore(todoReducer);
+// combine reducers
+const allReducers = combineReducers({
+  listProductReducer,
+  cartReducer,
+});
+
+// tạo store chứa allReducers
+const store = createStore(allReducers);
 
 // gói <App/> bên trong 1 component hỗ trợ của react-redux là Provider,
 // nhờ đó tất cả component trong <App/> có thể truy cập được store.
