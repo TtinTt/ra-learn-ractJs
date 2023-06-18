@@ -16,6 +16,13 @@
   justify-content: flex-start;
   text-align: left;
 }
+.groupImg h5 {
+  padding-left: 5px;
+  color: salmon;
+}
+.tittleProduct {
+  color: salmon;
+}
 .productInfo td {
   height: fit-content;
   vertical-align: middle;

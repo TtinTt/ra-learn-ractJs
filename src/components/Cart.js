@@ -38,7 +38,7 @@ export default function Cart() {
         <td style={{ width: "37%" }}>
           <div className="groupImg">
             <img className="productPhotoThumb" src={product.photo}></img>
-            {product.title}
+            <h5> {product.title}</h5>{" "}
           </div>
         </td>
         <td style={{ width: "10%" }}>{product.price}</td>
