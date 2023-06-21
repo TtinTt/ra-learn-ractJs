@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import "./Components.css";
 import { Link } from "react-router-dom";
 
-export default function Products() {
+export default function ManageProduct() {
   // lấy về state.todos từ store
   const products = useSelector((state) => state.listProductReducer.products);
   let cart = useSelector((state) => state.cartReducer.cart);
@@ -70,17 +70,19 @@ export default function Products() {
   return (
     <div className="List-Products">
       <h1>
-        List Products
+        Manage Products
         {isAdmin == true && (
           <span>
             <Link to="/manage-product" className="float-end">
-              <button className="buttonTopbar">Manage Product</button>
+              <button className="buttonTopbar">Add Product</button>
             </Link>
           </span>
         )}
         <span>
-          <Link to="/cart" className="float-end">
-            <button className="buttonTopbar">Your Cart ({cartQlt})</button>
+          <Link to="/" className="float-end">
+            <button style={{}} className="buttonHome">
+              Home
+            </button>
           </Link>
         </span>
       </h1>

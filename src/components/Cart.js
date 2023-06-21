@@ -7,6 +7,7 @@ import {
 } from "../actions/CartAction";
 import React, { useState } from "react";
 import "./Components.css";
+import { Link } from "react-router-dom";
 
 export default function Cart() {
   // lấy về state.todos từ store
@@ -35,7 +36,7 @@ export default function Cart() {
     return (
       <tr className="cartInfo">
         <td style={{ width: "5%" }}>{index + 1}</td>
-        <td style={{ width: "37%" }}>
+        <td style={{ width: "30%" }}>
           <div className="groupImg">
             <img className="productPhotoThumb" src={product.photo}></img>
             <h5> {product.title}</h5>{" "}
@@ -57,7 +58,7 @@ export default function Cart() {
           </div>
         </td>
         <td style={{ width: "10%" }}>{product.quantity * product.price}</td>
-        <td style={{ width: "18%" }}>
+        <td style={{ width: "25%" }}>
           {/* <button onClick={() => handleComplete(product)}>Update</button> */}
           <button
             className="buttonMain"
@@ -80,45 +81,64 @@ export default function Cart() {
 
   return (
     <div className="List-Cart">
-      <h1>Your cart</h1>
-      <table>
-        <thead>
-          <tr>
-            <th style={{ width: "5%" }}>#</th>
-            <th style={{ width: "37%", textAlign: "left" }}>Name</th>
-            <th style={{ width: "10%" }}>Price</th>
-            <th style={{ width: "25%" }}>Quantity</th>
-            <th style={{ width: "10%" }}>Total</th>
-            <th style={{ width: "18%" }}>Action</th>
-          </tr>
-        </thead>
-        <tbody>{cartProducts}</tbody>
-      </table>
+      <h1>
+        Your cart{" "}
+        <span>
+          <Link to="/" className="float-end">
+            <button style={{}} className="buttonHome">
+              Home
+            </button>
+          </Link>
+        </span>
+      </h1>
 
-      {cart.length == 0 ? (
-        <p>Empty product in your cart</p>
-      ) : (
-        <p>
-          There are <span>{cartQlt}</span> items in your cart:{" "}
-          <span>{cartSum}</span> USD
-        </p>
-      )}
-
-      {isSaved ? (
-        <p
-          style={{ color: "grey", letterSpacing: "1px", marginBottom: "44px" }}
-        >
-          Your cart has been saved!
-        </p>
-      ) : (
-        <button
-          onClick={() => handleSave(cart)}
-          style={{ width: "230px", marginBottom: "30px" }}
-          className="buttonMain"
-        >
-          Update Cart
-        </button>
-      )}
+      <div className="scrollTb">
+        <div className="tableScroll">
+          <table>
+            <thead>
+              <tr>
+                <th style={{ width: "5%" }}>#</th>
+                <th style={{ width: "30%", textAlign: "left" }}>Name</th>
+                <th style={{ width: "10%" }}>Price</th>
+                <th style={{ width: "25%" }}>Quantity</th>
+                <th style={{ width: "10%" }}>Total</th>
+                <th style={{ width: "25%" }}>Action</th>
+              </tr>
+            </thead>
+            <tbody>{cartProducts}</tbody>
+          </table>
+        </div>
+      </div>
+      <div className="footerCart">
+        {" "}
+        {cart.length == 0 ? (
+          <p>Empty product in your cart</p>
+        ) : (
+          <p>
+            There are <span>{cartQlt}</span> items in your cart:{" "}
+            <span>{cartSum}</span> USD
+          </p>
+        )}
+        {isSaved ? (
+          <p
+            style={{
+              color: "grey",
+              letterSpacing: "1px",
+              marginBottom: "44px",
+            }}
+          >
+            Your order has been saved!
+          </p>
+        ) : (
+          <button
+            onClick={() => handleSave(cart)}
+            style={{ width: "230px", marginBottom: "30px" }}
+            className="buttonMain"
+          >
+            Update Order
+          </button>
+        )}
+      </div>
     </div>
   );
 }

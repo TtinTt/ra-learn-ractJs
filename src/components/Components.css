@@ -2,6 +2,7 @@
   width: 160px;
   height: 120px;
   object-fit: cover;
+
   padding: 5px;
 }
 .productPhotoThumb {
@@ -64,7 +65,10 @@
   text-align: center;
   /* font-size: 10px; */
 }
-
+.List-Cart table .buttonMain {
+  width: 50px !important;
+  margin: 0 10px;
+}
 .buttonMain {
   border: 0;
   background-color: salmon;
@@ -76,11 +80,38 @@
   vertical-align: middle;
   margin: 10px 0;
 }
+.buttonHome {
+  position: relative;
+  left: 48px;
+  /* margin-right: 20px; */
+  background-color: rgb(255, 139, 126);
+  border: 0;
+  color: white;
+  border-radius: 3px;
+  width: 50px;
+  height: 25px;
+  text-align: center;
+  vertical-align: middle;
+  float: right;
+}
+.buttonTopbar {
+  margin: 0 3px;
+  background-color: rgb(255, 177, 168);
+  border: 0;
+  color: white;
+  border-radius: 3px;
+  /* width: 60px; */
+  padding: 0 10px;
+  height: 25px;
+  text-align: center;
+  vertical-align: middle;
+}
 .List-Products {
   border: 5px solid salmon;
-  display: inline-block;
-  width: 50%;
+  width: 80%;
   height: fit-content;
+  margin: auto;
+  padding: auto;
 }
 h1 {
   background-color: salmon;
@@ -96,24 +127,59 @@ table {
   width: 100%;
   padding: 0;
   margin: 0;
+  /* position: relative; */
+}
+.scrollTb {
+  position: relative;
+  width: 100%;
+  height: 450px;
+}
+tbody {
+  position: relative;
+  /* top: 30px; */
+}
+.tableScroll {
+  /* width: 100%; */
+  display: block;
+  overflow-y: auto;
+  height: 400px;
+}
+.List-Cart thead {
+  /* width: 796px; */
+  /* position: fixed; */
+  background-color: white;
+  z-index: 10;
+}
+.List-Cart table {
+  text-align: center;
+}
+.List-Cart table {
+  width: 100%;
 }
 
+.List-Cart tbody {
+  /* height: 200px;  */
+  overflow-y: auto;
+}
+.footerCart {
+  text-align: center;
+}
 .List-Cart {
   border: 5px solid salmon;
-  display: inline-block;
-  width: 40%;
+  width: 600px;
   height: fit-content;
+  height: 603px;
+  margin: auto;
 }
 .cartInfo td {
-  height: 100px;
+  /* height: 100px; */
   vertical-align: middle;
   border-bottom: 3px solid salmon;
-  padding: 10px 0;
+  /* padding: 10px 0; */
   width: 100%;
 }
 thead th {
   border-bottom: 3px solid salmon;
-
   padding: 10px 0px;
   width: 100%;
 }
@@ -139,3 +205,5 @@ p span {
     rgba(255, 166, 32, 0.3) 0px 30px 60px -30px,
     rgba(255, 21, 21, 0.35) 0px -2px 6px 0px;
 }
+
+/*  */

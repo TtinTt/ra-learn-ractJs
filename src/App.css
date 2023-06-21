@@ -1,9 +1,11 @@
 .App {
   text-align: center;
-  display: flex;
+  /* display: flex;
   flex-wrap: nowrap;
-  justify-content: space-evenly;
+  justify-content: center; */
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+
+  gap: 10px;
 }
 
 .App-logo {

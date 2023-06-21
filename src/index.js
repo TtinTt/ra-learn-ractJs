@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import listProductReducer from "./reducers/listProductReducer";
 import cartReducer from "./reducers/cartReducer";
 import { combineReducers } from "redux";
+import { BrowserRouter } from "react-router-dom";
 
 // combine reducers
 const allReducers = combineReducers({
@@ -19,8 +20,12 @@ const store = createStore(allReducers);
 // gói <App/> bên trong 1 component hỗ trợ của react-redux là Provider,
 // nhờ đó tất cả component trong <App/> có thể truy cập được store.
 ReactDOM.render(
-  <Provider store={store}>
-    <App />
-  </Provider>,
+  <BrowserRouter>
+    <Provider store={store}>
+      <App />
+    </Provider>
+    ,
+  </BrowserRouter>,
+
   document.getElementById("root")
 );
