@@ -1,34 +1,43 @@
 import React, { useState } from "react";
 import "./Components.css";
+import { useSelector, useDispatch } from "react-redux";
 
+import { updateEditProduct } from "../actions/productsManageAction";
 export default function EditProductShow({ productInput, onHideEditProduct }) {
-  const [productSave, setProductSave] = useState(productInput);
+  const [product, setProduct] = useState(productInput);
 
-  const handleGetInput = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setProductSave(([name] = value));
-    console.log(productSave);
+  let handleGetInput = async (event) => {
+    let productEdit = product;
+
+    productEdit[event.target.name] = event.target.value;
+
+    await setProduct({ ...productEdit });
   };
+  const dispatch = useDispatch();
 
-  let product = productInput;
-  console.log(product);
+  const handleUpdateEditProduct = async (product) => {
+    dispatch(updateEditProduct(product));
+    await console.log(product);
+    onHideEditProduct();
+  };
 
   return (
     <tr className="productInfo">
       <td>
-        <h4 className="tittleProduct">#{product.id}</h4>
+        <h4 className="titleProduct">#{product.id}</h4>
       </td>
       <td id="editProductCard" colSpan={2}>
         <table>
           <tr>
             <td>
-              <h4 className="tittleProduct">Title:</h4>
+              <h4 className="titleProduct">Title:</h4>
             </td>
             <td>
               <input
                 name="title"
-                onChangeD={(event) => handleGetInput}
+                onChange={(event) => {
+                  handleGetInput(event);
+                }}
                 value={product.title}
               ></input>
             </td>
@@ -40,8 +49,24 @@ export default function EditProductShow({ productInput, onHideEditProduct }) {
             <td>
               <input
                 name="description"
-                onChange={(event) => handleGetInput}
+                onChange={(event) => {
+                  handleGetInput(event);
+                }}
                 value={product.description}
+              ></input>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p className="productDes">Price :</p>
+            </td>
+            <td>
+              <input
+                name="price"
+                onChange={(event) => {
+                  handleGetInput(event);
+                }}
+                value={product.price}
               ></input>
             </td>
           </tr>
@@ -52,7 +77,9 @@ export default function EditProductShow({ productInput, onHideEditProduct }) {
             <td>
               <input
                 name="photo"
-                onChange={(event) => handleGetInput}
+                onChange={(event) => {
+                  handleGetInput(event);
+                }}
                 value={product.photo}
               ></input>
             </td>
@@ -60,17 +87,19 @@ export default function EditProductShow({ productInput, onHideEditProduct }) {
         </table>
       </td>
       <td>
-        <div className="groupQ" style={{ margin: "10px 0 0 0" }}>
-          <button
-            className="buttonMain"
-            style={{ margin: "0" }}
-            // onClick={() => handleShowEditProduct(product.id)}
-          >
-            Update
-          </button>
-        </div>
+        <button
+          className="buttonMain"
+          style={{ margin: "10px 0  0 10px" }}
+          onClick={() => handleUpdateEditProduct(product)}
+        >
+          Update
+        </button>
 
-        <button className="buttonMain" onClick={() => onHideEditProduct()}>
+        <button
+          style={{ margin: "5px 0  0 10px" }}
+          className="buttonMain"
+          onClick={() => onHideEditProduct()}
+        >
           Cancel
         </button>
       </td>

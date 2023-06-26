@@ -19,7 +19,16 @@ export default function ManageProduct() {
 
   const handleDeleteProduct = async (productID) => {
     dispatch(deleteProduct(productID));
-    await console.log(productID);
+    await console.log(products);
+  };
+
+  const [idDelete, setIdDelete] = useState("");
+  const handleShowDeleteProduct = (productID) => {
+    setIdDelete(productID);
+  };
+  const handleHideDeleteProduct = () => {
+    console.log("123");
+    setIdDelete("");
   };
 
   const [idEdit, setIdEdit] = useState("");
@@ -34,10 +43,10 @@ export default function ManageProduct() {
     console.log("123");
     setIdEdit("");
   };
+  const [isAddingProduct, setIisAddingProduct] = useState(true);
 
   const handleShowAddProduct = () => {
-    console.log("show add product");
-    handleAddProduct();
+    isAddingProduct = !isAddingProduct;
   };
   const handleAddProduct = () => {
     dispatch(addProduct());
@@ -54,26 +63,47 @@ export default function ManageProduct() {
         </td>
         <td>
           <h4 className="tittleProduct">{product.title}</h4>
-          <p className="productDes">{product.description}</p>
+          <p className="productDes">
+            {" "}
+            {product.price} USD - {product.description}
+          </p>
         </td>
-        <td>
-          <div className="groupQ" style={{ margin: "10px 0 0 0" }}>
+        {product.id != idDelete ? (
+          <td>
             <button
               className="buttonMain"
-              style={{ margin: "0" }}
+              style={{ margin: "10px 0  0 10px" }}
               onClick={() => handleShowEditProduct(product.id)}
             >
               Edit
             </button>
-          </div>
 
-          <button
-            className="buttonMain"
-            onClick={() => handleDeleteProduct(product.id)}
-          >
-            Delete
-          </button>
-        </td>
+            <button
+              style={{ margin: "5px 0  0 10px" }}
+              className="buttonMain"
+              onClick={() => handleShowDeleteProduct(product.id)}
+            >
+              Delete
+            </button>
+          </td>
+        ) : (
+          <td>
+            <button
+              style={{ margin: "10px 0  0 10px" }}
+              className="buttonMain"
+              onClick={() => handleDeleteProduct(product.id)}
+            >
+              Confirm
+            </button>{" "}
+            <button
+              style={{ margin: "5px 0  0 10px" }}
+              className="buttonMain"
+              onClick={() => handleHideDeleteProduct(product.id)}
+            >
+              Cancel
+            </button>
+          </td>
+        )}
       </tr>
     ) : (
       <EditProductShow
@@ -83,6 +113,10 @@ export default function ManageProduct() {
     );
   });
 
+  // viết thêm phần add product
+  const productAdd = products.map((product) => {
+    return <p>Show add product</p>;
+  });
   return (
     <>
       <div className="List-Products">
@@ -106,6 +140,9 @@ export default function ManageProduct() {
             </Link>
           </span>
         </h1>
+
+        {isAddingProduct ?? productAdd}
+
         <div>
           <table>
             <thead style={{ color: "salmon" }}>
@@ -113,6 +150,7 @@ export default function ManageProduct() {
                 <th>#</th>
                 <th style={{ width: "60px" }}>Photo</th>
                 <th>Description</th>
+
                 <th>Action</th>
               </tr>
             </thead>

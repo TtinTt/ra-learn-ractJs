@@ -16,6 +16,13 @@
   justify-content: flex-start;
   text-align: left;
 }
+.List-Products tr td:last-child {
+  text-align: center;
+}
+
+.List-Products .buttonMain {
+  width: 62px;
+}
 .groupImg h5 {
   padding-left: 5px;
   color: salmon;
@@ -37,6 +44,10 @@
   vertical-align: middle;
   border-top: 3px solid salmon;
   padding: 0 10px;
+}
+
+.editProductCard td {
+  border-top: none;
 }
 .productInfo h4 {
   margin: 0;

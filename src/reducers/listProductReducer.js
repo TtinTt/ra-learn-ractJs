@@ -1,6 +1,6 @@
 const initialState = {
-  products: [
-    JSON.parse(localStorage.getItem("products")) ?? {
+  products: JSON.parse(localStorage.getItem("products")) ?? [
+    {
       id: 1,
       title: "Air Pods Pro",
       description:
@@ -41,6 +41,7 @@ const initialState = {
       photo:
         "https://cdn2.cellphones.com.vn/x358,webp,q100/media/catalog/product/s/m/sm-s908_galaxys22ultra_front_phantomblack_211119.jpg",
     },
+    ,
   ],
 };
 
@@ -85,7 +86,17 @@ const listProductReducer = (state = initialState, action) => {
         ...state,
         products: updatedProductList2,
       };
+    case "DELETE_PRODUCT":
+      const ProductListDeleted = state.products.filter(
+        (product) => product.id !== action.payload
+      );
+      // console.log(ProductListDeleted);
+      localStorage.setItem("products", JSON.stringify(ProductListDeleted));
 
+      return {
+        ...state,
+        products: ProductListDeleted,
+      };
     case "ADD_TO_CART":
       const updatedProductListATC = state.products.map((product) => {
         if (product.id === action.payload.id) {
@@ -100,6 +111,22 @@ const listProductReducer = (state = initialState, action) => {
       return {
         ...state,
         products: updatedProductListATC,
+      };
+    case "UPDATE_EDIT_PRODUCT":
+      const updatedProductListEdit = state.products.map((product) => {
+        if (product.id === action.payload.id) {
+          return {
+            ...action.payload,
+          };
+        } else {
+          return product;
+        }
+      });
+      localStorage.setItem("products", JSON.stringify(updatedProductListEdit));
+
+      return {
+        ...state,
+        products: updatedProductListEdit,
       };
     default:
       return state;

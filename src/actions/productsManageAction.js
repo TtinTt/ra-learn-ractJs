@@ -18,3 +18,10 @@ export const editProduct = (id) => {
     payload: id,
   };
 };
+
+export const updateEditProduct = (product) => {
+  return {
+    type: "UPDATE_EDIT_PRODUCT",
+    payload: product,
+  };
+};
