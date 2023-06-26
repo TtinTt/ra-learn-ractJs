@@ -84,7 +84,18 @@ export default function Products() {
           </Link>
         </span>
       </h1>
-      <div>{productlist}</div>
+      <div>
+        <table>
+          <thead style={{ color: "salmon" }}>
+            <tr>
+              <th style={{ width: "60px" }}>Photo</th>
+              <th>Description</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          {productlist}
+        </table>
+      </div>
     </div>
   );
 }

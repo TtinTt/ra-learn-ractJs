@@ -7,6 +7,7 @@ import listProductReducer from "./reducers/listProductReducer";
 import cartReducer from "./reducers/cartReducer";
 import { combineReducers } from "redux";
 import { BrowserRouter } from "react-router-dom";
+// import "bootstrap/dist/css/bootstrap.min.css";
 
 // combine reducers
 const allReducers = combineReducers({

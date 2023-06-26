@@ -1,6 +1,6 @@
 const initialState = {
   products: [
-    {
+    JSON.parse(localStorage.getItem("products")) ?? {
       id: 1,
       title: "Air Pods Pro",
       description:

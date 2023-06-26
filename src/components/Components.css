@@ -2,7 +2,6 @@
   width: 160px;
   height: 120px;
   object-fit: cover;
-
   padding: 5px;
 }
 .productPhotoThumb {
@@ -24,10 +23,19 @@
 .tittleProduct {
   color: salmon;
 }
+
+.inLineTable td {
+  border-top: 0 !important;
+  width: fit-content !important;
+}
+.tittleProduct input,
+.tittleProduct textarea {
+  width: 500px !important;
+}
 .productInfo td {
   height: fit-content;
   vertical-align: middle;
-  border-bottom: 3px solid salmon;
+  border-top: 3px solid salmon;
   padding: 0 10px;
 }
 .productInfo h4 {
@@ -41,6 +49,26 @@
 .priceP {
   margin: 0;
   display: inline-block;
+}
+#editProductCard {
+  padding: 10px;
+  background-color: antiquewhite;
+}
+#editProductCard td {
+  border: 0;
+}
+#editProductCard tr td:first-child {
+  width: 85px;
+}
+#editProductCard tr td:last-child {
+  width: 100%%;
+}
+#editProductCard input {
+  width: 100%;
+  border: solid 1px white;
+}
+#editProductCard p {
+  color: rgb(107, 107, 107);
 }
 .groupQ {
   display: flex;
@@ -174,12 +202,11 @@ tbody {
 .cartInfo td {
   /* height: 100px; */
   vertical-align: middle;
-  border-bottom: 3px solid salmon;
+  border-top: 3px solid salmon;
   /* padding: 10px 0; */
   width: 100%;
 }
-thead th {
-  border-bottom: 3px solid salmon;
+.List-Cart thead th {
   padding: 10px 0px;
   width: 100%;
 }

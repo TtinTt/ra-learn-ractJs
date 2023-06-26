@@ -27,7 +27,6 @@ export default function Cart() {
     dispatch(deleteProductCart(productID));
     await console.log(productID);
   };
-
   const handleSave = async (cart) => {
     dispatch(saveProductCart(cart));
     await console.log("saved");
