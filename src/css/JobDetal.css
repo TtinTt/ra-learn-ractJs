@@ -1,0 +1,29 @@
+#jobLogo {
+  width: 100px;
+  height: 100px;
+  display: inline-Block;
+  object-fit: contain;
+  margin-right: 8px;
+  padding: 10px;
+}
+
+.list-group-item {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.list-group,
+.list-group-item {
+  --bs-list-group-bg: none;
+  padding: 5px 0;
+}
+
+.detalJob span {
+  margin-right: 3px;
+  font-weight: 100 !important;
+  letter-spacing: 1px;
+  font-size: 18px;
+}
+.detalJob * {
+  padding: 5px;
+}
