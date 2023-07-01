@@ -1,8 +1,8 @@
-import jobReducer from "../reducers/jobReducer";
+import productReducer from "../reducers/productReducer";
 import userReducer from "../reducers/userReducer";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
-const reducers = combineReducers({ jobReducer, userReducer });
+const reducers = combineReducers({ productReducer, userReducer });
 
 const store = configureStore({
   reducer: reducers,

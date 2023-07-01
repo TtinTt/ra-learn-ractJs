@@ -1,5 +1,4 @@
-import JobList from "../components/JobList";
-import JobDetal from "../components/JobDetal";
+import ProductList from "../components/ProductList";
 import NavbarTop from "../components/NavbarTop";
 import FooterBot from "../components/FooterBot";
 import Container from "react-bootstrap/Container";
@@ -11,16 +10,17 @@ function Home() {
   return (
     <>
       <NavbarTop></NavbarTop>
-      <Container>
+      {/* <Container>
         <Row>
           <Col className="leftBundle" sm={4}>
-            <JobList />
+            <ProductList />
           </Col>
           <Col className="rightBundle" sm={8}>
-            <JobDetal />
+            <ProductDetal />
           </Col>
         </Row>
-      </Container>
+      </Container> */}
+      <ProductList />
       <FooterBot></FooterBot>
     </>
   );
