@@ -2,75 +2,114 @@ import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { showProduct } from "../actions/productAction";
 import { useEffect, useState } from "react";
-import ListGroup from "react-bootstrap/ListGroup";
 import { addToCart } from "../actions/productAction";
 import Button from "react-bootstrap/Button";
-import Card from "react-bootstrap/Card";
-import Placeholder from "react-bootstrap/Placeholder";
-import ProductDetail from "./ProductDetail";
+import ProductCard from "./ProductCard";
 import "../css/ProductList.css";
-import Form from "react-bootstrap/Form";
-import Badge from "react-bootstrap/Badge";
-import Stack from "react-bootstrap/Stack";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Pagination from "react-bootstrap/Pagination";
+
+import { removeAccentsUpperCase, HandleFilter } from "../function/functionData";
 
 export default function ProductList() {
-  const productList = useSelector((state) => state.productReducer.products);
-  const searchFilter =
-    useSelector((state) => state.productReducer.searchFilter) ?? "";
+  const productListStore = useSelector(
+    (state) => state.productReducer.products
+  );
+
+  const productList = HandleFilter(productListStore);
 
   const dispatch = useDispatch();
 
-  // console.log(productList);
-
-  const handleSetProductShow = (Product) => {
-    dispatch(showProduct(Product));
-  };
-
-  //   show Product đầu tiên trong list
-  useEffect(() => {
-    handleSetProductShow(productList[0]);
-  }, []);
-
-  const removeAccentsUpperCase = (str) => {
-    return str
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/đ/g, "d")
-      .replace(/Đ/g, "D")
-      .toUpperCase();
-  };
-
-  // const [quantity, setQuantity] = useState(1);
-
-  const handleChangeQuantity = (event, productId) => {
-    const qlt = Number(event.target.value);
-    console.log(qlt);
-
-    if (qlt > 0) {
-      productList.map((product, index) => {
-        if (product.id == productId) {
-          return { ...product, cartQuantity: qlt };
-        } else {
-          return product;
-        }
-      });
-    }
-  };
-
+  // thêm vào giỏ hàng
   const handleAdd = (product) => {
     dispatch(addToCart(product));
   };
 
-  const products = productList.map((product, index) => {
+  // Pagination phân trang
+  const [currentPage, setCurrentPage] = useState(1);
+  const productsPerPage = 12;
+
+  const indexOfLastProduct = currentPage * productsPerPage;
+  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+
+  // const [currentProducts, setcurrentProducts] = useState(
+  //   productList.slice(indexOfFirstProduct, indexOfLastProduct)
+  // );
+
+  const currentProducts = productList.slice(
+    indexOfFirstProduct,
+    indexOfLastProduct
+  );
+
+  const renderProducts = currentProducts.map((product, index) => {
     return (
-      (removeAccentsUpperCase(product.name).includes(
-        removeAccentsUpperCase(searchFilter).toLowerCase()
-      ) ||
-        removeAccentsUpperCase(product.company.name).includes(
-          removeAccentsUpperCase(searchFilter).toLowerCase()
-        )) && <ProductDetail product={product} />
+      <Col>
+        <ProductCard key={index} product={product} />
+      </Col>
     );
   });
 
-  return <>{products}</>;
+  const totalPages = Math.ceil(productList.length / productsPerPage);
+
+  const changePage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+    // setcurrentProducts(
+    //   productList.slice(indexOfFirstProduct, indexOfLastProduct)
+    // );
+  };
+  // Pagination phân trang
+
+  return (
+    <>
+      <Row xs={1} sm={2} lg={3} xl={3} xxl={4}>
+        {renderProducts}
+      </Row>
+      <div id="paginationSet">
+        <p id="statusPagination">
+          Đang hiển thị sản phẩm thứ {indexOfFirstProduct + 1} đến{" "}
+          {indexOfLastProduct} trong tổng số {productList.length} sản phẩm
+        </p>
+        <Pagination id="pagination">
+          <Pagination.First
+            onClick={() => changePage(1)}
+            disabled={currentPage === 1}
+          />
+
+          <Pagination.Prev
+            onClick={() => changePage(currentPage - 1)}
+            disabled={currentPage === 1}
+          />
+
+          {/* console.log(Array.from('foo'));
+            // Expected output: Array ["f", "o", "o"]
+
+            console.log(Array.from([1, 2, 3], x => x + x));
+            // Expected output: Array [2, 4, 6]
+            */}
+
+          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
+            <Pagination.Item
+              key={number}
+              active={number === currentPage}
+              onClick={() => changePage(number)}
+            >
+              {number}
+            </Pagination.Item>
+          ))}
+
+          <Pagination.Next
+            onClick={() => changePage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          />
+
+          <Pagination.Last
+            onClick={() => changePage(totalPages)}
+            disabled={currentPage === totalPages}
+          />
+        </Pagination>
+      </div>
+    </>
+  );
 }

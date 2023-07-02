@@ -1,0 +1,25 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+.productImgThumb {
+  height: 18rem;
+  object-fit: cover;
+}
+
+.col .card {
+  /* margin: 10px auto; */
+}
+
+.col {
+  /* width: 18rem; */
+  display: flex;
+  justify-content: center;
+  padding: 5px;
+}
+
+.row {
+  --bs-gutter-x: -10px;
+  /* margin: 0 auto; */
+}

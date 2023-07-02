@@ -628,6 +628,7 @@ const productReducer = createReducer(
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
     ],
+    searchFilter: "",
   },
   {
     SHOW_PRODUCT: (state, action) => {
