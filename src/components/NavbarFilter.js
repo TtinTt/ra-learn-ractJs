@@ -5,16 +5,13 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
-import logo from "../imgs/Logo.png";
 import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
-import { TruncateString, CheckLink } from "../function/functionData";
-import UserButton from "./UserButton";
 
-function NavbarTop() {
+function NavbarFilter() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
-  let link = CheckLink();
+
   const dispatch = useDispatch();
 
   const handleLogout = () => {
@@ -22,24 +19,18 @@ function NavbarTop() {
     console.log("LOGOUT");
   };
 
+  // lấy dữ liệu search
+  const handleGetInput = async (event) => {
+    dispatch(inputSearchBox(event.target.value));
+  };
+
   return (
     <Navbar expand="lg" className="bg-body-tertiary">
-      <Link to="/">
-        <div className="logo-set-small">
-          <img
-            id="icon-logo"
-            style={{ width: "100px", height: "60px", marginLeft: "10px" }}
-            src={logo}
-            alt="cozy"
-          />
-        </div>
-      </Link>
-
       <Container fluid>
         <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav
+          {/* <Nav
             className="me-auto my-2 my-lg-0"
             style={{ maxHeight: "100px" }}
             navbarScroll
@@ -59,12 +50,14 @@ function NavbarTop() {
             <Nav.Link href="#" disabled>
               Link
             </Nav.Link>
-          </Nav>
+          </Nav> */}
           <Navbar.Brand className="d-flex">
-            <UserButton
-              link={link}
-              userLogined={userLogined}
-              handleLogout={handleLogout}
+            <Form.Control
+              type="search"
+              placeholder="Search"
+              className="me-2"
+              aria-label="Search"
+              onChange={handleGetInput}
             />
           </Navbar.Brand>
         </Navbar.Collapse>
@@ -73,4 +66,4 @@ function NavbarTop() {
   );
 }
 
-export default NavbarTop;
+export default NavbarFilter;

@@ -2,6 +2,7 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const productReducer = createReducer(
   {
+    searchFilter: JSON.parse(localStorage.getItem("searchFilter")) ?? "",
     products: JSON.parse(localStorage.getItem("Products")) ?? [
       {
         id: "a256b54a-71c7-4304-b5c1-cfdd8aebb24f",
@@ -637,6 +638,12 @@ const productReducer = createReducer(
       return {
         ...state,
         productshow: action.payload,
+      };
+    },
+    SEARCH_BOX: (state, action) => {
+      return {
+        ...state,
+        searchFilter: action.payload,
       };
     },
   }

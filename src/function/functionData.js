@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
-
+import { useLocation } from "react-router-dom";
+import React from "react";
 export const removeAccentsUpperCase = (str) => {
   return str
     .normalize("NFD")
@@ -36,8 +37,10 @@ export const getDaysDifference = (dateString) => {
   return Math.abs(Math.round(differenceInDays));
 };
 
-console.log(getCurrentTimeString()); // Output: "18h50 30-12-2023"
-console.log(getDaysDifference("18h50 30-12-2023")); // Output: <số ngày từ thời điểm hiện tại đến ngày 30-12-2023>
+// console.log(getCurrentTimeString());
+// Output: "18h50 30-12-2023"
+// console.log(getDaysDifference("18h50 30-12-2023"));
+// Output: <số ngày từ thời điểm hiện tại đến ngày 30-12-2023>
 
 export const TruncateString = (str, lenInput) => {
   if (str.length > lenInput) {
@@ -67,4 +70,14 @@ export const HandleFilter = (productListInput) => {
       removeAccentsUpperCase(searchFilter).toUpperCase()
     )
   );
+};
+
+export const CheckLink = () => {
+  const location = useLocation();
+
+  React.useEffect(() => {
+    console.log("đường dẫn '", location.pathname, "'"); // Logs link
+  }, [location]);
+
+  return location.pathname;
 };

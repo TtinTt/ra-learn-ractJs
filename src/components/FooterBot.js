@@ -1,4 +1,5 @@
 import "../css/FooterBot.css";
+import { Link } from "react-router-dom";
 
 function FooterBot() {
   return (
@@ -7,16 +8,12 @@ function FooterBot() {
         <div class="footer">
           <div class="about">
             <div onclick="HomePage()" class="logo-set-small">
-              <img
-                id="icon-logo"
-                // style="width: 30px; height: 30px"
-                // src="/imgs/FindYour Logo - 50x50.png"
-                alt=""
-              />
-              <h6>FindYour.com</h6>
+              <Link to="/">
+                <h6>Cozy.com</h6>
+              </Link>
             </div>
             <section class="about-p">
-              <p>Chúng tôi mang tới những công việc tuyệt vời!</p>
+              <p>Chúng tôi mang tới những sản phẩm tuyệt vời!</p>
             </section>
           </div>
           <div class="info">
@@ -46,10 +43,10 @@ function FooterBot() {
             <h4>Liên hệ</h4>
             <ul class="link-list">
               <li>
-                <a href="">info@FindYour.com</a>
+                <a href="">info@Cozy.com</a>
               </li>
               <li>
-                <a href="">www.FindYour.com</a>
+                <a href="">www.Cozy.com</a>
               </li>
               <li>
                 <a href="">Da Nang City, Vietnam</a>

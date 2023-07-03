@@ -17,11 +17,7 @@ footer {
   display: flex;
   gap: 30px;
 }
-h3 {
-  color: #fff;
-  margin-top: 3px;
-  margin-bottom: 25px;
-}
+
 .about {
   line-height: 1.8;
   display: inline-block;
