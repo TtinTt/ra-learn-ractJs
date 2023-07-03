@@ -9,6 +9,7 @@ const userReducer = createReducer(
         password: "demoUser1@gmail.com",
         Fname: "Tín",
         Lname: "",
+        cart: [],
         date: "",
         add: "",
         phone: "",
@@ -19,6 +20,7 @@ const userReducer = createReducer(
         password: "demoUser2@gmail.com",
         Fname: "",
         Lname: "",
+        cart: [],
         date: "",
         add: "",
         phone: "",
@@ -29,6 +31,7 @@ const userReducer = createReducer(
         password: "demoUser3@gmail.com",
         Fname: "",
         Lname: "",
+        cart: [],
         date: "",
         add: "",
         phone: "",
@@ -53,6 +56,31 @@ const userReducer = createReducer(
       return {
         ...state,
         userLogined: null,
+      };
+    },
+
+    ADD_TO_CART: (state, action) => {
+      let flag = false;
+      let updatedATC = state.userLogined.cart;
+
+      // if (state.userLogined.cart) {
+      //   updatedATC = state.userLogined.cart.map((product) => {
+      //     if (product.id === action.payload.id) {
+      //       flag = true;
+      //       product.quantity = product.quantity + action.payload.quantity;
+      //     }
+
+      //     return product;
+      //   });
+      // }
+
+      if (!flag) {
+        updatedATC = [...updatedATC, action.payload];
+      }
+      console.log(updatedATC);
+      return {
+        ...state,
+        userLogined: { ...state.userLogined, cart: updatedATC },
       };
     },
   }

@@ -70,6 +70,7 @@ export default function BoxRegister() {
       delete user.confirmPassword;
       user.Fname = "";
       user.Lname = "";
+      user.cart = [];
       user.date = "";
       user.add = "";
       user.phone = "";

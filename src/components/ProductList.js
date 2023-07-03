@@ -46,7 +46,12 @@ export default function ProductList() {
   const renderProducts = currentProducts.map((product, index) => {
     return (
       <Col>
-        <ProductCard key={index} product={product} />
+        <ProductCard
+          key={index}
+          product={product}
+          img1={product.img[0]}
+          img2={product.img[1]}
+        />
       </Col>
     );
   });

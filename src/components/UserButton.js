@@ -55,7 +55,7 @@ function UserButton({ link, userLogined, handleLogout }) {
               style={{
                 fontSize: "19px",
                 position: "relative ",
-                top: "-2px",
+                top: "-4px",
                 left: "-7px",
               }}
             >
