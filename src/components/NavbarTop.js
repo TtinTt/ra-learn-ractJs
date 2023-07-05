@@ -23,7 +23,7 @@ function NavbarTop() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
+    <Navbar expand="lg" className="bg-body-tertiary navbar-top">
       <Link to="/">
         <div className="logo-set-small">
           <img
@@ -61,11 +61,7 @@ function NavbarTop() {
             </Nav.Link>
           </Nav>
           <Navbar.Brand className="d-flex">
-            <UserButton
-              link={link}
-              userLogined={userLogined}
-              handleLogout={handleLogout}
-            />
+            <UserButton link={link} handleLogout={handleLogout} />
           </Navbar.Brand>
         </Navbar.Collapse>
       </Container>

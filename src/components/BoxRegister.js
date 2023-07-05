@@ -1,6 +1,5 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { showProduct } from "../actions/productAction";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
 import ProductCard from "./ProductCard";
@@ -13,7 +12,11 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../actions/userAction";
 
-import { removeAccentsUpperCase, HandleFilter } from "../function/functionData";
+import {
+  removeAccentsUpperCase,
+  HandleFilter,
+  getCurrentTimeString,
+} from "../function/functionData";
 
 export default function BoxRegister() {
   let usersDB = useSelector((state) => state.userReducer.users);
@@ -71,7 +74,7 @@ export default function BoxRegister() {
       user.Fname = "";
       user.Lname = "";
       user.cart = [];
-      user.date = "";
+      user.date = getCurrentTimeString();
       user.add = "";
       user.phone = "";
       user.img =

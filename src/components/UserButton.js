@@ -10,8 +10,20 @@ import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
 import { TruncateString, CheckLink } from "../function/functionData";
+import Badge from "react-bootstrap/Badge";
 
-function UserButton({ link, userLogined, handleLogout }) {
+function UserButton({ link, handleLogout }) {
+  let countCart = 0;
+  let cart = [];
+  let userLogined = useSelector((state) => state.userReducer.userLogined);
+
+  // kiểm tra userLogined không phải là null hoặc undefined
+  if (userLogined && Array.isArray(userLogined.cart)) {
+    userLogined.cart.map((product) => {
+      countCart = countCart + product.quantity;
+    });
+  }
+
   if (link === "/login") {
     return (
       <Navbar.Brand className="d-flex">
@@ -68,7 +80,8 @@ function UserButton({ link, userLogined, handleLogout }) {
 
         <Link to="/cart">
           <Button style={{ marginRight: "2px" }} variant="secondary">
-            Giỏ hàng
+            Giỏ hàng{" "}
+            <Badge bg={countCart > 0 ? "danger" : "dark"}>{countCart}</Badge>
           </Button>
         </Link>
 

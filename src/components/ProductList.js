@@ -1,6 +1,5 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { showProduct } from "../actions/productAction";
 import { useEffect, useState } from "react";
 import { addToCart } from "../actions/productAction";
 import Button from "react-bootstrap/Button";
@@ -11,14 +10,17 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Pagination from "react-bootstrap/Pagination";
 
-import { removeAccentsUpperCase, HandleFilter } from "../function/functionData";
+import { HandleFilter } from "../function/functionData";
 
 export default function ProductList() {
   const productListStore = useSelector(
     (state) => state.productReducer.products
   );
 
-  const productList = HandleFilter(productListStore);
+  const [productDescription, setProductDescription] = useState("");
+
+  // chạy HandleFilter
+  const productList = HandleFilter();
 
   const dispatch = useDispatch();
 
@@ -46,12 +48,7 @@ export default function ProductList() {
   const renderProducts = currentProducts.map((product, index) => {
     return (
       <Col>
-        <ProductCard
-          key={index}
-          product={product}
-          img1={product.img[0]}
-          img2={product.img[1]}
-        />
+        <ProductCard key={index} product={product} />
       </Col>
     );
   });
@@ -60,22 +57,29 @@ export default function ProductList() {
 
   const changePage = (pageNumber) => {
     setCurrentPage(pageNumber);
-    // setcurrentProducts(
-    //   productList.slice(indexOfFirstProduct, indexOfLastProduct)
-    // );
   };
-  // Pagination phân trang
 
-  return (
-    <>
-      <Row xs={1} sm={2} lg={3} xl={3} xxl={4}>
-        {renderProducts}
-      </Row>
+  // khi 1 trong các biến phụ [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]
+  // thay đổi sẽ chạy lại để lấy giá trị mới nhất
+  useEffect(() => {
+    const description = `Đang hiển thị sản phẩm thứ ${
+      indexOfFirstProduct + 1
+    } đến ${indexOfLastProduct} trong tổng số ${productList.length} sản phẩm`;
+    setProductDescription(description);
+  }, [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]);
+
+  // Pagination phân trang
+  const PaginationSet = () => {
+    return (
       <div id="paginationSet">
-        <p id="statusPagination">
-          Đang hiển thị sản phẩm thứ {indexOfFirstProduct + 1} đến{" "}
-          {indexOfLastProduct} trong tổng số {productList.length} sản phẩm
-        </p>
+        {renderProducts.length > 0 ? (
+          <p id="statusPagination">{productDescription}</p>
+        ) : (
+          <p id="statusPagination">
+            Chúng tôi không có sản phẩm nào giống như bạn đang tìm kiếm
+          </p>
+        )}
+
         <Pagination id="pagination">
           <Pagination.First
             onClick={() => changePage(1)}
@@ -86,13 +90,6 @@ export default function ProductList() {
             onClick={() => changePage(currentPage - 1)}
             disabled={currentPage === 1}
           />
-
-          {/* console.log(Array.from('foo'));
-            // Expected output: Array ["f", "o", "o"]
-
-            console.log(Array.from([1, 2, 3], x => x + x));
-            // Expected output: Array [2, 4, 6]
-            */}
 
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
             <Pagination.Item
@@ -115,6 +112,16 @@ export default function ProductList() {
           />
         </Pagination>
       </div>
+    );
+  };
+
+  return (
+    <>
+      {renderProducts.length > 8 && PaginationSet()}
+      <Row xs={1} sm={2} lg={3} xl={3} xxl={4}>
+        {renderProducts}
+      </Row>
+      {PaginationSet()}
     </>
   );
 }

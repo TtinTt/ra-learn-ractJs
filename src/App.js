@@ -4,6 +4,7 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import ProfileUser from "./pages/ProfileUser";
 import Cart from "./pages/Cart";
+import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 
 import { Container } from "react-bootstrap";
 import { Routes, Route } from "react-router-dom";

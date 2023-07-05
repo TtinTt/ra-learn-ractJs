@@ -1,3 +1,6 @@
+import { useEffect, useState } from "react";
+import React from "react";
+import "../css/NavbarFilter.css";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Form from "react-bootstrap/Form";
@@ -7,16 +10,79 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
-import { inputSearchBox } from "../actions/productAction";
+import Dropdown from "react-bootstrap/Dropdown";
+import DropdownButton from "react-bootstrap/DropdownButton";
+import InputGroup from "react-bootstrap/InputGroup";
+import { Changedot } from "../function/functionData";
+import {
+  sortProducts,
+  priceFrom,
+  inputSearchBox,
+} from "../actions/productAction";
+import { FormLabel } from "react-bootstrap";
 
 function NavbarFilter() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  let productList = useSelector((state) => state.productReducer.products);
+
+  const [sort, setSort] = useState(0); // Giá trị mặc định
 
   const dispatch = useDispatch();
 
+  const changeSort = (value) => {
+    setSort(value);
+    dispatch(sortProducts(value));
+  };
+
+  const sortValue = () => {
+    if (sort == 0) {
+      return "Mới nhất";
+    } else if (sort == 1) {
+      return "Giá giảm dần";
+    } else if (sort == 2) {
+      return "Giá tăng dần";
+    }
+  };
   const handleLogout = () => {
     dispatch(logoutUser());
     console.log("LOGOUT");
+  };
+
+  // lấy giá trị price lớn nhất và nhỏ nhất của listProduct
+  const minMaxPrice = (productList) => {
+    if (productList.length === 0) {
+      return null; // Trả về null nếu mảng productListInput rỗng
+    }
+
+    let minPrice = productList[0].price;
+    let maxPrice = productList[0].price;
+
+    for (let i = 1; i < productList.length; i++) {
+      const price = productList[i].price;
+      if (price < minPrice) {
+        minPrice = price;
+      }
+      if (price > maxPrice) {
+        maxPrice = price;
+      }
+    }
+
+    return [minPrice, maxPrice];
+  };
+
+  let [minPrice, maxPrice] = minMaxPrice(productList);
+  const [value, setValue] = useState(maxPrice); // Giá trị mặc định
+
+  useEffect(() => {
+    dispatch(priceFrom(maxPrice));
+  }, [maxPrice]);
+
+  // filter
+
+  const handleChangePriceFrom = (event) => {
+    const newValue = event.target.value;
+    setValue(newValue);
+    dispatch(priceFrom(newValue));
   };
 
   // lấy dữ liệu search
@@ -25,41 +91,68 @@ function NavbarFilter() {
   };
 
   return (
-    <Navbar expand="lg" className="bg-body-tertiary">
-      <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+    <Navbar expand="lg" className="bg-body-tertiary navbar-filter">
+      <Container fluid id="navbarScrollContainer">
+        {/* <Navbar.Brand href="#">Lọc sản phẩm</Navbar.Brand> */}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          {/* <Nav
-            className="me-auto my-2 my-lg-0"
-            style={{ maxHeight: "100px" }}
-            navbarScroll
-          >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
-            </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
-          </Nav> */}
-          <Navbar.Brand className="d-flex">
-            <Form.Control
-              type="search"
-              placeholder="Search"
-              className="me-2"
-              aria-label="Search"
-              onChange={handleGetInput}
-            />
-          </Navbar.Brand>
+          <div id="groupSortMaxPrice">
+            <Nav className="d-flex">
+              <label for="setMaxPrice" id="setMaxPriceLabel">
+                Giá tối đa{" "}
+                <span style={{ color: "#dc3545" }}>{Changedot(value)}</span>
+              </label>
+            </Nav>
+            <Nav className="d-flex">
+              <Form.Range
+                id="setMaxPriceRange"
+                min={minPrice}
+                max={maxPrice}
+                step={(maxPrice - minPrice) * 0.1}
+                value={value}
+                onChange={handleChangePriceFrom}
+              />{" "}
+            </Nav>{" "}
+          </div>
+          <div id="groupSearchProduct">
+            {" "}
+            <Nav className="d-flex position-relative" style={{ top: "8px" }}>
+              <InputGroup className="mb-3 ">
+                <Form.Control
+                  placeholder="Sắp xếp theo"
+                  for="input-group-dropdown-2"
+                  disabled
+                  aria-label="Text input with dropdown button"
+                  className="sortStatus"
+                />
+                <DropdownButton
+                  variant="outline-secondary"
+                  title={sortValue()}
+                  id="input-group-dropdown-2"
+                  align="end"
+                >
+                  <Dropdown.Item onClick={() => changeSort(0)} href="#">
+                    Mới nhất
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeSort(1)} href="#">
+                    Giá giảm dần
+                  </Dropdown.Item>
+                  <Dropdown.Item onClick={() => changeSort(2)} href="#">
+                    Giá tăng dần
+                  </Dropdown.Item>
+                </DropdownButton>
+              </InputGroup>
+            </Nav>
+            <Navbar.Brand className="d-flex">
+              <Form.Control
+                type="search"
+                placeholder="Tìm kiếm sản phẩm"
+                // className="me-2"
+                aria-label="Search"
+                onChange={handleGetInput}
+              />
+            </Navbar.Brand>
+          </div>
         </Navbar.Collapse>
       </Container>
     </Navbar>

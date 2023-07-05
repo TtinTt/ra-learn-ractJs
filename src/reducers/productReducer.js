@@ -2,6 +2,8 @@ import { createReducer } from "@reduxjs/toolkit";
 
 const productReducer = createReducer(
   {
+    sort: 0,
+    priceFrom: null,
     searchFilter: JSON.parse(localStorage.getItem("searchFilter")) ?? "",
     products: JSON.parse(localStorage.getItem("Products")) ?? [
       {
@@ -13,6 +15,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -25,6 +28,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -37,6 +41,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -49,6 +54,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -61,6 +67,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -73,6 +80,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -85,6 +93,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -97,6 +106,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -109,6 +119,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -121,6 +132,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -133,6 +145,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -145,6 +158,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -157,6 +171,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -169,6 +184,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -181,6 +197,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -193,6 +210,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -205,6 +223,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -217,6 +236,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -229,6 +249,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -241,6 +262,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -253,6 +275,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -265,6 +288,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -277,6 +301,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -289,6 +314,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -301,6 +327,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -313,6 +340,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -325,6 +353,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -337,6 +366,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -349,6 +379,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -361,6 +392,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -373,6 +405,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "725000",
+        comparative: "",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -385,6 +418,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "525000",
+        comparative: "",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -397,6 +431,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "725000",
+        comparative: "",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -409,6 +444,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "625000",
+        comparative: "780000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -421,6 +457,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "625000",
+        comparative: "780000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -433,6 +470,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -445,6 +483,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -457,6 +496,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -469,6 +509,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -481,6 +522,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -493,6 +535,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -505,6 +548,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -517,6 +561,7 @@ const productReducer = createReducer(
         ],
         tag: ["Necklace"],
         price: "150000",
+        comparative: "320000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -529,6 +574,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "925000",
+        comparative: "1800000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -541,6 +587,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "925000",
+        comparative: "1800000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -553,6 +600,7 @@ const productReducer = createReducer(
         ],
         tag: ["HomeDecor"],
         price: "925000",
+        comparative: "1800000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -565,6 +613,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -577,6 +626,7 @@ const productReducer = createReducer(
         ],
         tag: ["Ring"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -589,6 +639,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -601,6 +652,7 @@ const productReducer = createReducer(
         ],
         tag: ["EarRings"],
         price: "1800000",
+        comparative: "2200000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -613,6 +665,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "250000",
+        comparative: "480000",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -625,6 +678,7 @@ const productReducer = createReducer(
         ],
         tag: ["Bracelet"],
         price: "450000",
+        comparative: "",
         description:
           "Sản phẩm được làm thủ công, quá trình gia công tỉ mỉ và hoàn hảo tới từng chi tiết.",
       },
@@ -632,18 +686,22 @@ const productReducer = createReducer(
     searchFilter: "",
   },
   {
-    SHOW_PRODUCT: (state, action) => {
-      // let ProductWillShow = state.Products.find((Product) => Product.id == action.payload);
-
+    SORT_PRODUCTS: (state, action) => {
       return {
         ...state,
-        productshow: action.payload,
+        sort: action.payload,
       };
     },
     SEARCH_BOX: (state, action) => {
       return {
         ...state,
         searchFilter: action.payload,
+      };
+    },
+    SORT_PRICE_FROM: (state, action) => {
+      return {
+        ...state,
+        priceFrom: action.payload,
       };
     },
   }

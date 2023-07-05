@@ -1,6 +1,5 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const showProduct = createAction("SHOW_PRODUCT");
 
 export const inputSearchBox = createAction("SEARCH_BOX");
 
@@ -14,3 +13,7 @@ export const addToCart = (cart) => {
     payload: cart,
   };
 };
+
+export const sortProducts = createAction("SORT_PRODUCTS");
+
+export const priceFrom = createAction("SORT_PRICE_FROM");

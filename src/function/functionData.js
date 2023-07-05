@@ -52,24 +52,78 @@ export const TruncateString = (str, lenInput) => {
 // function xử lý số: bỏ dấu [.] hoặc thêm dấu [.] cho số tiền
 export const Changedot = (money) => {
   if (money.includes(".")) {
-    let x = money.toString().replace(" đ", "");
+    let x = money.toString().replace("đ", "");
     let y = x.toString().replace(".", "");
     let z = y.toString().replace(".", "");
     return z.toString().replace(".", "");
   } else {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + " đ";
+    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
   }
 };
 
-export const HandleFilter = (productListInput) => {
+const sortPrice = (productList, sortOption) => {
+  if (sortOption === 0) {
+    console.log(productList);
+
+    return productList;
+  } else if (sortOption === 2) {
+    console.log(productList);
+
+    return productList.slice().sort((a, b) => a.price - b.price);
+  } else if (sortOption === 1) {
+    console.log(productList);
+
+    return productList.slice().sort((a, b) => b.price - a.price);
+  } else {
+    console.log(productList);
+
+    return productList;
+  }
+};
+
+const sortPriceFrom = (productList, priceMax) => {
+  console.log("sortPriceFrom");
+
+  if (priceMax === null) {
+    return productList; // Trả về mảng gốc nếu price null
+  }
+
+  const sortedList = productList.filter((product) => product.price <= priceMax);
+
+  return sortedList;
+};
+
+export const HandleFilter = () => {
+  // lấy giá trị ô productListInput từ store
+  const productListInput = useSelector(
+    (state) => state.productReducer.products
+  );
+
+  // lấy option sort từ store
+  const sortOption = useSelector((state) => state.productReducer.sort) ?? 0;
+
+  // lấy max price sort từ store
+  const priceFromValue =
+    useSelector((state) => state.productReducer.priceFrom) ?? null;
+
+  // lấy giá trị ô search
   const searchFilter =
     useSelector((state) => state.productReducer.searchFilter) ?? "";
 
-  return productListInput.filter((product) =>
+  // sắp xếp thứ tự tăng giảm
+  let sortProductList = sortPrice(productListInput, sortOption);
+
+  // sắp xếp chỉ hiển thị các sản phẩm có giá dưới priceFromValue
+  let sortProductListFrom = sortPriceFrom(sortProductList, priceFromValue);
+
+  // lấy listProducts lọc theo ô search
+  let listSorted = sortProductListFrom.filter((product) =>
     removeAccentsUpperCase(product.name).includes(
       removeAccentsUpperCase(searchFilter).toUpperCase()
     )
   );
+  console.log(listSorted);
+  return listSorted;
 };
 
 export const CheckLink = () => {

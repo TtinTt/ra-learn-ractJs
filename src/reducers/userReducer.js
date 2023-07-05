@@ -61,27 +61,37 @@ const userReducer = createReducer(
 
     ADD_TO_CART: (state, action) => {
       let flag = false;
-      let updatedATC = state.userLogined.cart;
+      // let updatedATC = state.userLogined.cart;
 
-      // if (state.userLogined.cart) {
-      //   updatedATC = state.userLogined.cart.map((product) => {
-      //     if (product.id === action.payload.id) {
-      //       flag = true;
-      //       product.quantity = product.quantity + action.payload.quantity;
-      //     }
+      let updatedATC = state.userLogined.cart.map((product) => {
+        if (product.id === action.payload.id) {
+          flag = true;
+          return {
+            ...product,
+            quantity: product.quantity + action.payload.quantity,
+          };
+        }
 
-      //     return product;
-      //   });
-      // }
+        return product;
+      });
 
       if (!flag) {
         updatedATC = [...updatedATC, action.payload];
       }
+
       console.log(updatedATC);
+
+      localStorage.setItem(
+        "userLogined",
+        JSON.stringify({ ...state.userLogined, cart: updatedATC })
+      );
+
       return {
         ...state,
         userLogined: { ...state.userLogined, cart: updatedATC },
       };
+
+      // state.userLogined.cart = updatedATC;
     },
   }
 );

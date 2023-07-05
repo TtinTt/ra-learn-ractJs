@@ -11,10 +11,12 @@ import "../css/Home.css";
 function Home() {
   return (
     <Container>
-      <NavbarTop></NavbarTop>
-      <NavbarFilter></NavbarFilter>
+      <div className="navbar">
+        <NavbarTop />
+        <NavbarFilter />
+      </div>
       <ProductList />
-      <FooterBot></FooterBot>
+      <FooterBot />
     </Container>
   );
 }
