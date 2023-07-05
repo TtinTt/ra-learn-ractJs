@@ -1,19 +1,17 @@
-export const addToCart = (product, quantity) => {
+import { createAction } from "@reduxjs/toolkit";
+
+export const addToCart = (cart) => {
+  let userLogined = JSON.parse(localStorage.getItem("userLogined"));
+  userLogined = { ...userLogined, cart };
+  localStorage.setItem("userLogined", JSON.stringify(userLogined));
+
   return {
     type: "ADD_TO_CART",
-    payload: {
-      ...product,
-      quantity,
-    },
+    payload: cart,
   };
 };
 
-export const deleteFromCart = (id) => {
-  return {
-    type: "DELETE_FROM_CART",
-    payload: id,
-  };
-};
+export const deleteFromCart = createAction("DELETE_FROM_CART");
 
 export const changeQuantity = (id, quantity) => {
   return {

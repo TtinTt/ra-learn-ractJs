@@ -4,7 +4,7 @@ import Form from "react-bootstrap/Form";
 import { useSelector, useDispatch } from "react-redux";
 import { deleteFromCart, changeQuantity } from "../actions/cartAction";
 import { Changedot } from "../function/functionData";
-function CartProduct() {
+function CartList() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   let cart = userLogined.cart;
   const dispatch = useDispatch();
@@ -77,12 +77,12 @@ function CartProduct() {
       </tbody>
       <tfoot>
         <tr>
-          <td colSpan={4}>Tổng giá đơn hàng</td>
-          <td>{Changedot([total])}</td>
+          <td colSpan={5}>Tổng giá đơn hàng</td>
+          <td colSpan={2}>{Changedot([total])}</td>
         </tr>
       </tfoot>
     </Table>
   );
 }
 
-export default CartProduct;
+export default CartList;

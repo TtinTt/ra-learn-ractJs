@@ -5,7 +5,7 @@ import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";
-import { addToCart } from "../actions/productAction";
+import { addToCart } from "../actions/cartAction";
 import "../css/ProductCard.css";
 import { TruncateString, Changedot } from "../function/functionData";
 import { useNavigate } from "react-router-dom";

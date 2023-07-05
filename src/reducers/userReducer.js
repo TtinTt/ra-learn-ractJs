@@ -61,7 +61,6 @@ const userReducer = createReducer(
 
     ADD_TO_CART: (state, action) => {
       let flag = false;
-      // let updatedATC = state.userLogined.cart;
 
       let updatedATC = state.userLogined.cart.map((product) => {
         if (product.id === action.payload.id) {
@@ -75,11 +74,22 @@ const userReducer = createReducer(
         return product;
       });
 
+      let updatedCartUser = state.users.map((user) => {
+        if (user.email === state.userLogined.email) {
+          return {
+            ...user,
+            cart: updatedATC,
+          };
+        }
+
+        return user;
+      });
+
+      localStorage.setItem("users", JSON.stringify(updatedCartUser));
+
       if (!flag) {
         updatedATC = [...updatedATC, action.payload];
       }
-
-      console.log(updatedATC);
 
       localStorage.setItem(
         "userLogined",
@@ -89,9 +99,38 @@ const userReducer = createReducer(
       return {
         ...state,
         userLogined: { ...state.userLogined, cart: updatedATC },
+        users: updatedCartUser,
       };
+    },
 
-      // state.userLogined.cart = updatedATC;
+    DELETE_FROM_CART: (state, action) => {
+      let updatedATC = state.userLogined.cart.filter(
+        (item) => item.id !== action.payload
+      );
+
+      let updatedCartUser = state.users.map((user) => {
+        if (user.email === state.userLogined.email) {
+          return {
+            ...user,
+            cart: updatedATC,
+          };
+        }
+
+        return user;
+      });
+
+      localStorage.setItem("users", JSON.stringify(updatedCartUser));
+
+      localStorage.setItem(
+        "userLogined",
+        JSON.stringify({ ...state.userLogined, cart: updatedATC })
+      );
+
+      return {
+        ...state,
+        userLogined: { ...state.userLogined, cart: updatedATC },
+        users: updatedCartUser,
+      };
     },
   }
 );

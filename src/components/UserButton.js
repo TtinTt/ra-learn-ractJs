@@ -78,7 +78,7 @@ function UserButton({ link, handleLogout }) {
           </p>
         </Link>
 
-        <Link to="/cart">
+        <Link to="/userProfile">
           <Button style={{ marginRight: "2px" }} variant="secondary">
             Giỏ hàng{" "}
             <Badge bg={countCart > 0 ? "danger" : "dark"}>{countCart}</Badge>

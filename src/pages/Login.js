@@ -2,6 +2,7 @@ import ProductList from "../components/ProductList";
 import NavbarTop from "../components/NavbarTop";
 import FooterBot from "../components/FooterBot";
 import { Link } from "react-router-dom";
+
 import BoxLogin from "../components/BoxLogin";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
@@ -11,9 +12,11 @@ import "../css/Home.css";
 function Login() {
   return (
     <Container>
-      <NavbarTop></NavbarTop>
+      <div className="navbar">
+        <NavbarTop />
+      </div>
       <BoxLogin />
-      <FooterBot></FooterBot>
+      <FooterBot />
     </Container>
   );
 }

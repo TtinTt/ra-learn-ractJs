@@ -11,9 +11,11 @@ import "../css/Home.css";
 function Register() {
   return (
     <Container>
-      <NavbarTop></NavbarTop>
+      <div className="navbar">
+        <NavbarTop />
+      </div>
       <BoxRegister />
-      <FooterBot></FooterBot>
+      <FooterBot />
     </Container>
   );
 }

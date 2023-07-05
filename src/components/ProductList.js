@@ -53,6 +53,7 @@ export default function ProductList() {
     );
   });
 
+  // làm tròn
   const totalPages = Math.ceil(productList.length / productsPerPage);
 
   const changePage = (pageNumber) => {
@@ -80,37 +81,41 @@ export default function ProductList() {
           </p>
         )}
 
-        <Pagination id="pagination">
-          <Pagination.First
-            onClick={() => changePage(1)}
-            disabled={currentPage === 1}
-          />
+        {totalPages !== 1 && (
+          <Pagination id="pagination">
+            <Pagination.First
+              onClick={() => changePage(1)}
+              disabled={currentPage === 1}
+            />
 
-          <Pagination.Prev
-            onClick={() => changePage(currentPage - 1)}
-            disabled={currentPage === 1}
-          />
+            <Pagination.Prev
+              onClick={() => changePage(currentPage - 1)}
+              disabled={currentPage === 1}
+            />
 
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((number) => (
-            <Pagination.Item
-              key={number}
-              active={number === currentPage}
-              onClick={() => changePage(number)}
-            >
-              {number}
-            </Pagination.Item>
-          ))}
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              (number) => (
+                <Pagination.Item
+                  key={number}
+                  active={number === currentPage}
+                  onClick={() => changePage(number)}
+                >
+                  {number}
+                </Pagination.Item>
+              )
+            )}
 
-          <Pagination.Next
-            onClick={() => changePage(currentPage + 1)}
-            disabled={currentPage === totalPages}
-          />
+            <Pagination.Next
+              onClick={() => changePage(currentPage + 1)}
+              disabled={currentPage === totalPages}
+            />
 
-          <Pagination.Last
-            onClick={() => changePage(totalPages)}
-            disabled={currentPage === totalPages}
-          />
-        </Pagination>
+            <Pagination.Last
+              onClick={() => changePage(totalPages)}
+              disabled={currentPage === totalPages}
+            />
+          </Pagination>
+        )}
       </div>
     );
   };

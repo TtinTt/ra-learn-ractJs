@@ -2,8 +2,7 @@ import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import ProfileUser from "./pages/ProfileUser";
-import Cart from "./pages/Cart";
+import BuyerProfile from "./pages/BuyerProfile";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 
 import { Container } from "react-bootstrap";
@@ -16,8 +15,8 @@ function App() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/profile" element={<ProfileUser />} />
-      <Route path="/cart" element={<Cart />} />
+      {/* <Route path="/profile" element={<ProfileUser />} /> */}
+      <Route path="/userProfile" element={<BuyerProfile />} />
     </Routes>
   );
 }

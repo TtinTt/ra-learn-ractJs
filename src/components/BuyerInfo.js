@@ -9,7 +9,7 @@ import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
 
-function UserInfo() {
+function BuyerInfo() {
   // let userLogined = useSelector((state) => state.userReducer.userLogined);
 
   // const dispatch = useDispatch();
@@ -24,7 +24,7 @@ function UserInfo() {
   //   dispatch(inputSearchBox(event.target.value));
   // };
 
-  return <p>user info</p>;
+  return <p>buyer info</p>;
 }
 
-export default UserInfo;
+export default BuyerInfo;
