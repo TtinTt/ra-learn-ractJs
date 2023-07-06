@@ -4,8 +4,8 @@ const productReducer = createReducer(
   {
     sort: 0,
     priceFrom: null,
-    searchFilter: JSON.parse(localStorage.getItem("searchFilter")) ?? "",
-    products: JSON.parse(localStorage.getItem("Products")) ?? [
+    searchFilter: "",
+    products: [
       {
         id: "a256b54a-71c7-4304-b5c1-cfdd8aebb24f",
         name: "Dây Chuyền Gỗ Resin Hồ Quang Xanh Lam",

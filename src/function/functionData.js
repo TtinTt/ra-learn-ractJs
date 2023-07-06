@@ -10,7 +10,47 @@ export const removeAccentsUpperCase = (str) => {
     .toUpperCase();
 };
 
-// Hàm lấy thời gian hiện tại và format thành string
+export const getStatus = (orderStatus) => {
+  if (orderStatus === 0) {
+    return "Đang xử lý thông tin đơn hàng";
+  } else if (orderStatus === 1) {
+    return "Đơn hàng đang được chuẩn bị";
+  } else if (orderStatus === 2) {
+    return "Đơn hàng đang được giao tới";
+  } else if (orderStatus === 3) {
+    return "Đơn hàng đã được giao thành công";
+  } else if (orderStatus === 4) {
+    return "Đơn hàng giao không thành công và đang chuyển hoàn";
+  } else if (orderStatus === 5) {
+    return "Đơn hàng đã được chuyển hoàn";
+  } else if (orderStatus === -1) {
+    return "Đơn hàng đã bị huỷ";
+  } else if (orderStatus === -2) {
+    return "Đơn hàng bị từ chối";
+  }
+};
+
+export const hanleGetColor = (orderStatus) => {
+  if (orderStatus === 0) {
+    return "PaleGoldenRod";
+  } else if (orderStatus === 1) {
+    return "MediumAquaMarine";
+  } else if (orderStatus === 2) {
+    return "MediumAquaMarine";
+  } else if (orderStatus === 3) {
+    return "PaleGoldenRod";
+  } else if (orderStatus === 4) {
+    return "PaleGoldenRod";
+  } else if (orderStatus === 5) {
+    return "PeachPuff";
+  } else if (orderStatus === -1) {
+    return "PeachPuff";
+  } else if (orderStatus === -2) {
+    return "PeachPuff";
+  }
+};
+
+// lấy thời gian hiện tại và sửa dịnh dạng
 export const getCurrentTimeString = () => {
   const now = new Date();
   const date = ("0" + now.getDate()).slice(-2);
@@ -19,20 +59,20 @@ export const getCurrentTimeString = () => {
   const hours = now.getHours();
   const minutes = ("0" + now.getMinutes()).slice(-2);
 
-  return `${hours}h${minutes} ${date}-${month}-${year}`;
+  return `${hours}:${minutes} ${date}/${month}/${year}`;
 };
 
-// Hàm lấy số ngày từ thời điểm hiện tại đến một thời điểm khác (truyền vào dưới dạng string)
+// lấy số giờ từ thời điểm hiện tại đến một thời điểm khác (truyền vào dưới dạng string)
 export const getDaysDifference = (dateString) => {
   const [time, date] = dateString.split(" ");
-  const [hour, minute] = time.slice(0, -1).split("h");
-  const [day, month, year] = date.split("-");
+  const [hour, minute] = time.slice(0, -1).split(":");
+  const [day, month, year] = date.split("/");
 
   const now = new Date();
   const dateObject = new Date(year, month - 1, day, hour, minute);
 
   const differenceInTime = now.getTime() - dateObject.getTime();
-  const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+  const differenceInDays = differenceInTime / (1000 * 3600);
 
   return Math.abs(Math.round(differenceInDays));
 };
@@ -49,8 +89,18 @@ export const TruncateString = (str, lenInput) => {
     return str;
   }
 };
+export const TruncateName = (name, lenInput) => {
+  let fullName = name.split(" ");
+  let Fname = fullName[fullName.length - 1];
+  if (Fname.length > lenInput) {
+    return Fname.substring(0, lenInput) + "...";
+  } else {
+    return Fname;
+  }
+};
 // function xử lý số: bỏ dấu [.] hoặc thêm dấu [.] cho số tiền
 export const Changedot = (money) => {
+  // money = JSON.stringify(money);
   if (money.includes(".")) {
     let x = money.toString().replace("đ", "");
     let y = x.toString().replace(".", "");

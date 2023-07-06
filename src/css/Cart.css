@@ -1,0 +1,14 @@
+td {
+  vertical-align: middle !important;
+}
+.leftText {
+  text-align: left !important;
+  padding-left: 15px !important;
+}
+.rightText {
+  text-align: right !important;
+  padding-right: 15px !important;
+}
+.msgCartTop {
+  margin: 100px;
+}

@@ -14,8 +14,6 @@ import { loginUser } from "../actions/userAction";
 
 export default function BoxLogin() {
   let usersDB = useSelector((state) => state.userReducer.users);
-  JSON.parse(localStorage.getItem("users")) == null &&
-    localStorage.setItem("users", JSON.stringify(usersDB));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();

@@ -1,7 +1,7 @@
 import { Table } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import { addToCart } from "../actions/productAction";
+import { addToCart } from "../actions/cartAction";
 import Button from "react-bootstrap/Button";
 import ProductCard from "./ProductCard";
 import "../css/ProductList.css";

@@ -4,7 +4,6 @@ import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import Stack from "react-bootstrap/Stack";
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch } from "react-redux";
 import { addToCart } from "../actions/cartAction";
 import "../css/ProductCard.css";
 import { TruncateString, Changedot } from "../function/functionData";
@@ -13,9 +12,12 @@ import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Carousel from "react-bootstrap/Carousel";
+import { useDispatch, useSelector } from "react-redux";
 
 function ProductCard({ product }) {
   const [currentImg, setCurrentImg] = useState(product.img[0]);
+  let userLogined = useSelector((state) => state.userReducer.userLogined);
+
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -35,7 +37,7 @@ function ProductCard({ product }) {
 
   // add to cart
   const handleAdd = () => {
-    if (JSON.parse(localStorage.getItem("userLogined"))) {
+    if (userLogined !== null) {
       dispatch(addToCart({ ...product, quantity }));
     } else {
       navigate("/login");
@@ -158,7 +160,12 @@ function ProductCard({ product }) {
       {/* MODAL___________________________________ */}
       {/* MODAL___________________________________ */}
       {/* MODAL___________________________________ */}
-      <Modal show={show} onHide={handleClose}>
+      <Modal
+        // size="lg"
+        show={show}
+        onHide={handleClose}
+        centered
+      >
         <Modal.Body closeButton>
           <Button
             variant="light"
@@ -233,7 +240,7 @@ function ProductCard({ product }) {
                 />
                 <Button
                   style={{ width: "300px" }}
-                  variant="light"
+                  variant="secondary"
                   onClick={handleAdd}
                 >
                   Thêm vào giỏ hàng

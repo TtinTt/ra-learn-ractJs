@@ -9,7 +9,11 @@ import logo from "../imgs/Logo.png";
 import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
-import { TruncateString, CheckLink } from "../function/functionData";
+import {
+  TruncateString,
+  CheckLink,
+  TruncateName,
+} from "../function/functionData";
 import Badge from "react-bootstrap/Badge";
 
 function UserButton({ link, handleLogout }) {
@@ -71,20 +75,24 @@ function UserButton({ link, handleLogout }) {
                 left: "-7px",
               }}
             >
-              {userLogined.Fname == ""
+              {userLogined.name == ""
                 ? TruncateString(userLogined.email, 9)
-                : TruncateString(userLogined.Fname, 12)}
+                : TruncateName(userLogined.name, 12)}
             </Button>
           </p>
         </Link>
 
-        <Link to="/userProfile">
+        <Link to="/cart">
           <Button style={{ marginRight: "2px" }} variant="secondary">
             Giỏ hàng{" "}
             <Badge bg={countCart > 0 ? "danger" : "dark"}>{countCart}</Badge>
           </Button>
         </Link>
-
+        <Link to="/order">
+          <Button style={{ marginRight: "2px" }} variant="secondary">
+            Đơn hàng
+          </Button>
+        </Link>
         <Link to="/">
           <Button onClick={handleLogout} variant="outline-secondary">
             Đăng xuất

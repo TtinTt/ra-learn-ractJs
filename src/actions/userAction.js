@@ -1,14 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
 
-// export const registerUser = createAction("ADD_USER");
-
 export const registerUser = (user) => {
-  // lấy useDB từ localStorage
-  let usersDB = JSON.parse(localStorage.getItem("users"));
-  // push user vào useDB
-  usersDB = [...usersDB, user];
-  // đẩy useDB lên lại localStorage
-  localStorage.setItem("users", JSON.stringify(usersDB));
+  // // lấy useDB từ localStorage
+  // let usersDB = JSON.parse(localStorage.getItem("users"));
+  // // push user vào useDB
+  // usersDB = [...usersDB, user];
+  // // đẩy useDB lên lại localStorage
+  // localStorage.setItem("users", JSON.stringify(usersDB));
 
   return {
     type: "ADD_USER",
@@ -19,7 +17,7 @@ export const registerUser = (user) => {
 export const loginUser = (user) => {
   // lấy useDB từ localStorage
 
-  localStorage.setItem("userLogined", JSON.stringify(user));
+  // localStorage.setItem("userLogined", JSON.stringify(user));
 
   return {
     type: "LOGIN_USER",
@@ -37,3 +35,6 @@ export const logoutUser = () => {
     payload: null,
   };
 };
+
+export const clearCart = createAction("CLEAR_CART");
+export const updateInfoUser = createAction("UPDATE_INFO");

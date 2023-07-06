@@ -1,24 +1,12 @@
 import { createAction } from "@reduxjs/toolkit";
 
-export const addToCart = (cart) => {
-  let userLogined = JSON.parse(localStorage.getItem("userLogined"));
-  userLogined = { ...userLogined, cart };
-  localStorage.setItem("userLogined", JSON.stringify(userLogined));
-
-  return {
-    type: "ADD_TO_CART",
-    payload: cart,
-  };
-};
-
+export const addToCart = createAction("ADD_TO_CART");
 export const deleteFromCart = createAction("DELETE_FROM_CART");
+// export const changeQuantity = createAction("CHANGE_QUANTITY");
 
-export const changeQuantity = (id, quantity) => {
-  return {
-    type: "CHANGE_QUANTITY",
-    payload: {
-      id: id,
-      quantity: quantity,
-    },
-  };
-};
+export const changeQuantity = (id, quantity) => ({
+  type: "CHANGE_QUANTITY",
+  payload: { id, quantity },
+});
+
+// export const createOrder = createAction("CREATE_ORDER");

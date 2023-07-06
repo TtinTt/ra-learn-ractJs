@@ -20,8 +20,8 @@ import {
 
 export default function BoxRegister() {
   let usersDB = useSelector((state) => state.userReducer.users);
-  JSON.parse(localStorage.getItem("users")) == null &&
-    localStorage.setItem("users", JSON.stringify(usersDB));
+  // JSON.parse(localStorage.getItem("users")) == null &&
+  //   localStorage.setItem("users", JSON.stringify(usersDB));
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -71,9 +71,10 @@ export default function BoxRegister() {
 
     if (isDulicate === false) {
       delete user.confirmPassword;
-      user.Fname = "";
-      user.Lname = "";
+
+      user.name = "";
       user.cart = [];
+      user.bday = "";
       user.date = getCurrentTimeString();
       user.add = "";
       user.phone = "";
