@@ -6,7 +6,6 @@ import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import logo from "../imgs/Logo.png";
-import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
 import { TruncateString, CheckLink } from "../function/functionData";
@@ -16,11 +15,6 @@ function NavbarTop() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   let link = CheckLink();
   const dispatch = useDispatch();
-
-  const handleLogout = () => {
-    dispatch(logoutUser());
-    console.log("LOGOUT");
-  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary navbar-top">
@@ -61,7 +55,7 @@ function NavbarTop() {
             </Nav.Link>
           </Nav>
           <Navbar.Brand className="d-flex">
-            <UserButton link={link} handleLogout={handleLogout} />
+            <UserButton link={link} />
           </Navbar.Brand>
         </Navbar.Collapse>
       </Container>

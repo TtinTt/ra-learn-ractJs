@@ -17,7 +17,7 @@ import "../css/Profile.css";
 import Modal from "react-bootstrap/Modal";
 import { updateInfoUser } from "../actions/userAction";
 
-function ContactUs() {
+function ContactUsBox() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   const [isCanEdit, setIsCanEdit] = useState(true);
   const [info, setInfo] = useState({
@@ -153,4 +153,4 @@ function ContactUs() {
   );
 }
 
-export default ContactUs;
+export default ContactUsBox;
