@@ -3,13 +3,23 @@
   width: 130px;
   text-align: left;
 }
+
+#input-group-dropdown-3 {
+  width: 160px;
+  text-align: left;
+}
 .sortStatus {
   border: none;
   text-align: right;
   width: 120px !important;
   float: right !important;
 }
-
+.sortStatus2 {
+  border: none;
+  text-align: right;
+  width: 80px !important;
+  float: right !important;
+}
 #setMaxPrice {
   width: 150px;
 }

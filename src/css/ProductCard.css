@@ -11,59 +11,69 @@
   height: 28rem;
   object-fit: cover;
 }
-
+.productImgThumbSmall {
+  height: 6rem;
+  width: 6rem;
+  object-fit: cover;
+  display: inline-block;
+}
 .col .card {
   /* margin: 10px auto; */
 }
+#adminProductCard h6 {
+  margin: 0;
+}
+td {
+  vertical-align: middle !important;
+  padding: 30px;
+}
 
+#cardProductBodyAdmin {
+  display: inline-block;
+  width: 60%;
+}
 .col {
   /* width: 18rem; */
   display: flex;
   justify-content: center;
   padding: 5px;
 }
+.productPreview {
+  border: solid rgb(227, 227, 227) 2px;
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+.groupPreview {
+  display: flex;
+  justify-content: center;
+}
 
 .row {
   --bs-gutter-x: -10px;
   /* margin: 0 auto; */
 }
-
+.subPreview {
+  text-align: center;
+  color: gray;
+  margin: 0;
+  padding: 0;
+}
 .tooltip {
-  --bs-tooltip-opacity: 0.8;
+  --bs-tooltip-opacity: 0.9;
   --bs-tooltip-max-width: 290px;
-  --bs-tooltip-color: black;
-  --bs-tooltip-bg: white;
+  --bs-tooltip-color: rgb(0, 0, 0);
+  --bs-tooltip-bg: rgb(255, 255, 255);
   border: 1px gray solid;
-  /* 
-  --bs-tooltip-zindex: 1080;
-  --bs-tooltip-padding-x: 0.5rem;
-  --bs-tooltip-padding-y: 0.25rem;
-  --bs-tooltip-margin: ;
-  --bs-tooltip-font-size: 0.875rem;
-  --bs-tooltip-border-radius: var(--bs-border-radius);
-  --bs-tooltip-arrow-width: 0.8rem;
-  --bs-tooltip-arrow-height: 0.4rem;
-  z-index: var(--bs-tooltip-zindex);
-  display: block;
-  margin: var(--bs-tooltip-margin);
-  font-family: var(--bs-font-sans-serif);
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.5;
-  text-align: left;
-  text-align: start;
-  text-decoration: none;
-  text-shadow: none;
-  text-transform: none;
-  letter-spacing: normal;
-  word-break: normal;
-  white-space: normal;
-  word-spacing: normal;
-  line-break: auto;
-  font-size: var(--bs-tooltip-font-size);
-  word-wrap: break-word;
-  opacity: 0; */
   inset: auto auto 17px 0px !important;
+}
+.editProductCard {
+  margin-left: 30px;
+  border: solid rgb(227, 227, 227) 2px;
+  width: 500px;
+  border-radius: 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 10px;
 }
 
 /* element.style {

@@ -11,3 +11,6 @@ import { createAction } from "@reduxjs/toolkit";
 
 export const loginAdmin = createAction("LOGIN_ADMIN");
 export const logoutAdmin = createAction("LOGOUT_ADMIN");
+export const updateEditProduct = createAction("EDIT_PRODUCT");
+export const addProduct = createAction("ADD_PRODUCT");
+export const deleteProduct = createAction("DELETE_PRODUCT");

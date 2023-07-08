@@ -116,29 +116,34 @@ function ProductCard({ product }) {
                     }}
                   >
                     {Changedot([product.price])}
-                    <strike
-                      style={{
-                        paddingLeft: "5px",
-                        color: "grey",
-                        fontWeight: "400",
-                      }}
-                    >
-                      {Changedot([product.comparative])}
-                    </strike>
-                    <span
-                      style={{
-                        paddingLeft: "5px",
-                        color: "#dc3545",
-                        fontWeight: "400",
-                      }}
-                    >
-                      {"(Giảm "}
-                      {(
-                        100 -
-                        (product.price / product.comparative) * 100
-                      ).toFixed(0)}
-                      {"%)"}
-                    </span>
+                    {product.comparative > product.price && (
+                      <>
+                        {" "}
+                        <strike
+                          style={{
+                            paddingLeft: "5px",
+                            color: "grey",
+                            fontWeight: "400",
+                          }}
+                        >
+                          {Changedot([product.comparative])}
+                        </strike>
+                        <span
+                          style={{
+                            paddingLeft: "5px",
+                            color: "#dc3545",
+                            fontWeight: "400",
+                          }}
+                        >
+                          {"(Giảm "}
+                          {(
+                            100 -
+                            (product.price / product.comparative) * 100
+                          ).toFixed(0)}
+                          {"%)"}
+                        </span>
+                      </>
+                    )}
                   </h6>
                 </Card.Text>
                 {/* <Card.Text>{TruncateString(product.description, 50)}</Card.Text> */}
@@ -203,30 +208,33 @@ function ProductCard({ product }) {
                       fontWeight: "600",
                     }}
                   >
-                    {" "}
-                    <span
-                      style={{
-                        paddingLeft: "5px",
-                        color: "#dc3545",
-                        fontWeight: "200",
-                      }}
-                    >
-                      {"(Giảm giá "}
-                      {(
-                        100 -
-                        (product.price / product.comparative) * 100
-                      ).toFixed(0)}
-                      {"%)"}
-                    </span>
-                    <strike
-                      style={{
-                        paddingLeft: "5px",
-                        color: "grey",
-                        fontWeight: "200",
-                      }}
-                    >
-                      {Changedot([product.comparative * quantity])}
-                    </strike>{" "}
+                    {product.comparative > product.price && (
+                      <>
+                        <span
+                          style={{
+                            paddingLeft: "5px",
+                            color: "#dc3545",
+                            fontWeight: "200",
+                          }}
+                        >
+                          {"(Giảm giá "}
+                          {(
+                            100 -
+                            (product.price / product.comparative) * 100
+                          ).toFixed(0)}
+                          {"%)"}
+                        </span>
+                        <strike
+                          style={{
+                            paddingLeft: "5px",
+                            color: "grey",
+                            fontWeight: "200",
+                          }}
+                        >
+                          {Changedot([product.comparative * quantity])}
+                        </strike>
+                      </>
+                    )}{" "}
                     {Changedot([product.price * quantity])}
                   </h5>
                 </Card.Text>

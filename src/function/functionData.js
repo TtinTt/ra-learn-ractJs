@@ -11,43 +11,43 @@ export const removeAccentsUpperCase = (str) => {
 };
 
 export const getStatus = (orderStatus) => {
-  if (orderStatus === 0) {
+  if (orderStatus === "0") {
     return "Đang xử lý thông tin đơn hàng";
-  } else if (orderStatus === 1) {
+  } else if (orderStatus === "1") {
     return "Đơn hàng đang được chuẩn bị";
-  } else if (orderStatus === 2) {
+  } else if (orderStatus === "2") {
     return "Đơn hàng đang được giao tới";
-  } else if (orderStatus === 3) {
+  } else if (orderStatus === "3") {
     return "Đơn hàng đã được giao thành công";
-  } else if (orderStatus === 4) {
-    return "Đơn hàng giao không thành công và đang chuyển hoàn";
-  } else if (orderStatus === 5) {
+  } else if (orderStatus === "4") {
+    return "Giao hàng không thành công và đang chuyển hoàn";
+  } else if (orderStatus === "5") {
     return "Đơn hàng đã được chuyển hoàn";
-  } else if (orderStatus === -1) {
+  } else if (orderStatus === "-1") {
     return "Đơn hàng đã bị huỷ";
-  } else if (orderStatus === -2) {
+  } else if (orderStatus === "-2") {
     return "Đơn hàng bị từ chối";
   }
 };
 
 export const hanleGetColor = (orderStatus) => {
-  if (orderStatus === 0) {
+  if (orderStatus === "0") {
+    return "#D7D7D7";
+  } else if (orderStatus === "1") {
     return "PaleGoldenRod";
-  } else if (orderStatus === 1) {
-    return "MediumAquaMarine";
-  } else if (orderStatus === 2) {
-    return "MediumAquaMarine";
-  } else if (orderStatus === 3) {
+  } else if (orderStatus === "2") {
     return "PaleGoldenRod";
-  } else if (orderStatus === 4) {
+  } else if (orderStatus === "3") {
     return "PaleGoldenRod";
-  } else if (orderStatus === 5) {
-    return "PeachPuff";
-  } else if (orderStatus === -1) {
-    return "PeachPuff";
-  } else if (orderStatus === -2) {
-    return "PeachPuff";
-  }
+  } else if (orderStatus === "4") {
+    return "PaleGoldenRod";
+  } else if (orderStatus === "5") {
+    return "#ffdab9";
+  } else if (orderStatus === "-1") {
+    return "#ffdab9";
+  } else if (orderStatus === "-2") {
+    return "#ffdab9";
+  } else return "none";
 };
 
 // lấy thời gian hiện tại và sửa dịnh dạng
@@ -82,6 +82,7 @@ export const getDaysDifference = (dateString) => {
 // console.log(getDaysDifference("18h50 30-12-2023"));
 // Output: <số ngày từ thời điểm hiện tại đến ngày 30-12-2023>
 
+// cắt đoạn string ngắn lại và thêm ...
 export const TruncateString = (str, lenInput) => {
   if (str.length > lenInput) {
     return str.substring(0, lenInput) + "...";
@@ -89,6 +90,8 @@ export const TruncateString = (str, lenInput) => {
     return str;
   }
 };
+
+// cắt lấy tên từ họ và tên ...
 export const TruncateName = (name, lenInput) => {
   let fullName = name.split(" ");
   let Fname = fullName[fullName.length - 1];
@@ -98,41 +101,60 @@ export const TruncateName = (name, lenInput) => {
     return Fname;
   }
 };
+
 // function xử lý số: bỏ dấu [.] hoặc thêm dấu [.] cho số tiền
 export const Changedot = (money) => {
+  money = money.toString();
   // money = JSON.stringify(money);
-  if (money.includes(".")) {
-    let x = money.toString().replace("đ", "");
-    let y = x.toString().replace(".", "");
-    let z = y.toString().replace(".", "");
-    return z.toString().replace(".", "");
+  if (money.includes("." || "đ")) {
+    return Number(
+      money
+        .replace(/\s+/g, "") //xoá space
+        .replace(/\./g, "") //xoá .
+        .replace(/đ/g, "") //xoá đ
+    );
   } else {
-    return money.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
+    let moneyEdit = money
+      .replace(/\s+/g, "") //xoá space
+      .replace(/\./g, "") //xoá .
+      .replace(/đ/g, ""); //xoá đ
+    return moneyEdit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".") + "đ";
   }
+};
+
+export const removeDot = (money) => {
+  money = money.toString();
+
+  return Number(
+    money
+      .replace(/\s+/g, "") //xoá space
+      .replace(/\./g, "") //xoá .
+      .replace(/đ/g, "") //xoá đ
+  );
 };
 
 const sortPrice = (productList, sortOption) => {
   if (sortOption === 0) {
-    console.log(productList);
+    // console.log(productList);
 
     return productList;
   } else if (sortOption === 2) {
-    console.log(productList);
+    // console.log(productList);
 
     return productList.slice().sort((a, b) => a.price - b.price);
   } else if (sortOption === 1) {
-    console.log(productList);
+    // console.log(productList);
 
     return productList.slice().sort((a, b) => b.price - a.price);
   } else {
-    console.log(productList);
+    // console.log(productList);
 
     return productList;
   }
 };
 
 const sortPriceFrom = (productList, priceMax) => {
-  console.log("sortPriceFrom");
+  // console.log("sortPriceFrom");
 
   if (priceMax === null) {
     return productList; // Trả về mảng gốc nếu price null
@@ -168,11 +190,11 @@ export const HandleFilter = () => {
 
   // lấy listProducts lọc theo ô search
   let listSorted = sortProductListFrom.filter((product) =>
-    removeAccentsUpperCase(product.name).includes(
+    removeAccentsUpperCase(product.name + product.tag + product.sku).includes(
       removeAccentsUpperCase(searchFilter).toUpperCase()
     )
   );
-  console.log(listSorted);
+  // console.log(listSorted);
   return listSorted;
 };
 
@@ -184,4 +206,70 @@ export const CheckLink = () => {
   }, [location]);
 
   return location.pathname;
+};
+
+// đổi "," trong string thành ", "
+export const addSpace = (inputString) => {
+  let removeSpace = inputString.toString().replace(/\s+/g, "");
+  return removeSpace.replace(/,/g, ", ");
+};
+
+// đổi chuỗi có ", " thành mảng cắt bởi dấu phẩy
+export const splitArray = (inputString) => {
+  let removeSpace = inputString.replace(/\s+/g, "");
+  return removeSpace.split(",");
+};
+
+const FilterOrders = (orders, filterOption) => {
+  let filteredOrders;
+  console.log(orders);
+  if (filterOption === 0) {
+    filteredOrders = orders;
+  } else if (filterOption === 1) {
+    filteredOrders = orders.filter((order) =>
+      ["0", "1", "2", "4"].includes(order.status)
+    );
+  } else if (filterOption === 2) {
+    filteredOrders = orders.filter((order) =>
+      ["-1", "-2", "3", "5"].includes(order.status)
+    );
+  }
+
+  return filteredOrders;
+};
+
+export const HandleFilterOrder = () => {
+  // lấy giá trị ô orderList từ store
+  const orderList = useSelector((state) => state.orderReducer.orders);
+
+  // lấy option filter từ store
+  const filterOption = useSelector((state) => state.orderReducer.filter) ?? 0;
+  // lấy giá trị ô search
+  const searchFilter =
+    useSelector((state) => state.orderReducer.searchFilter) ?? "";
+
+  // lọc theo filter
+  let filteredOrders = FilterOrders(orderList, filterOption);
+  console.log(filteredOrders);
+
+  // lấy listorders lọc theo ô search
+  let listSorted = filteredOrders.filter((order) =>
+    removeAccentsUpperCase(
+      getEmailName(order.email) + order.address.name + order.address.phoneNumber
+    ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
+  );
+  // console.log(listSorted);
+  return listSorted;
+};
+
+// Tách phần trước @ để lấy tên email
+
+const getEmailName = (email) => {
+  if (email.includes("@")) {
+    const emailParts = email.split("@");
+    const emailName = emailParts[0];
+    return emailName;
+  } else {
+    return email;
+  }
 };

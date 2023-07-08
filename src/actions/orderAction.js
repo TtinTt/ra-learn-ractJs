@@ -10,4 +10,7 @@ import { createAction } from "@reduxjs/toolkit";
 // });
 export const createOrder = createAction("CREATE_ORDER");
 
-export const deleteOrder = createAction("DELETE_ORDER");
+export const cancelOrder = createAction("CANCEL_ORDER");
+export const updateStatusOrder = createAction("UPDATE_STATUS_ORDER");
+export const filterOrder = createAction("FILTER_ORDER");
+export const inputSearchOrder = createAction("SEARCH_ORDER");

@@ -5,7 +5,7 @@ import Container from "react-bootstrap/Container";
 import AdminBox from "../../components/Admin/AdminBox";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-
+import OrderManage from "../../components/Admin/OrderManage";
 import { useNavigate } from "react-router-dom";
 import ManageProduct from "../../components/Admin/ManageProduct";
 import Tab from "react-bootstrap/Tab";
@@ -16,11 +16,11 @@ import "../../css/Home.css";
 function Admin() {
   const navigate = useNavigate();
   let [showing, setShowing] = useState(1);
-  const [key, setKey] = useState("admin");
+  const [key, setKey] = useState("order");
 
   return (
     <Container>
-      <div className="navbar">
+      <div>
         <NavbarTop />
       </div>
       <Tabs
@@ -29,18 +29,18 @@ function Admin() {
         onSelect={(k) => setKey(k)}
         className="mb-3"
       >
-        <Tab eventKey="admin" title="admin">
-          <AdminBox />{" "}
+        <Tab eventKey="order" title="Đơn hàng">
+          <OrderManage></OrderManage>
         </Tab>
-        <Tab eventKey="products" title="products">
-          <ManageProduct />{" "}
+        <Tab eventKey="products" title="Sản phẩm">
+          <ManageProduct />
         </Tab>
-        <Tab eventKey="user" title="user">
+        <Tab eventKey="admin" title="Người dùng">
+          <AdminBox />
+        </Tab>
+        <Tab eventKey="contact" title="Liên hệ">
           <></>
         </Tab>
-        {/* <Tab eventKey="contact" title="Contact" disabled>
-          Tab content for Contact
-        </Tab> */}
       </Tabs>
 
       <FooterBot />

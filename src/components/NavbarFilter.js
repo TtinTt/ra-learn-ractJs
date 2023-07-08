@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
-import { Changedot } from "../function/functionData";
+import { Changedot, CheckLink } from "../function/functionData";
 import {
   sortProducts,
   priceFrom,
@@ -26,6 +26,12 @@ function NavbarFilter() {
   let productList = useSelector((state) => state.productReducer.products);
 
   const [sort, setSort] = useState(0); // Giá trị mặc định
+
+  let link = CheckLink();
+
+  useEffect(() => {
+    dispatch(inputSearchBox(""));
+  }, []);
 
   const dispatch = useDispatch();
 
@@ -45,7 +51,7 @@ function NavbarFilter() {
   };
   const handleLogout = () => {
     dispatch(logoutUser());
-    console.log("LOGOUT");
+    // console.log("LOGOUT");
   };
 
   // lấy giá trị price lớn nhất và nhỏ nhất của listProduct
@@ -117,7 +123,10 @@ function NavbarFilter() {
           <div id="groupSearchProduct">
             {" "}
             <Nav className="d-flex position-relative" style={{ top: "8px" }}>
-              <InputGroup className="mb-3 ">
+              <InputGroup
+                className="mb-3 "
+                style={{ display: "flex", flexWrap: "noWrap" }}
+              >
                 <Form.Control
                   placeholder="Sắp xếp theo"
                   for="input-group-dropdown-2"

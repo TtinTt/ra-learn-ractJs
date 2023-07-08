@@ -127,7 +127,7 @@ const userReducer = createReducer(
     },
 
     CHANGE_QUANTITY: (state, action) => {
-      console.log(action.payload);
+      // console.log(action.payload);
       let updatedATC = state.userLogined.cart.map((product) => {
         if (product.id === action.payload.id) {
           return {

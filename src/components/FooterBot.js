@@ -31,10 +31,10 @@ function FooterBot() {
                   <a href="">Chính sách đổi trả</a>
                 </li> */}
                 <li>
-                  <a href="">Trang chủ</a>
+                  <a href="/">Trang chủ</a>
                 </li>
                 <li onclick="LoginAdminPage()">
-                  <a href="/Admin/LoginAdmin.html">Truy cập quyền quản trị</a>
+                  <a href="/Admin">Truy cập quyền quản trị</a>
                 </li>
               </ul>
             </nav>

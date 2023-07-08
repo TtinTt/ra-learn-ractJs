@@ -30,16 +30,16 @@ function UserButton({ link }) {
       countCart = countCart + product.quantity;
     });
   }
-  console.log(!link.includes("/admin"));
+  // console.log(!link.includes("/admin"));
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    console.log("LOGOUT");
+    // console.log("LOGOUT");
   };
 
   const handleLogoutAdmin = () => {
     dispatch(logoutAdmin());
-    console.log("LOGOUT ADMIN");
+    // console.log("LOGOUT ADMIN");
   };
 
   if (link === "/login") {

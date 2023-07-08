@@ -94,8 +94,8 @@ function CartList() {
       ...address,
       [key]: event.target.value,
     };
-    console.log(key);
-    console.log(newAddress);
+    // console.log(key);
+    // console.log(newAddress);
     setAddress(newAddress);
     validateAddress(newAddress);
   };
@@ -137,7 +137,7 @@ function CartList() {
         cart: cart,
         address: address,
         date: getCurrentTimeString(),
-        status: 0,
+        status: "0",
       };
       console.log(order);
       dispatch(createOrder(order)); // Gửi đơn hàng tới store
@@ -297,6 +297,7 @@ function CartList() {
             Xác nhận đơn hàng
           </Button>
           <p className="text-center ">
+            Sau khi đặt hàng, bạn có thể huỷ đơn hàng của mình trong vòng 4 giờ.
             Đơn hàng sẽ giao tới địa chỉ của bạn trong vòng 4-10 ngày làm việc.
             Bạn cần thanh toán <strong>{Changedot([total])}</strong> khi nhận
             hàng.

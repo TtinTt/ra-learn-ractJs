@@ -3,11 +3,10 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { deleteFromCart, changeQuantity } from "../actions/cartAction";
 import { Changedot, getStatus, hanleGetColor } from "../function/functionData";
 import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
-import { deleteOrder } from "../actions/orderAction";
+import { cancelOrder } from "../actions/orderAction";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { v4 as uuidv4 } from "uuid";
 import {
@@ -33,17 +32,17 @@ function CartList() {
     return total;
   };
 
-  const [isShowConfirmDeleteOrder, setIsShowConfirmDeleteOrder] =
+  const [isShowConfirmCancelOrder, setIsShowConfirmCancelOrder] =
     useState(false);
 
-  const ConfirmDeleteOrder = () => {
+  const ConfirmCancelOrder = () => {
     return (
       <>
         {" "}
         <Button
           style={{ width: "180px", marginRight: "5px" }}
           variant="danger"
-          onClick={() => handleDeleteOrder(orderShowing.id)}
+          onClick={() => handleCancelOrder(orderShowing.id)}
         >
           Xác nhận
         </Button>
@@ -51,7 +50,7 @@ function CartList() {
           style={{ width: "180px" }}
           variant="light"
           onClick={() => {
-            setIsShowConfirmDeleteOrder(false);
+            setIsShowConfirmCancelOrder(false);
           }}
         >
           Huỷ
@@ -59,8 +58,8 @@ function CartList() {
       </>
     );
   };
-  const handleDeleteOrder = (id) => {
-    dispatch(deleteOrder(id));
+  const handleCancelOrder = (id) => {
+    dispatch(cancelOrder(id));
     handleClose();
   };
 
@@ -151,7 +150,7 @@ function CartList() {
   const handleShow = (order) => {
     setShow(true);
     setOrderShowing(order);
-    setIsShowConfirmDeleteOrder(false);
+    setIsShowConfirmCancelOrder(false);
   };
 
   return orders.length == 0 ? (
@@ -214,7 +213,7 @@ function CartList() {
 
               {getDaysDifference(orderShowing.date) > 4 && (
                 <p className="text-center" style={{ color: "#dc3545" }}>
-                  Đơn hàng đã hết thời gian có thể huỷ. Vui lòng{" "}
+                  Đơn hàng đã qua thời gian để có thể huỷ. Vui lòng{" "}
                   <span
                     style={{
                       cursor: "pointer",
@@ -232,7 +231,7 @@ function CartList() {
             </div>
           </Modal.Body>
           <Modal.Footer>
-            {isShowConfirmDeleteOrder == false ? (
+            {isShowConfirmCancelOrder == false ? (
               <div>
                 <Button
                   style={{ width: "180px", marginRight: "5px" }}
@@ -246,7 +245,7 @@ function CartList() {
                     style={{ width: "180px" }}
                     variant="danger"
                     onClick={() => {
-                      setIsShowConfirmDeleteOrder(true);
+                      setIsShowConfirmCancelOrder(true);
                     }}
                   >
                     Huỷ đơn hàng
@@ -254,7 +253,7 @@ function CartList() {
                 )}
               </div>
             ) : (
-              ConfirmDeleteOrder()
+              ConfirmCancelOrder()
             )}
           </Modal.Footer>
         </Modal>

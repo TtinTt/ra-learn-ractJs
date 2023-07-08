@@ -32,7 +32,7 @@ export default function BoxRegister() {
     confirmPassword: "",
   });
 
-  console.log(user);
+  // console.log(user);
 
   const [error, setError] = useState({
     isShowStatus: false,
