@@ -35,10 +35,6 @@ export default function ManageProduct() {
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  // const [currentProducts, setcurrentProducts] = useState(
-  //   productList.slice(indexOfFirstProduct, indexOfLastProduct)
-  // );
-
   const currentProducts = productList.slice(
     indexOfFirstProduct,
     indexOfLastProduct
@@ -67,7 +63,11 @@ export default function ManageProduct() {
   useEffect(() => {
     const description = `Đang hiển thị sản phẩm thứ ${
       indexOfFirstProduct + 1
-    } đến ${indexOfLastProduct} trong tổng số ${productList.length} sản phẩm`;
+    } đến ${
+      indexOfLastProduct > productList.length
+        ? productList.length
+        : indexOfLastProduct
+    } trong tổng số ${productList.length} sản phẩm`;
     setProductDescription(description);
   }, [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]);
 

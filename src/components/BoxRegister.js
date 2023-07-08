@@ -75,6 +75,7 @@ export default function BoxRegister() {
       user.name = "";
       user.cart = [];
       user.bday = "";
+      user.status = true;
       user.date = getCurrentTimeString();
       user.add = "";
       user.phone = "";

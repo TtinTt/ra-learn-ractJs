@@ -65,7 +65,11 @@ export default function ProductList() {
   useEffect(() => {
     const description = `Đang hiển thị sản phẩm thứ ${
       indexOfFirstProduct + 1
-    } đến ${indexOfLastProduct} trong tổng số ${productList.length} sản phẩm`;
+    } đến ${
+      indexOfLastProduct > productList.length
+        ? productList.length
+        : indexOfLastProduct
+    } trong tổng số ${productList.length} sản phẩm`;
     setProductDescription(description);
   }, [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]);
 

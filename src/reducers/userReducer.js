@@ -3,6 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 const userReducer = createReducer(
   {
     userLogined: null,
+    searchFilter: "",
     users: [
       {
         email: "demoUser1@gmail.com",
@@ -10,18 +11,20 @@ const userReducer = createReducer(
         name: "Trần Trọng Tín",
         cart: [],
         bday: "",
-        date: "",
+        date: "01:01 01/01/2021",
+        status: true,
         add: "",
-        phone: "",
+        phone: "0999999999",
         img: "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif",
       },
       {
         email: "demoUser2@gmail.com",
         password: "demoUser2@gmail.com",
-        name: "",
+        name: "Nguyễn Minh Tâm",
         cart: [],
         bday: "",
-        date: "",
+        date: "23:16 08/06/2023",
+        status: true,
         add: "",
         phone: "",
         img: "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif",
@@ -29,10 +32,35 @@ const userReducer = createReducer(
       {
         email: "demoUser3@gmail.com",
         password: "demoUser3@gmail.com",
+        name: "Lê Tùng",
+        cart: [],
+        bday: "",
+        date: "20:11 04/06/2023",
+        status: true,
+        add: "",
+        phone: "",
+        img: "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif",
+      },
+      {
+        email: "demoUser4@gmail.com",
+        password: "demoUser4@gmail.com",
         name: "",
         cart: [],
         bday: "",
-        date: "",
+        date: "12:11 04/08/2023",
+        status: true,
+        add: "",
+        phone: "",
+        img: "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif",
+      },
+      {
+        email: "demoUser5@gmail.com",
+        password: "demoUser3@gmail.com",
+        name: "Lê Hải",
+        cart: [],
+        bday: "",
+        date: "20:11 04/06/2021",
+        status: false,
         add: "",
         phone: "",
         img: "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif",
@@ -61,8 +89,8 @@ const userReducer = createReducer(
             email: state.userLogined.email,
             name: state.userLogined.name,
             bday: state.userLogined.bday,
+            status: state.userLogined.status,
             add: state.userLogined.add,
-            note: state.userLogined.note,
             phone: state.userLogined.phone,
             img: state.userLogined.img,
           };
@@ -163,11 +191,30 @@ const userReducer = createReducer(
           email: action.payload.email,
           name: action.payload.name,
           bday: action.payload.bday,
+          status: action.payload.status,
           add: action.payload.add,
-          note: action.payload.note,
+          // note: action.payload.note,
           phone: action.payload.phone,
           img: img,
         },
+      };
+    },
+    UPDATE_STATUS_USER: (state, action) => {
+      let updatedUsers = state.users.map((user) => {
+        if (user.email === action.payload.email) {
+          return action.payload;
+        }
+        return user;
+      });
+      return {
+        ...state,
+        users: updatedUsers,
+      };
+    },
+    SEARCH_USER: (state, action) => {
+      return {
+        ...state,
+        searchFilter: action.payload,
       };
     },
   }

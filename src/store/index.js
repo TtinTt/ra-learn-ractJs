@@ -2,6 +2,7 @@ import productReducer from "../reducers/productReducer";
 import userReducer from "../reducers/userReducer";
 import orderReducer from "../reducers/orderReducer";
 import adminReducer from "../reducers/adminReducer";
+import messReducer from "../reducers/messReducer";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
 const loadFromLocalStorage = () => {
@@ -20,6 +21,7 @@ const rootReducer = combineReducers({
   userReducer,
   orderReducer,
   adminReducer,
+  messReducer,
 });
 
 const preloadedState = loadFromLocalStorage();

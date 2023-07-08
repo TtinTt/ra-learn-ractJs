@@ -7,7 +7,7 @@ function FooterBot() {
       <footer>
         <div class="footer">
           <div class="about">
-            <div onclick="HomePage()" class="logo-set-small">
+            <div class="logo-set-small">
               <Link to="/">
                 <h6>Cozy.com</h6>
               </Link>
@@ -33,7 +33,7 @@ function FooterBot() {
                 <li>
                   <a href="/">Trang chủ</a>
                 </li>
-                <li onclick="LoginAdminPage()">
+                <li>
                   <a href="/Admin">Truy cập quyền quản trị</a>
                 </li>
               </ul>
@@ -42,6 +42,9 @@ function FooterBot() {
           <div class="contact">
             <h4>Liên hệ</h4>
             <ul class="link-list">
+              <li>
+                <a href="/contactUs">Để lại lời nhắn</a>
+              </li>
               <li>
                 <a href="">info@Cozy.com</a>
               </li>

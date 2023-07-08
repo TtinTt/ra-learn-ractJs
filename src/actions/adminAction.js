@@ -14,3 +14,4 @@ export const logoutAdmin = createAction("LOGOUT_ADMIN");
 export const updateEditProduct = createAction("EDIT_PRODUCT");
 export const addProduct = createAction("ADD_PRODUCT");
 export const deleteProduct = createAction("DELETE_PRODUCT");
+export const inputSearchUser = createAction("SEARCH_USER");

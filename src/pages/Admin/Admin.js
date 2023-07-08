@@ -5,7 +5,9 @@ import Container from "react-bootstrap/Container";
 import AdminBox from "../../components/Admin/AdminBox";
 import { useSelector, useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
-import OrderManage from "../../components/Admin/OrderManage";
+import ManageUser from "../../components/Admin/ManageUser";
+import ManageOrder from "../../components/Admin/ManageOrder";
+import ManageMess from "../../components/Admin/ManageMess";
 import { useNavigate } from "react-router-dom";
 import ManageProduct from "../../components/Admin/ManageProduct";
 import Tab from "react-bootstrap/Tab";
@@ -30,16 +32,16 @@ function Admin() {
         className="mb-3"
       >
         <Tab eventKey="order" title="Đơn hàng">
-          <OrderManage></OrderManage>
+          <ManageOrder />
         </Tab>
         <Tab eventKey="products" title="Sản phẩm">
           <ManageProduct />
         </Tab>
         <Tab eventKey="admin" title="Người dùng">
-          <AdminBox />
+          <ManageUser />
         </Tab>
         <Tab eventKey="contact" title="Liên hệ">
-          <></>
+          <ManageMess />
         </Tab>
       </Tabs>
 

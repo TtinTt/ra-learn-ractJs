@@ -21,7 +21,9 @@ import { updateStatusOrder } from "../../actions/orderAction";
 import OrderFilter from "../OrderFilter";
 import Pagination from "react-bootstrap/Pagination";
 
-function OrderManage() {
+function ManageOrder() {
+  // debugger;
+
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [orderDescription, setOrderDescription] = useState("");
@@ -48,6 +50,13 @@ function OrderManage() {
     return total;
   };
 
+  const draftOrder = () => {
+    if (orders.length == 0) {
+      return null;
+    } else {
+      return orders[0];
+    }
+  };
   const handleUpdateStatusOrder = async (event) => {
     await setOrderShowing({ ...orderShowing, status: event.target.value });
     await dispatch(
@@ -55,7 +64,7 @@ function OrderManage() {
     );
   };
 
-  const [orderShowing, setOrderShowing] = useState(orders[0]);
+  const [orderShowing, setOrderShowing] = useState(draftOrder());
 
   const [show, setShow] = useState(false);
 
@@ -140,7 +149,9 @@ function OrderManage() {
   useEffect(() => {
     const description = `Đang hiển thị đơn hàng thứ ${
       indexOfFirstOrder + 1
-    } đến ${indexOfLastOrder} trong tổng số ${orders.length} đơn hàng`;
+    } đến ${
+      indexOfLastOrder > orders.length ? orders.length : indexOfLastOrder
+    } trong tổng số ${orders.length} đơn hàng`;
     setOrderDescription(description);
   }, [currentPage, orders, indexOfFirstOrder, indexOfLastOrder]);
 
@@ -190,6 +201,7 @@ function OrderManage() {
     );
   };
   const orderInfo = (order) => {
+    // debugger;
     return (
       <>
         <Table striped bordered hover>
@@ -271,6 +283,8 @@ function OrderManage() {
     );
   };
 
+  // console.log("orderShowing", orderShowing);
+
   return (
     <>
       {" "}
@@ -311,87 +325,96 @@ function OrderManage() {
                   <Modal.Title>Chi tiết đơn hàng</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                  {orderShowing !== {} && orderInfo(orderShowing)}
-                  <div>
-                    <br></br>
-                    <h6>
-                      <strong>Thông tin giao hàng</strong>
-                    </h6>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">
-                        Người nhận
-                      </InputGroup.Text>
-                      <Form.Control
-                        disabled
-                        value={orderShowing.address.name}
-                      />
-                      <InputGroup.Text id="basic-addon1">
-                        Số điện thoại
-                      </InputGroup.Text>
-                      <Form.Control
-                        disabled
-                        value={orderShowing.address.phoneNumber}
-                      />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">
-                        Địa chỉ nhận hàng
-                      </InputGroup.Text>
-                      <Form.Control
-                        disabled
-                        value={orderShowing.address.address}
-                      />
-                    </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">
-                        Lưu ý giao hàng
-                      </InputGroup.Text>
-                      <Form.Control
-                        placeholder="Không có lưu ý giao hàng"
-                        disabled
-                        value={orderShowing.address.note}
-                      />
-                    </InputGroup>
-
-                    <>
+                  {orderShowing && orderInfo(orderShowing)}
+                  {orderShowing && (
+                    <div>
                       <br></br>
-                      <p>
-                        <strong>Cập nhật trạng thái đơn hàng</strong>
-                      </p>
-                      <Form.Select
-                        aria-label="Default select example"
-                        onChange={(event) => {
-                          handleUpdateStatusOrder(event);
-                        }}
-                        value={orderShowing.status}
-                      >
-                        <option value="0">Đang xử lý thông tin đơn hàng</option>
-                        <option value="1">Đơn hàng đang được chuẩn bị</option>
-                        <option value="2">Đơn hàng đang được giao tới</option>
-                        <option value="3">
-                          Đơn hàng đã được giao thành công
-                        </option>
-                        <option value="4">
-                          Đơn hàng giao không thành công và đang chuyển hoàn
-                        </option>
-                        <option value="5">Đơn hàng đã được chuyển hoàn</option>
-                        <option value="-1">
-                          Đơn hàng đã bị huỷ bởi khách hàng
-                        </option>
-                        <option value="-2">Từ chối đơn hàng</option>
-                      </Form.Select>
-                    </>
-                    {getDaysDifference(orderShowing.date) < 4 && (
+                      <h6>
+                        <strong>Thông tin giao hàng</strong>
+                      </h6>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Người nhận
+                        </InputGroup.Text>
+                        <Form.Control
+                          disabled
+                          value={orderShowing.address.name}
+                        />
+                        <InputGroup.Text id="basic-addon1">
+                          Số điện thoại
+                        </InputGroup.Text>
+                        <Form.Control
+                          disabled
+                          value={orderShowing.address.phoneNumber}
+                        />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Địa chỉ nhận hàng
+                        </InputGroup.Text>
+                        <Form.Control
+                          disabled
+                          value={orderShowing.address.address}
+                        />
+                      </InputGroup>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Lưu ý giao hàng
+                        </InputGroup.Text>
+                        <Form.Control
+                          placeholder="Không có lưu ý giao hàng"
+                          disabled
+                          value={orderShowing.address.note}
+                        />
+                      </InputGroup>
+
                       <>
                         <br></br>
-                        <p className="text-center" style={{ color: "#dc3545" }}>
-                          Đơn hàng đang được xử lý và còn trong thời gian có thể
-                          huỷ bởi khách hàng
+                        <p>
+                          <strong>Cập nhật trạng thái đơn hàng</strong>
                         </p>
+                        <Form.Select
+                          aria-label="Default select example"
+                          onChange={(event) => {
+                            handleUpdateStatusOrder(event);
+                          }}
+                          value={orderShowing.status}
+                        >
+                          <option value="0">
+                            Đang xử lý thông tin đơn hàng
+                          </option>
+                          <option value="1">Đơn hàng đang được chuẩn bị</option>
+                          <option value="2">Đơn hàng đang được giao tới</option>
+                          <option value="3">
+                            Đơn hàng đã được giao thành công
+                          </option>
+                          <option value="4">
+                            Đơn hàng giao không thành công và đang chuyển hoàn
+                          </option>
+                          <option value="5">
+                            Đơn hàng đã được chuyển hoàn
+                          </option>
+                          <option value="-1">
+                            Đơn hàng đã bị huỷ bởi khách hàng
+                          </option>
+                          <option value="-2">Từ chối đơn hàng</option>
+                        </Form.Select>
                       </>
-                    )}
-                    <br></br>
-                  </div>
+                      {getDaysDifference(orderShowing.date) < 4 && (
+                        <>
+                          <br></br>
+                          <p
+                            className="text-center"
+                            style={{ color: "#dc3545" }}
+                          >
+                            Đơn hàng đang được xử lý và còn trong thời gian có
+                            thể huỷ bởi khách hàng
+                          </p>
+                        </>
+                      )}
+                      <br></br>
+                    </div>
+                  )}
                 </Modal.Body>
               </Modal>
             </>
@@ -402,4 +425,4 @@ function OrderManage() {
   );
 }
 
-export default OrderManage;
+export default ManageOrder;

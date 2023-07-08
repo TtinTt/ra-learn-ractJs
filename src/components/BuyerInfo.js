@@ -24,6 +24,7 @@ function BuyerInfo() {
     email: userLogined.email,
     name: userLogined.name,
     bday: userLogined.bday,
+    status: userLogined.status,
     add: userLogined.add,
     note: userLogined.note,
     phone: userLogined.phone,

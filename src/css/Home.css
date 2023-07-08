@@ -17,3 +17,11 @@
   z-index: 100;
   background-color: white;
 }
+
+#controlled-tab-example-tab-products,
+#controlled-tab-example-tab-order,
+#controlled-tab-example-tab-admin,
+#controlled-tab-example-tab-contact {
+  color: black;
+  margin-top: 5px;
+}

@@ -38,3 +38,4 @@ export const logoutUser = () => {
 
 export const clearCart = createAction("CLEAR_CART");
 export const updateInfoUser = createAction("UPDATE_INFO");
+export const updateStatusUser = createAction("UPDATE_STATUS_USER");

@@ -222,7 +222,7 @@ export const splitArray = (inputString) => {
 
 const FilterOrders = (orders, filterOption) => {
   let filteredOrders;
-  console.log(orders);
+  // console.log(orders);
   if (filterOption === 0) {
     filteredOrders = orders;
   } else if (filterOption === 1) {
@@ -244,13 +244,14 @@ export const HandleFilterOrder = () => {
 
   // lấy option filter từ store
   const filterOption = useSelector((state) => state.orderReducer.filter) ?? 0;
+
   // lấy giá trị ô search
   const searchFilter =
     useSelector((state) => state.orderReducer.searchFilter) ?? "";
 
   // lọc theo filter
   let filteredOrders = FilterOrders(orderList, filterOption);
-  console.log(filteredOrders);
+  // console.log(filteredOrders);
 
   // lấy listorders lọc theo ô search
   let listSorted = filteredOrders.filter((order) =>
@@ -259,6 +260,23 @@ export const HandleFilterOrder = () => {
     ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
   );
   // console.log(listSorted);
+  return listSorted;
+};
+
+export const HandleFilterUser = () => {
+  // lấy giá trị ô userList từ store
+  const userList = useSelector((state) => state.userReducer.users);
+
+  // lấy giá trị ô search
+  const searchFilter =
+    useSelector((state) => state.userReducer.searchFilter) ?? "";
+
+  // lấy listUsers lọc theo ô search
+  let listSorted = userList.filter((user) =>
+    removeAccentsUpperCase(
+      getEmailName(user.email) + user.name + user.phone
+    ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
+  );
   return listSorted;
 };
 
@@ -272,4 +290,21 @@ const getEmailName = (email) => {
   } else {
     return email;
   }
+};
+
+export const HandleFilterMess = () => {
+  // lấy giá trị ô messList từ store
+  const messList = useSelector((state) => state.messReducer.messs);
+
+  // lấy giá trị ô search
+  const searchFilter =
+    useSelector((state) => state.messReducer.searchFilter) ?? "";
+
+  // lấy listMesss lọc theo ô search
+  let listSorted = messList.filter((mess) =>
+    removeAccentsUpperCase(
+      getEmailName(mess.email) + mess.name + mess.phone
+    ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
+  );
+  return listSorted;
 };
