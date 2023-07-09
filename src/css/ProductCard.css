@@ -59,7 +59,7 @@ td {
   margin: 0;
   padding: 0;
 }
-.tooltip {
+#tooltip-top {
   --bs-tooltip-opacity: 0.9;
   --bs-tooltip-max-width: 290px;
   --bs-tooltip-color: rgb(0, 0, 0);

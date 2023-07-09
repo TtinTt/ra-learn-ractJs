@@ -13,8 +13,9 @@ import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
 import Carousel from "react-bootstrap/Carousel";
 import { useDispatch, useSelector } from "react-redux";
+import "./../css/CarouselProduct.css";
 
-function ProductCard({ product }) {
+function ProductCard({ screen, product }) {
   const [currentImg, setCurrentImg] = useState(product.img[0]);
   let userLogined = useSelector((state) => state.userReducer.userLogined);
 
@@ -69,98 +70,113 @@ function ProductCard({ product }) {
       </Carousel.Item>
     );
   });
-
   return (
     <>
-      <Card style={{ width: "310px" }}>
-        <div>
-          <Card.Img
-            onClick={handleShow}
-            className="productImgThumb"
-            variant="top"
-            src={currentImg}
-            onMouseOver={() => setCurrentImg(product.img[1])}
-            onMouseOut={() => setCurrentImg(product.img[0])}
-          />
+      {screen !== "cardProduct" ? (
+        <div
+          onClick={handleShow}
+          style={{ backgroundImage: `url(${screen})` }}
+          className="CarouselProductCard"
+        >
+          {/* <> {console.log(screen)}</> */}
         </div>
-        <Card.Body>
-          <div onClick={handleShow}>
-            <OverlayTrigger
-              style={{ width: "320px !importan" }}
-              key={"top"}
-              placement={"top"}
-              overlay={
-                <Tooltip id={`tooltip-top`}>
-                  <strong>{product.name} </strong>
-                  <br></br>
-                  {product.description + " Click để xem thông tin sản phẩm."}
-                </Tooltip>
-              }
-            >
-              <div>
-                <Card.Title>
-                  <h6
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    {TruncateString(product.name, 29)}
-                  </h6>
-                </Card.Title>
-                <Card.Text>
-                  <h6
-                    style={{
-                      paddingLeft: "5px",
-                      color: "#258635",
-                      textAlign: "center",
-                    }}
-                  >
-                    {Changedot([product.price])}
-                    {product.comparative > product.price && (
-                      <>
-                        {" "}
-                        <strike
-                          style={{
-                            paddingLeft: "5px",
-                            color: "grey",
-                            fontWeight: "400",
-                          }}
-                        >
-                          {Changedot([product.comparative])}
-                        </strike>
-                        <span
-                          style={{
-                            paddingLeft: "5px",
-                            color: "#dc3545",
-                            fontWeight: "400",
-                          }}
-                        >
-                          {"(Giảm "}
-                          {(
-                            100 -
-                            (product.price / product.comparative) * 100
-                          ).toFixed(0)}
-                          {"%)"}
-                        </span>
-                      </>
-                    )}
-                  </h6>
-                </Card.Text>
-                {/* <Card.Text>{TruncateString(product.description, 50)}</Card.Text> */}
-              </div>
-            </OverlayTrigger>
+      ) : (
+        <Card style={{ width: "310px" }}>
+          <div>
+            <Card.Img
+              onClick={handleShow}
+              className="productImgThumb"
+              variant="top"
+              src={currentImg}
+              onMouseOver={() => {
+                let item = 1;
+                if (product.img.length < 2) {
+                  item = 0;
+                }
+                setCurrentImg(product.img[item]);
+              }}
+              onMouseOut={() => setCurrentImg(product.img[0])}
+            />
           </div>
-          <Button
-            variant="light"
-            onClick={handleAdd}
-            style={{
-              float: "right",
-            }}
-          >
-            Thêm vào giỏ hàng
-          </Button>
-        </Card.Body>
-      </Card>
+          <Card.Body>
+            <div onClick={handleShow}>
+              <OverlayTrigger
+                style={{ width: "320px !importan" }}
+                key={"top"}
+                placement={"top"}
+                overlay={
+                  <Tooltip id={`tooltip-top`}>
+                    <strong>{product.name} </strong>
+                    <br></br>
+                    {product.description + " Click để xem thông tin sản phẩm."}
+                  </Tooltip>
+                }
+              >
+                <div>
+                  <Card.Title>
+                    <h6
+                      style={{
+                        textAlign: "center",
+                      }}
+                    >
+                      {TruncateString(product.name, 29)}
+                    </h6>
+                  </Card.Title>
+                  <Card.Text>
+                    <h6
+                      style={{
+                        paddingLeft: "5px",
+                        color: "#258635",
+                        textAlign: "center",
+                      }}
+                    >
+                      {Changedot([product.price])}
+                      {product.comparative > product.price && (
+                        <>
+                          {" "}
+                          <strike
+                            style={{
+                              paddingLeft: "5px",
+                              color: "grey",
+                              fontWeight: "400",
+                            }}
+                          >
+                            {Changedot([product.comparative])}
+                          </strike>
+                          <span
+                            style={{
+                              paddingLeft: "5px",
+                              color: "#dc3545",
+                              fontWeight: "400",
+                            }}
+                          >
+                            {"(Giảm "}
+                            {(
+                              100 -
+                              (product.price / product.comparative) * 100
+                            ).toFixed(0)}
+                            {"%)"}
+                          </span>
+                        </>
+                      )}
+                    </h6>
+                  </Card.Text>
+                  {/* <Card.Text>{TruncateString(product.description, 50)}</Card.Text> */}
+                </div>
+              </OverlayTrigger>
+            </div>
+            <Button
+              variant="light"
+              onClick={handleAdd}
+              style={{
+                float: "right",
+              }}
+            >
+              Thêm vào giỏ hàng
+            </Button>
+          </Card.Body>
+        </Card>
+      )}
 
       {/* MODAL___________________________________ */}
       {/* MODAL___________________________________ */}

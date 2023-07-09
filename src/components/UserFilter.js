@@ -10,6 +10,8 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import { logoutUser } from "../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import InputGroup from "react-bootstrap/InputGroup";
@@ -65,15 +67,26 @@ function UserFilter() {
               className="d-flex position-relative"
               style={{ top: "8px" }}
             ></Nav>
-            <Navbar.Brand className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Tìm kiếm người dùng"
-                // className="me-2"
-                aria-label="Search"
-                onChange={handleGetInput}
-              />
-            </Navbar.Brand>
+            <OverlayTrigger
+              key={"left"}
+              placement={"left"}
+              overlay={
+                <Tooltip id={`tooltip-left`}>
+                  Tìm kiếm theo <strong>email, tên</strong> hoặc{" "}
+                  <strong>số điện thoại khách hàng</strong>
+                </Tooltip>
+              }
+            >
+              <Navbar.Brand className="d-flex">
+                <Form.Control
+                  type="search"
+                  placeholder="Tìm kiếm người dùng"
+                  // className="me-2"
+                  aria-label="Search"
+                  onChange={handleGetInput}
+                />
+              </Navbar.Brand>
+            </OverlayTrigger>
           </div>
         </Navbar.Collapse>
       </Container>

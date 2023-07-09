@@ -20,12 +20,15 @@ import {
   inputSearchBox,
 } from "../actions/productAction";
 import { FormLabel } from "react-bootstrap";
+import OverlayTrigger from "react-bootstrap/OverlayTrigger";
+import Tooltip from "react-bootstrap/Tooltip";
 
 function NavbarFilter() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   let productList = useSelector((state) => state.productReducer.products);
 
   const [sort, setSort] = useState(0); // Giá trị mặc định
+  const [show, setShow] = useState(false);
 
   let link = CheckLink();
 
@@ -152,15 +155,27 @@ function NavbarFilter() {
                 </DropdownButton>
               </InputGroup>
             </Nav>
-            <Navbar.Brand className="d-flex">
-              <Form.Control
-                type="search"
-                placeholder="Tìm kiếm sản phẩm"
-                // className="me-2"
-                aria-label="Search"
-                onChange={handleGetInput}
-              />
-            </Navbar.Brand>
+            <OverlayTrigger
+              key={"left"}
+              placement={"left"}
+              overlay={
+                <Tooltip id={`tooltip-left`}>
+                  Tìm kiếm theo <strong>tên sản phẩm, tag</strong> hoặc{" "}
+                  <strong>SKU</strong>
+                </Tooltip>
+              }
+            >
+              <Navbar.Brand className="d-flex">
+                <Form.Control
+                  type="search"
+                  placeholder="Tìm kiếm sản phẩm"
+                  // className="me-2"
+                  aria-label="Search"
+                  onChange={handleGetInput}
+                  onClick={() => setShow(!show)}
+                />
+              </Navbar.Brand>
+            </OverlayTrigger>
           </div>
         </Navbar.Collapse>
       </Container>

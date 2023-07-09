@@ -8,6 +8,8 @@ import ContactUs from "./pages/ContactUs";
 import PageNotFound from "./pages/PageNotFound";
 import Admin from "./pages/Admin/Admin";
 import AdminLogin from "./pages/Admin/AdminLogin";
+import AboutUsPage from "./pages/AboutUsPage";
+import QnAPage from "./pages/QnAPage";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import Profile from "./pages/Profile";
 import { Container } from "react-bootstrap";
@@ -15,6 +17,13 @@ import { Routes, Route } from "react-router-dom";
 import Register from "./pages/Register";
 import { useSelector } from "react-redux";
 import { useEffect } from "react";
+import {
+  TruncateString,
+  CheckLink,
+  useGetTagsProducts,
+  useGetProductsByTags,
+  Changedot,
+} from "../src/function/functionData";
 
 function App() {
   const state = useSelector((state) => state);
@@ -23,6 +32,14 @@ function App() {
   useEffect(() => {
     localStorage.setItem("reduxState", JSON.stringify(state));
   }, [state]);
+
+  let tagsProducts = useGetTagsProducts();
+
+  const catalogue = tagsProducts.map((tag) => {
+    console.log(tag);
+    let urlLink = "/" + tag.toLocaleLowerCase();
+    return <Route path={urlLink} element={<Home />} />;
+  });
 
   return (
     <Routes>
@@ -33,11 +50,14 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/order" element={<Order />} />
       <Route path="/contactUs" element={<ContactUs />} />
+      <Route path="/aboutUs" element={<AboutUsPage />} />
+      <Route path="/QnA" element={<QnAPage />} />
+
       <Route
         path="/admin"
         element={adminLogined == null ? <AdminLogin /> : <Admin />}
       />
-
+      {catalogue}
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

@@ -21,11 +21,11 @@ function FooterBot() {
             <nav>
               <ul>
                 <li>
-                  <a href="">Các câu hỏi thường gặp</a>
+                  <a href="/QnA">Các câu hỏi thường gặp</a>
                 </li>
 
                 <li>
-                  <a href="">Câu chuyện của chúng tôi</a>
+                  <a href="/aboutUs">Câu chuyện của chúng tôi</a>
                 </li>
                 {/* <li>
                   <a href="">Chính sách đổi trả</a>

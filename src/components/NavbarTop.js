@@ -7,17 +7,42 @@ import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
 import logo from "../imgs/Logo.png";
 import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { inputSearchBox } from "../actions/productAction";
-import { TruncateString, CheckLink } from "../function/functionData";
+import {
+  TruncateString,
+  CheckLink,
+  useGetTagsProducts,
+  useGetProductsByTags,
+} from "../function/functionData";
 import UserButton from "./UserButton";
 
 function NavbarTop() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  const navigate = useNavigate();
+
   let link = CheckLink();
   const dispatch = useDispatch();
 
+  // lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm
+  let tagsProducts = useGetTagsProducts();
+
+  const carouselItem = tagsProducts.map((tag) => {
+    let urlLink = "/" + tag;
+    return (
+      <NavDropdown.Item href={urlLink}>
+        {tag.toLocaleUpperCase()}{" "}
+      </NavDropdown.Item>
+    );
+  });
+
   return (
-    <Navbar expand="lg" className="bg-body-tertiary navbar-top">
+    <Navbar
+      expand="lg"
+      className="bg-body-tertiary navbar-top"
+      style={{ zIndex: "800" }}
+    >
       <Link to="/">
         <div className="logo-set-small">
           <img
@@ -30,7 +55,7 @@ function NavbarTop() {
       </Link>
 
       <Container fluid>
-        <Navbar.Brand href="#">Navbar scroll</Navbar.Brand>
+        {/* <Navbar.Brand href="#">Bộ sưu tập:</Navbar.Brand> */}
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -38,21 +63,15 @@ function NavbarTop() {
             style={{ maxHeight: "100px" }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Home</Nav.Link>
-            <Nav.Link href="#action2">Link</Nav.Link>
-            <NavDropdown title="Link" id="navbarScrollingDropdown">
-              <NavDropdown.Item href="#action3">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action4">
-                Another action
-              </NavDropdown.Item>
+            <Nav.Link href="/">Trang chủ</Nav.Link>
+            <Nav.Link href="/aboutUs">Về chúng tôi</Nav.Link>
+            <Nav.Link href="/contactUs">Sản phẩm</Nav.Link>
+            <Nav.Link href="/contactUs">Liên hệ</Nav.Link>
+
+            <NavDropdown title="Bộ sưu tập" id="navbarScrollingDropdown">
+              {carouselItem}
               <NavDropdown.Divider />
-              <NavDropdown.Item href="#action5">
-                Something else here
-              </NavDropdown.Item>
             </NavDropdown>
-            <Nav.Link href="#" disabled>
-              Link
-            </Nav.Link>
           </Nav>
           <Navbar.Brand className="d-flex">
             <UserButton link={link} />

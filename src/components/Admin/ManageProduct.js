@@ -24,7 +24,7 @@ export default function ManageProduct() {
     (state) => state.productReducer.products
   );
 
-  const productList = HandleFilter();
+  const productList = HandleFilter(productListStore);
 
   const [productDescription, setProductDescription] = useState("");
 

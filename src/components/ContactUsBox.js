@@ -39,8 +39,8 @@ function ContactUsBox() {
       return {
         id: uuidv4(),
         email: userLogined.email,
-        name: userLogined.name,
-        phone: userLogined.phone,
+        name: userLogined.name ?? "",
+        phone: userLogined.phone ?? "",
         date: getCurrentTimeString(),
         mess: "",
         status: false,
@@ -129,7 +129,7 @@ function ContactUsBox() {
             <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Tên</InputGroup.Text>
               <Form.Control
-                disabled={userLogined ? true : false}
+                disabled={userLogined && info.name !== "" ? true : false}
                 aria-label="name"
                 aria-describedby="basic-addon1"
                 type="text"
@@ -141,7 +141,7 @@ function ContactUsBox() {
             <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Số điện thoại</InputGroup.Text>
               <Form.Control
-                disabled={userLogined ? true : false}
+                disabled={userLogined && info.phone !== "" ? true : false}
                 aria-label="phone"
                 aria-describedby="basic-addon1"
                 type="number"

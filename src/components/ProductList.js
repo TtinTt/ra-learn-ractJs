@@ -10,17 +10,34 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Pagination from "react-bootstrap/Pagination";
 
-import { HandleFilter } from "../function/functionData";
+import {
+  HandleFilter,
+  useGetTagsProducts,
+  useGetProductsByTags,
+  CheckLink,
+} from "../function/functionData";
 
 export default function ProductList() {
+  // lấy ra các array là list product từ products trên store theo từng tag
+  let productsByTags = useGetProductsByTags();
+
   const productListStore = useSelector(
     (state) => state.productReducer.products
   );
 
+  let checkLink = CheckLink();
+  let productListDraft = [];
+  if (checkLink == "/") {
+    productListDraft = productListStore;
+  } else {
+    let link = checkLink.substring(1).replace(/\s/g, "").toLocaleLowerCase();
+    productListDraft = productsByTags[link.toString()];
+  }
+
   const [productDescription, setProductDescription] = useState("");
 
   // chạy HandleFilter
-  const productList = HandleFilter();
+  const productList = HandleFilter(productListDraft);
 
   const dispatch = useDispatch();
 
@@ -48,7 +65,7 @@ export default function ProductList() {
   const renderProducts = currentProducts.map((product, index) => {
     return (
       <Col>
-        <ProductCard key={index} product={product} />
+        <ProductCard key={index} screen={"cardProduct"} product={product} />
       </Col>
     );
   });

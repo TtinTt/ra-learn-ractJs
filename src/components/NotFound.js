@@ -17,7 +17,11 @@ import "../css/Cart.css";
 
 import { clearCart } from "../actions/userAction";
 function NotFound() {
-  return <h5 className="text-center msgCartTop">Trang không tồn tại.</h5>;
+  return (
+    <div className="imgPageTop">
+      <h1 className="text-center msgPageTop">Trang không tồn tại.</h1>
+    </div>
+  );
 }
 
 export default NotFound;

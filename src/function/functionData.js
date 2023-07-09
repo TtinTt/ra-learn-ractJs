@@ -165,15 +165,14 @@ const sortPriceFrom = (productList, priceMax) => {
   return sortedList;
 };
 
-export const HandleFilter = () => {
+export const HandleFilter = (productListInput) => {
   // lấy giá trị ô productListInput từ store
-  const productListInput = useSelector(
-    (state) => state.productReducer.products
-  );
+  // const productListInput = useSelector(
+  //   (state) => state.productReducer.products
+  // );
 
   // lấy option sort từ store
   const sortOption = useSelector((state) => state.productReducer.sort) ?? 0;
-
   // lấy max price sort từ store
   const priceFromValue =
     useSelector((state) => state.productReducer.priceFrom) ?? null;
@@ -307,4 +306,61 @@ export const HandleFilterMess = () => {
     ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
   );
   return listSorted;
+};
+
+// tự động lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm
+export const useGetTagsProducts = () => {
+  let products = useSelector((state) => state.productReducer.products);
+
+  // lấy tag đầu tiên của mỗi sản phẩm
+  const firstTags = products.map((product) =>
+    product.tag[0].toLocaleLowerCase()
+  );
+
+  // bỏ các tag trùng lặp
+  const listTag = firstTags.filter(
+    (tag, index) => firstTags.indexOf(tag) === index
+  );
+  console.log(listTag);
+  return listTag;
+};
+
+// lấy ra các list product từ products trên store theo tag
+export const useGetProductsByTags = () => {
+  const result = {};
+
+  let products = useSelector((state) => state.productReducer.products);
+  let listCatalogueByTag = useGetTagsProducts();
+
+  // listCatalogueByTag.forEach((tag) => {
+  //   // Lọc ra các sản phẩm có tag tương ứng
+  //   const filteredProducts = products.filter((product) => {
+  //     let tagDraft = product.tag.toString();
+
+  //     if (tagDraft.toLocaleLowerCase().includes(tag)) {
+  //       return true;
+  //     } else {
+  //       return false;
+  //     }
+  //   });
+
+  //   result[tag] = filteredProducts;
+  // });
+
+  listCatalogueByTag.forEach((tag) => {
+    // Lọc ra các sản phẩm có tag tương ứng
+    const filteredProducts = products.filter((product) => {
+      // Kiểm tra xem tag có tồn tại trong mảng tag của sản phẩm không
+      let tagExists = product.tag.some(
+        (productTag) =>
+          productTag.toLocaleLowerCase() === tag.toLocaleLowerCase()
+      );
+
+      return tagExists;
+    });
+
+    result[tag] = filteredProducts;
+  });
+
+  return result;
 };
