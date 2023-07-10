@@ -333,17 +333,33 @@ function ProductCardAdmin({ render, i, product }) {
                         onChange={handleChangeProduct}
                       />
                     </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">Tag</InputGroup.Text>
-                      <Form.Control
-                        // placeholder="Tên của bạn"
-                        aria-label="tag"
-                        aria-describedby="basic-addon1"
-                        type="text"
-                        value={addSpace(newProduct.tag)}
-                        onChange={handleChangeProduct}
-                      />
-                    </InputGroup>
+                    <OverlayTrigger
+                      style={{ width: "320px !importan" }}
+                      key={"left"}
+                      placement={"left"}
+                      overlay={
+                        <Tooltip id={`tooltip-left`}>
+                          <p>
+                            Lưu ý: tag đầu tiên của mỗi sản phẩm sẽ được sử dụng
+                            để sắp xếp theo Catalogue. Nếu tag chưa từng tồn tại
+                            trước đây, một Catalogue mới sẽ được tạo
+                          </p>
+                        </Tooltip>
+                      }
+                    >
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">Tag</InputGroup.Text>
+                        <Form.Control
+                          // placeholder="Tên của bạn"
+                          aria-label="tag"
+                          aria-describedby="basic-addon1"
+                          type="text"
+                          value={addSpace(newProduct.tag)}
+                          onChange={handleChangeProduct}
+                        />
+                      </InputGroup>
+                    </OverlayTrigger>
+
                     <InputGroup className="mb-3">
                       <InputGroup.Text id="basic-addon1">Giá</InputGroup.Text>
                       <Form.Control

@@ -5,6 +5,14 @@ import adminReducer from "../reducers/adminReducer";
 import messReducer from "../reducers/messReducer";
 import { configureStore, combineReducers } from "@reduxjs/toolkit";
 
+const rootReducer = combineReducers({
+  productReducer,
+  userReducer,
+  orderReducer,
+  adminReducer,
+  messReducer,
+});
+
 const loadFromLocalStorage = () => {
   try {
     const serializedState = localStorage.getItem("reduxState");
@@ -15,14 +23,6 @@ const loadFromLocalStorage = () => {
     return undefined;
   }
 };
-
-const rootReducer = combineReducers({
-  productReducer,
-  userReducer,
-  orderReducer,
-  adminReducer,
-  messReducer,
-});
 
 const preloadedState = loadFromLocalStorage();
 

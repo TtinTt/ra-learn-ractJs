@@ -6,8 +6,8 @@ import Stack from "react-bootstrap/Stack";
 import { useEffect, useMemo, useState } from "react";
 import { addToCart } from "../actions/cartAction";
 import "../css/ProductCard.css";
-import { TruncateString, Changedot } from "../function/functionData";
-import { useNavigate } from "react-router-dom";
+import { TruncateString, Changedot, CheckLink } from "../function/functionData";
+import { Link, useNavigate } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
 import Modal from "react-bootstrap/Modal";
@@ -18,6 +18,7 @@ import "./../css/CarouselProduct.css";
 function ProductCard({ screen, product }) {
   const [currentImg, setCurrentImg] = useState(product.img[0]);
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  let link = CheckLink();
 
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
@@ -165,15 +166,48 @@ function ProductCard({ screen, product }) {
                 </div>
               </OverlayTrigger>
             </div>
-            <Button
-              variant="light"
-              onClick={handleAdd}
+            <div
+              className="noWrap"
               style={{
-                float: "right",
+                justifyContent: "center",
+                gap: "3px",
+                alignItems: "center",
               }}
             >
-              Thêm vào giỏ hàng
-            </Button>
+              {link == "/" && (
+                <OverlayTrigger
+                  style={{ width: "320px !importan" }}
+                  key={"right"}
+                  placement={"right"}
+                  overlay={
+                    <Tooltip id={`tooltip-right`}>
+                      Xem các sản phẩm tương tự trong bộ sưu tập{" "}
+                      <strong> {product.tag[0].toUpperCase()}</strong>{" "}
+                    </Tooltip>
+                  }
+                >
+                  <Link to={"/" + product.tag[0].toLowerCase()}>
+                    <p
+                      style={{
+                        paddingTop: "5px",
+                      }}
+                    >
+                      Tương tự...
+                    </p>
+                  </Link>
+                </OverlayTrigger>
+              )}
+
+              <Button
+                variant="light"
+                onClick={handleAdd}
+                style={{
+                  float: "right",
+                }}
+              >
+                Thêm vào giỏ hàng
+              </Button>
+            </div>
           </Card.Body>
         </Card>
       )}
