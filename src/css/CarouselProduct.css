@@ -21,8 +21,12 @@
 }
 
 .CarouselProductText {
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.414), 0 0 1em rgba(0, 0, 0, 0.514),
-    0 0 0.2em rgba(0, 0, 0, 0.461);
+  /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.414), 0 0 1em rgba(0, 0, 0, 0.514),
+    0 0 0.2em rgba(0, 0, 0, 0.461); */
+
+  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
+    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.738),
+    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
 
 #bundleCarouselAndCatalouge {
@@ -69,10 +73,9 @@
   padding: 0 5px;
   text-align: center;
   margin: 0;
-  text-shadow: -1px 0px 7px rgba(84, 84, 84, 0.466),
-    0px -13px 13px rgba(131, 131, 131, 0.476),
-    0px 10px 15px rgba(139, 139, 139, 0.738),
-    0px 0px 4px rgba(91, 91, 91, 0.463);
+  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
+    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.738),
+    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
 
 .imgCatalogue p {

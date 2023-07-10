@@ -588,7 +588,7 @@ function ProductCardAdmin({ render, i, product }) {
       <>
         {" "}
         <Button
-          variant="light"
+          variant="secondary"
           onClick={handleShow}
           style={{ marginRight: "5px" }}
         >

@@ -77,7 +77,7 @@ function CarouselProduct() {
                 <span
                   style={{
                     paddingLeft: "5px",
-                    color: "#FF9CB3",
+                    color: "#FFA500",
                     fontWeight: "400",
                   }}
                 >
@@ -123,9 +123,15 @@ function CarouselProduct() {
 
   return (
     <div id="bundleCarouselAndCatalouge">
-      <Carousel id="carouselScreen" activeIndex={index} onSelect={handleSelect}>
+      <Carousel
+        fade
+        id="carouselScreen"
+        activeIndex={index}
+        onSelect={handleSelect}
+      >
         {carouselItem}
       </Carousel>
+
       <div id="catalogueScreen"> {cataloguelItem}</div>
     </div>
   );

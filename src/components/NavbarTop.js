@@ -65,7 +65,7 @@ function NavbarTop() {
           >
             <Nav.Link href="/">Trang chủ</Nav.Link>
             <Nav.Link href="/aboutUs">Về chúng tôi</Nav.Link>
-            <Nav.Link href="/contactUs">Sản phẩm</Nav.Link>
+            <Nav.Link href="/aboutProduct">Sản phẩm</Nav.Link>
             <Nav.Link href="/contactUs">Liên hệ</Nav.Link>
 
             <NavDropdown title="Bộ sưu tập" id="navbarScrollingDropdown">

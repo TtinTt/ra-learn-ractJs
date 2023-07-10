@@ -14,6 +14,11 @@ import { loginUser } from "../actions/userAction";
 
 export default function BoxLogin() {
   let usersDB = useSelector((state) => state.userReducer.users);
+  let userLogined = useSelector((state) => state.userReducer.userLogined);
+
+  useEffect(() => {
+    userLogined !== null && navigate("/");
+  }, [usersDB]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -54,7 +59,7 @@ export default function BoxLogin() {
     let userLogin = { ...user };
     usersDB.forEach(async (item) => {
       if (item.email === user.email && item.password === user.password) {
-        isDulicate = true;
+        item.status == true ? (isDulicate = true) : (isDulicate = null);
         userLogin = item;
       }
     });
@@ -65,12 +70,20 @@ export default function BoxLogin() {
       //   Chuyển sang login
 
       navigate("/");
-    } else {
+    } else if (isDulicate === false) {
       await setError({
         ...error,
         isShowStatus: true,
         status: true,
         errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
+      });
+    } else if (isDulicate === null) {
+      await setError({
+        ...error,
+        isShowStatus: true,
+        status: true,
+        errorMsg:
+          "Tài khoản của bạn đã bị đình chỉ, vui lòng liên hệ với chúng tôi để biết thông tin chi tiết",
       });
     }
   };

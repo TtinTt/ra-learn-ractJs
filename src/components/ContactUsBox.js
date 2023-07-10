@@ -173,20 +173,20 @@ function ContactUsBox() {
       </div>
 
       <Modal
+        className="modalCenter"
         show={show}
         onHide={handleClose}
         backdrop="static"
         keyboard={false}
-        style={{ alignItems: "center" }}
       >
-        <Modal.Header>
+        <Modal.Header className="modalCenter">
           <h5>Lời nhắn đã được gửi đi</h5>
         </Modal.Header>
         <Modal.Body style={{ margin: "10px", textAlign: "center" }}>
           Cảm ơn bạn đã để lại lời nhắn! Chúng tôi sẽ phản hồi trong thời gian
           sớm nhất qua thông tin liên hệ mà bạn đã cung cấp.
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer className="modalCenter">
           <Button variant="secondary" onClick={handleClose}>
             Quay về trang chủ
           </Button>

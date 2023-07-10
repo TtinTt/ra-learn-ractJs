@@ -12,6 +12,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { inputSearchBox } from "../actions/productAction";
 import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
+import { useNavigate } from "react-router-dom";
+
 import Image from "react-bootstrap/Image";
 import "../css/Profile.css";
 import Modal from "react-bootstrap/Modal";
@@ -19,6 +21,7 @@ import { updateInfoUser } from "../actions/userAction";
 
 function BuyerInfo() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+
   const [isCanEdit, setIsCanEdit] = useState(true);
   const [info, setInfo] = useState({
     email: userLogined.email,
@@ -33,6 +36,7 @@ function BuyerInfo() {
   // modal
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
+  const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -58,7 +62,7 @@ function BuyerInfo() {
   };
 
   const handleSaveInfo = () => {
-    console.log(info);
+    // console.log(info);
     dispatch(updateInfoUser(info)); // Gửi đơn hàng tới store
     handleClose();
   };
@@ -152,6 +156,7 @@ function BuyerInfo() {
                 style={{ display: "inline-block", marginRight: "10px" }}
                 type="submit"
                 className="btn btn-light"
+                onClick={() => navigate("/changePass")}
               >
                 Đổi mật khẩu
               </Button>

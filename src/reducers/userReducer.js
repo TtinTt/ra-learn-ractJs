@@ -217,6 +217,24 @@ const userReducer = createReducer(
         searchFilter: action.payload,
       };
     },
+    CHANGE_PASSWORD_USER: (state, action) => {
+      let updatedPassUsers = state.users.map((user) => {
+        if (user.email === action.payload.email) {
+          console.log({ ...user, password: action.payload.password });
+
+          return { ...user, password: action.payload.password };
+        } else {
+          return user;
+        }
+      });
+
+      console.log("đây", updatedPassUsers);
+
+      return {
+        ...state,
+        users: updatedPassUsers,
+      };
+    },
   }
 );
 

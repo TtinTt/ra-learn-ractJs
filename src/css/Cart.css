@@ -26,3 +26,13 @@ td {
   background-size: cover;
   background-position: center;
 }
+
+#multiSetStatus {
+  width: 5px !important;
+  display: inline-block;
+  float: left;
+  height: 23px;
+}
+.headTable-Set {
+  vertical-align: middle;
+}

@@ -28,6 +28,7 @@ function ManageUser() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userDescription, setUserDescription] = useState("");
+  const [listCheck, setListCheck] = useState([]);
 
   let usersStore = useSelector((state) => state.userReducer.users);
 
@@ -35,12 +36,24 @@ function ManageUser() {
 
   let users = HandleFilterUser();
 
-  const checkTotal = (cart) => {
-    let total = 0;
-    cart.forEach((user) => {
-      total = total + user.price * user.quantity;
-    });
-    return total;
+  // kiểm tra xem object có trong array không
+  const checkIsChecked = (array, searchObject) => {
+    return array.some(
+      (element) => JSON.stringify(element) === JSON.stringify(searchObject)
+    );
+  };
+
+  const handleGetChecked = (isChecked, user) => {
+    console.log(isChecked);
+    if (isChecked) {
+      // isChecked true, thêm user vào listCheck
+      setListCheck((listCheck) => [...listCheck, user]);
+    } else {
+      // isChecked false, xóa user khỏi listCheck
+      setListCheck((listCheck) =>
+        listCheck.filter((item) => item.email !== user.email)
+      );
+    }
   };
 
   const checkQuantity = (cart) => {
@@ -59,13 +72,17 @@ function ManageUser() {
     await setUserShowing({ ...user, status: value });
     await dispatch(updateStatusUser({ ...user, status: value }));
   };
-  // const draftUser = () => {
-  //   if (users.length == 0) {
-  //     return null;
-  //   } else {
-  //     return users[0];
-  //   }
-  // };
+
+  const handleUpdateStatusMultiUser = async (event, listUser) => {
+    console.log(event);
+    let value = event.target.value === "true" ? true : false;
+    console.log(listUser);
+    listUser.forEach((user) => {
+      dispatch(updateStatusUser({ ...user, status: value }));
+    });
+
+    setListCheck([]);
+  };
 
   const [userShowing, setUserShowing] = useState(null);
 
@@ -97,16 +114,20 @@ function ManageUser() {
       <>
         <tr>
           <td
-            onClick={() => {
-              handleShow(user);
-            }}
-            style={{
-              textAlign: "center",
-            }}
+
+          // style={{
+          //   textAlign: "center",
+          //   width: "70px",
+          // }}
           >
-            {index + 1}
+            <input
+              type="checkbox"
+              checked={checkIsChecked(listCheck, user)}
+              onClick={(e) => handleGetChecked(e.target.checked, user)}
+            />
           </td>
           <td
+            colSpan={2}
             onClick={() => {
               handleShow(user);
             }}
@@ -349,10 +370,43 @@ function ManageUser() {
               <Table striped busered hover variant="light">
                 <thead>
                   <tr>
-                    <th className="text-center">#</th>
+                    <th>
+                      <input
+                        type="checkbox"
+                        checked={listCheck.length == currentUsers.length}
+                        onClick={(e) =>
+                          e.target.checked
+                            ? setListCheck(currentUsers)
+                            : setListCheck([])
+                        }
+                      />
+                    </th>
                     <th
-                      className="text-left position-relative"
-                      style={{ padding: "auto" }}
+                      style={{
+                        textAlign: "center",
+                        width: "70px",
+                      }}
+                    >
+                      {" "}
+                      {listCheck.length > 0 && (
+                        <span>
+                          <Form.Select
+                            id="multiSetStatus"
+                            aria-label="Default select example"
+                            onChange={(event) => {
+                              handleUpdateStatusMultiUser(event, listCheck);
+                            }}
+                          >
+                            <option>Huỷ</option>
+                            <option value="true">Đang hoạt động</option>
+                            <option value="false">Đình chỉ</option>
+                          </Form.Select>
+                        </span>
+                      )}
+                    </th>
+                    <th
+                      className="text-left position-relative headTable-Set"
+                      style={{ padding: "auto", textAlign: "left" }}
                     >
                       Email
                     </th>

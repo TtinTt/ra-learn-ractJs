@@ -321,7 +321,7 @@ export const useGetTagsProducts = () => {
   const listTag = firstTags.filter(
     (tag, index) => firstTags.indexOf(tag) === index
   );
-  console.log(listTag);
+  // console.log(listTag);
   return listTag;
 };
 

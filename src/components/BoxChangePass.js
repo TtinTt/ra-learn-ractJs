@@ -10,7 +10,8 @@ import Col from "react-bootstrap/Col";
 import Pagination from "react-bootstrap/Pagination";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { registerUser } from "../actions/userAction";
+import { changePassUser } from "../actions/userAction";
+import Modal from "react-bootstrap/Modal";
 
 import {
   removeAccentsUpperCase,
@@ -18,21 +19,23 @@ import {
   getCurrentTimeString,
 } from "../function/functionData";
 
-export default function BoxRegister() {
-  let userLogined = useSelector((state) => state.userReducer.userLogined);
-
+export default function BoxChangePass() {
   let usersDB = useSelector((state) => state.userReducer.users);
-  // JSON.parse(localStorage.getItem("users")) == null &&
-  //   localStorage.setItem("users", JSON.stringify(usersDB));
-  useEffect(() => {
-    userLogined !== null && navigate("/");
-  }, [usersDB]);
+  let userLogined = useSelector((state) => state.userReducer.userLogined);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => {
+    setShow(false);
+    navigate("/profile");
+  };
+  const handleShow = () => setShow(true);
 
   const [user, setUser] = useState({
-    email: "",
+    email: userLogined.email,
+    oldpassword: "",
     password: "",
     confirmPassword: "",
   });
@@ -49,7 +52,7 @@ export default function BoxRegister() {
   const handleGetInput = async (event) => {
     user[event.target.id] = event.target.value;
     setUser({ ...user });
-
+    // cần xem lại set user có hợp lý không khi email đang khoá
     await validate(user);
   };
 
@@ -64,44 +67,11 @@ export default function BoxRegister() {
       return;
     } else {
       // render không lỗi
-    }
-
-    //  Kiểm tra email đã đăng ký chưa
-    let isDulicate = false;
-    usersDB.forEach((item) => {
-      if (item.email === user.email) {
-        isDulicate = true;
-      }
-    });
-
-    if (isDulicate === false) {
       delete user.confirmPassword;
-
-      user.name = "";
-      user.cart = [];
-      user.bday = "";
-      user.status = true;
-      user.date = getCurrentTimeString();
-      user.add = "";
-      user.phone = "";
-      user.img =
-        "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif";
-
-      //   B6: Đẩy dữ liệu lên store
-
-      dispatch(registerUser(user));
-
-      //   Chuyển sang login
-
-      navigate("/login");
-    } else {
-      await setError({
-        ...error,
-        isShowStatus: true,
-        status: true,
-        errorMsg:
-          "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
-      });
+      delete user.oldpassword;
+      console.log("ok");
+      dispatch(changePassUser(user));
+      setShow(true);
     }
   };
 
@@ -109,9 +79,19 @@ export default function BoxRegister() {
   const validate = async (data) => {
     let newError = { ...error }; // Tạo một bản sao của error hiện tại
 
-    if (data.email == "" || data.password == "" || data.confirmPassword == "") {
+    if (
+      data.oldpassword == "" ||
+      data.password == "" ||
+      data.confirmPassword == ""
+    ) {
       newError.status = true;
       newError.errorMsg = "Các thông tin không được để trống";
+    } else if (data.oldpassword !== userLogined.password) {
+      newError.status = true;
+      newError.errorMsg = "Mật khẩu cũ không chính xác";
+    } else if (data.oldpassword == data.password) {
+      newError.status = true;
+      newError.errorMsg = "Mật khẩu mới không được trùng với mật khẩu cũ";
     } else if (data.password !== data.confirmPassword) {
       newError.status = true;
       newError.errorMsg = "Mật khẩu nhập lại không chính xác";
@@ -145,19 +125,33 @@ export default function BoxRegister() {
         </nav>
       </ul>
       <form onSubmit={handleSubmit}>
-        <h3 style={{ textAlign: "center", padding: "20px" }}>ĐĂNG KÝ</h3>
+        <h3 style={{ textAlign: "center", padding: "20px" }}>ĐỔI MẬT KHẨU</h3>
         <div className="mb-3">
           <label for="email" className="form-label">
             Email
           </label>
           <input
+            disabled
             type="email"
             className="form-control"
             id="email"
-            onChange={(event) => handleGetInput(event)}
+            value={userLogined.email}
             aria-describedby="emailHelp"
           />
         </div>
+
+        <div className="mb-3">
+          <label for="password" className="form-label">
+            Mật khẩu cũ
+          </label>
+          <input
+            type="password"
+            className="form-control"
+            onChange={(event) => handleGetInput(event)}
+            id="oldpassword"
+          />
+        </div>
+
         <div className="mb-3">
           <label for="password" className="form-label">
             Mật khẩu
@@ -181,12 +175,12 @@ export default function BoxRegister() {
           />
         </div>
         <h6 style={{ color: "Grey", textAlign: "center" }}>
-          Nếu bạn đã có tài khoản, vui lòng
-          <Link to="/login">
+          Nếu bạn cần hỗ trợ, vui lòng
+          <Link to="/contactUs">
             <span
               style={{ color: "Black", paddingLeft: "5px", cursor: "pointer" }}
             >
-              đăng nhập
+              liên hệ với chúng tôi
             </span>
           </Link>
         </h6>
@@ -209,6 +203,27 @@ export default function BoxRegister() {
           </button>
         </div>
       </form>
+
+      <Modal
+        show={show}
+        onHide={handleClose}
+        backdrop="static"
+        keyboard={false}
+        style={{ alignItems: "center" }}
+        className="modalCenter"
+      >
+        <Modal.Header className="modalCenter">
+          <h5>Mật khẩu đã được đổi thành công</h5>
+        </Modal.Header>
+        <Modal.Body style={{ margin: "10px", textAlign: "center" }}>
+          Chúng tôi cập nhật mật khẩu mới cho bạn.
+        </Modal.Body>
+        <Modal.Footer className="modalCenter">
+          <Button variant="secondary" onClick={handleClose}>
+            Quay lại trang thông tin người dùng
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
