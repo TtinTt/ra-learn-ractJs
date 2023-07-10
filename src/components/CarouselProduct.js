@@ -91,9 +91,9 @@ function CarouselProduct() {
               </>
             )}
           </h4>
-          <p className="CarouselProductText">
+          {/* <p className="CarouselProductText">
             {TruncateString(productShow.description, 100)}
-          </p>
+          </p> */}
         </Carousel.Caption>
       </Carousel.Item>
     );

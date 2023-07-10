@@ -19,9 +19,17 @@ function Home() {
         {checkLink == "/" ? (
           <CarouselProduct />
         ) : (
-          <h1 id="catalogueTitle">
-            {checkLink.substring(1).replace(/\s/g, "").toLocaleUpperCase()}
-          </h1>
+          <div id="catalogueTitle">
+            <h1>
+              {" "}
+              <span
+                style={{ letterSpacing: "3px", margin: "0", fontSize: "30px" }}
+              >
+                Bộ sưu tập{" "}
+              </span>
+              {checkLink.substring(1).replace(/\s/g, "").toLocaleUpperCase()}
+            </h1>
+          </div>
         )}
       </div>
       <div className="groupShowProducts">

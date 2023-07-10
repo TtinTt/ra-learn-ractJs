@@ -339,10 +339,14 @@ function ProductCardAdmin({ render, i, product }) {
                       placement={"left"}
                       overlay={
                         <Tooltip id={`tooltip-left`}>
+                          <p></p>
                           <p>
-                            Lưu ý: tag đầu tiên của mỗi sản phẩm sẽ được sử dụng
-                            để sắp xếp theo Catalogue. Nếu tag chưa từng tồn tại
-                            trước đây, một Catalogue mới sẽ được tạo
+                            Tag đầu tiên của mỗi sản phẩm sẽ được sử dụng để sắp
+                            xếp theo Catalogue.
+                          </p>
+                          <p>
+                            Nếu tag chưa từng tồn tại trước đây, một Catalogue
+                            mới sẽ được tạo
                           </p>
                         </Tooltip>
                       }

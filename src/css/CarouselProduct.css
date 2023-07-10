@@ -23,12 +23,11 @@
 .CarouselProductText {
   /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.414), 0 0 1em rgba(0, 0, 0, 0.514),
     0 0 0.2em rgba(0, 0, 0, 0.461); */
-
-  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
-    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.738),
-    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
-
+.CarouselProductText:hover {
+  /* text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.414), 0 0 1em rgba(0, 0, 0, 0.514),
+    0 0 0.2em rgba(0, 0, 0, 0.461); */
+}
 #bundleCarouselAndCatalouge {
   gap: 3px;
 
@@ -40,6 +39,14 @@
   width: 65%;
   display: flex;
   flex-wrap: nowrap;
+  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
+    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.338),
+    0px 0px 4px rgba(0, 0, 0, 0.463);
+}
+#carouselScreen:hover {
+  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.766),
+    0px -13px 13px rgba(0, 0, 0, 0.376), 0px 10px 15px rgba(0, 0, 0, 0.738),
+    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
 #catalogueScreen {
   gap: 3px;
@@ -58,12 +65,18 @@
   justify-content: center;
   align-content: center;
   color: rgb(255, 255, 255);
+  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
+    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.738),
+    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
 .imgCatalogue:hover {
   background-image: none !important;
   background-color: rgb(249, 213, 192);
   color: rgb(0, 0, 0) !important;
   letter-spacing: 0px !important;
+  text-shadow: -1px 0px 7px rgba(255, 0, 0, 0.411),
+    0px -13px 13px rgba(255, 0, 0, 0.12), 0px 10px 15px rgba(255, 0, 0, 0.12),
+    0px 0px 4px rgba(255, 0, 0, 0.12) !important;
 }
 
 .imgCatalogue h4,
@@ -73,9 +86,6 @@
   padding: 0 5px;
   text-align: center;
   margin: 0;
-  text-shadow: -1px 0px 7px rgba(0, 0, 0, 0.466),
-    0px -13px 13px rgba(0, 0, 0, 0.476), 0px 10px 15px rgba(0, 0, 0, 0.738),
-    0px 0px 4px rgba(0, 0, 0, 0.463);
 }
 
 .imgCatalogue p {
