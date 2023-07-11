@@ -34,7 +34,7 @@ function NavbarFilter() {
 
   useEffect(() => {
     dispatch(inputSearchBox(""));
-  }, []);
+  }, [link]);
 
   const dispatch = useDispatch();
 

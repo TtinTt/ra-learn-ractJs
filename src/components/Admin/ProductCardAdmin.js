@@ -169,7 +169,36 @@ function ProductCardAdmin({ render, i, product }) {
           </Carousel>
 
           <Card.Body>
-            <div>
+            <div
+              className="noWrap"
+              style={{
+                justifyContent: "space-between",
+                gap: "15px",
+                // alignItems: "center",
+              }}
+            >
+              <OverlayTrigger
+                key={"right"}
+                placement={"right"}
+                overlay={
+                  <Tooltip id={`tooltip-right`}>
+                    Xem các sản phẩm tương tự trong bộ sưu tập{" "}
+                    <strong>...</strong>{" "}
+                  </Tooltip>
+                }
+              >
+                <p
+                  className="noWrap"
+                  style={{
+                    paddingTop: "15px",
+                    color: "grey",
+                    width: "420px !importan",
+                  }}
+                  onClick={handleClose}
+                >
+                  Tương tự...
+                </p>
+              </OverlayTrigger>
               <Card.Text>
                 <h5
                   style={{
@@ -230,12 +259,7 @@ function ProductCardAdmin({ render, i, product }) {
           </Card.Body>
           <br></br>
           <Card.Text>
-            <p>
-              {" "}
-              {product.description == ""
-                ? "Mô tả thông tin sản phẩm"
-                : product.description}
-            </p>
+            <p className="text-center">{product.description}</p>
           </Card.Text>
         </div>
         <p className="subPreview">(Xem trước sản phẩm)</p>
@@ -348,6 +372,10 @@ function ProductCardAdmin({ render, i, product }) {
                             Nếu tag chưa từng tồn tại trước đây, một Catalogue
                             mới sẽ được tạo
                           </p>
+                          <p>
+                            Các tag viết lần lượt ngăn cách bởi dấu phẩy, không
+                            giới hạn số lượng.
+                          </p>
                         </Tooltip>
                       }
                     >
@@ -365,7 +393,9 @@ function ProductCardAdmin({ render, i, product }) {
                     </OverlayTrigger>
 
                     <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">Giá</InputGroup.Text>
+                      <InputGroup.Text id="basic-addon1">
+                        Giá bán
+                      </InputGroup.Text>
                       <Form.Control
                         // placeholder="Tên của bạn"
                         aria-label="price"
@@ -377,21 +407,38 @@ function ProductCardAdmin({ render, i, product }) {
                         onChange={handleChangeProduct}
                       />
                     </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">
-                        Giá so sánh
-                      </InputGroup.Text>
-                      <Form.Control
-                        // placeholder="Tên của bạn"
-                        aria-label="comparative"
-                        aria-describedby="basic-addon1"
-                        type="text"
-                        value={Changedot(newProduct.comparative)
-                          .toString()
-                          .replace(/đ/g, "")}
-                        onChange={handleChangeProduct}
-                      />
-                    </InputGroup>
+
+                    <OverlayTrigger
+                      style={{ width: "320px !importan" }}
+                      key={"left"}
+                      placement={"left"}
+                      overlay={
+                        <Tooltip id={`tooltip-left`}>
+                          <p></p>
+                          <p>
+                            Giá so sánh cần lớn hơn Giá bán và tỉ lệ giảm giá
+                            được tự động tính khi so sánh với Giá bán.
+                          </p>
+                        </Tooltip>
+                      }
+                    >
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Giá so sánh
+                        </InputGroup.Text>
+                        <Form.Control
+                          // placeholder="Tên của bạn"
+                          aria-label="comparative"
+                          aria-describedby="basic-addon1"
+                          type="text"
+                          value={Changedot(newProduct.comparative)
+                            .toString()
+                            .replace(/đ/g, "")}
+                          onChange={handleChangeProduct}
+                        />
+                      </InputGroup>
+                    </OverlayTrigger>
+
                     <InputGroup className="mb-3">
                       <InputGroup.Text id="basic-addon1">Mô tả</InputGroup.Text>
                       <Form.Control
@@ -404,20 +451,36 @@ function ProductCardAdmin({ render, i, product }) {
                         onChange={handleChangeProduct}
                       />
                     </InputGroup>
-                    <InputGroup className="mb-3">
-                      <InputGroup.Text id="basic-addon1">
-                        Hình ảnh
-                      </InputGroup.Text>
-                      <Form.Control
-                        as="textarea"
-                        // placeholder="Tên của bạn"
-                        aria-label="img"
-                        aria-describedby="basic-addon1"
-                        type="text"
-                        value={addSpace(newProduct.img)}
-                        onChange={handleChangeProduct}
-                      />
-                    </InputGroup>
+
+                    <OverlayTrigger
+                      style={{ width: "320px !importan" }}
+                      key={"left"}
+                      placement={"left"}
+                      overlay={
+                        <Tooltip id={`tooltip-left`}>
+                          <p></p>
+                          <p>
+                            Các link ảnh viết lần lượt ngăn cách bởi dấu phẩy,
+                            không giới hạn số lượng.
+                          </p>
+                        </Tooltip>
+                      }
+                    >
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Hình ảnh
+                        </InputGroup.Text>
+                        <Form.Control
+                          as="textarea"
+                          // placeholder="Tên của bạn"
+                          aria-label="img"
+                          aria-describedby="basic-addon1"
+                          type="text"
+                          value={addSpace(newProduct.img)}
+                          onChange={handleChangeProduct}
+                        />
+                      </InputGroup>
+                    </OverlayTrigger>
                   </InputGroup>
                 </Card.Text>
                 <Modal.Footer>

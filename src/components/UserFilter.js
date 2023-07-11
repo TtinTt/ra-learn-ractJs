@@ -72,8 +72,9 @@ function UserFilter() {
               placement={"left"}
               overlay={
                 <Tooltip id={`tooltip-left`}>
-                  Tìm kiếm theo <strong>email, tên</strong> hoặc{" "}
-                  <strong>số điện thoại khách hàng</strong>
+                  Tìm kiếm theo{" "}
+                  <strong>email, tên, số điện thoại khách hàng</strong> hoặc{" "}
+                  <strong>trạng thái tài khoản</strong>
                 </Tooltip>
               }
             >

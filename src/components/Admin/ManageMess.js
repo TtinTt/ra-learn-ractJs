@@ -112,7 +112,7 @@ function ManageMess() {
               handleShow(mess);
             }}
             style={{
-              textAlign: "left",
+              textAlign: "center",
             }}
           >
             {mess.date}
@@ -122,7 +122,7 @@ function ManageMess() {
               handleShow(mess);
             }}
             style={{
-              textAlign: "right",
+              textAlign: "left",
             }}
           >
             {mess.email}
@@ -142,7 +142,7 @@ function ManageMess() {
               handleShow(mess);
             }}
             style={{
-              textAlign: "left",
+              textAlign: "center",
             }}
           >
             {mess.phone}

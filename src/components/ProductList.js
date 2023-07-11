@@ -34,6 +34,10 @@ export default function ProductList() {
     productListDraft = productsByTags[link.toString()];
   }
 
+  if (productListDraft.length == 0) {
+    window.location.reload();
+  }
+
   const [productDescription, setProductDescription] = useState("");
 
   // chạy HandleFilter

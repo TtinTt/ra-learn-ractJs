@@ -82,7 +82,7 @@ function ProductCard({ screen, product }) {
           {/* <> {console.log(screen)}</> */}
         </div>
       ) : (
-        <Card style={{ width: "310px" }}>
+        <Card style={{ width: "310px" }} className="ProductCardThumb">
           <div>
             <Card.Img
               onClick={handleShow}
@@ -170,7 +170,7 @@ function ProductCard({ screen, product }) {
               className="noWrap"
               style={{
                 justifyContent: "center",
-                gap: "3px",
+                gap: "15px",
                 alignItems: "center",
               }}
             >
@@ -188,8 +188,10 @@ function ProductCard({ screen, product }) {
                 >
                   <Link to={"/" + product.tag[0].toLowerCase()}>
                     <p
+                      onClick={handleClose}
                       style={{
-                        paddingTop: "5px",
+                        paddingTop: "15px",
+                        color: "grey",
                       }}
                     >
                       Tương tự...
@@ -220,6 +222,7 @@ function ProductCard({ screen, product }) {
         show={show}
         onHide={handleClose}
         centered
+        // size="lg"
       >
         <Modal.Body closeButton>
           <Button
@@ -249,7 +252,42 @@ function ProductCard({ screen, product }) {
               {renderCarousel}
             </Carousel>
             <Card.Body>
-              <div>
+              <div
+                className="noWrap"
+                style={{
+                  justifyContent: "space-between",
+                  gap: "15px",
+                  // alignItems: "center",
+                }}
+              >
+                {link == "/" ? (
+                  <OverlayTrigger
+                    key={"right"}
+                    placement={"right"}
+                    overlay={
+                      <Tooltip id={`tooltip-right`}>
+                        Xem các sản phẩm tương tự trong bộ sưu tập{" "}
+                        <strong> {product.tag[0].toUpperCase()}</strong>{" "}
+                      </Tooltip>
+                    }
+                  >
+                    <Link to={"/" + product.tag[0].toLowerCase()}>
+                      <p
+                        className="noWrap"
+                        style={{
+                          paddingTop: "15px",
+                          color: "grey",
+                          width: "420px !importan",
+                        }}
+                        onClick={handleClose}
+                      >
+                        Tương tự...
+                      </p>
+                    </Link>
+                  </OverlayTrigger>
+                ) : (
+                  <div></div>
+                )}
                 <Card.Text>
                   <h5
                     style={{
@@ -289,7 +327,15 @@ function ProductCard({ screen, product }) {
                   </h5>
                 </Card.Text>
               </div>
-              <div id="modalFotter">
+              <div
+                id="modalFotter"
+                className="noWrap"
+                style={{
+                  justifyContent: "center",
+                  gap: "15px",
+                  alignItems: "center",
+                }}
+              >
                 <Form.Control
                   type="number"
                   value={quantity}
@@ -298,7 +344,7 @@ function ProductCard({ screen, product }) {
                 />
                 <Button
                   style={{ width: "300px" }}
-                  variant="secondary"
+                  variant="light"
                   onClick={handleAdd}
                 >
                   Thêm vào giỏ hàng
@@ -307,7 +353,7 @@ function ProductCard({ screen, product }) {
             </Card.Body>
             <br></br>
             <Card.Text>
-              <p>{product.description}</p>
+              <p className="text-center">{product.description}</p>
             </Card.Text>
           </div>
         </Modal.Body>

@@ -261,7 +261,9 @@ export const HandleFilterOrder = () => {
   // console.log(listSorted);
   return listSorted;
 };
-
+const getStatusUser = (status) => {
+  return status ? "Đang hoạt động" : "Đình chỉ";
+};
 export const HandleFilterUser = () => {
   // lấy giá trị ô userList từ store
   const userList = useSelector((state) => state.userReducer.users);
@@ -273,7 +275,10 @@ export const HandleFilterUser = () => {
   // lấy listUsers lọc theo ô search
   let listSorted = userList.filter((user) =>
     removeAccentsUpperCase(
-      getEmailName(user.email) + user.name + user.phone
+      getEmailName(user.email) +
+        user.name +
+        user.phone +
+        getStatusUser(user.status)
     ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
   );
   return listSorted;
@@ -291,6 +296,10 @@ const getEmailName = (email) => {
   }
 };
 
+const getStatusMess = (status) => {
+  return status ? "Đã phản hồi" : "Chưa phản hồi";
+};
+
 export const HandleFilterMess = () => {
   // lấy giá trị ô messList từ store
   const messList = useSelector((state) => state.messReducer.messs);
@@ -302,7 +311,10 @@ export const HandleFilterMess = () => {
   // lấy listMesss lọc theo ô search
   let listSorted = messList.filter((mess) =>
     removeAccentsUpperCase(
-      getEmailName(mess.email) + mess.name + mess.phone
+      getEmailName(mess.email) +
+        mess.name +
+        mess.phone +
+        getStatusMess(mess.status)
     ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
   );
   return listSorted;

@@ -144,7 +144,7 @@ function ManageUser() {
               handleShow(user);
             }}
             style={{
-              textAlign: "right",
+              textAlign: "center",
             }}
           >
             {user.date}
@@ -164,7 +164,7 @@ function ManageUser() {
               handleShow(user);
             }}
             style={{
-              textAlign: "left",
+              textAlign: "center",
             }}
           >
             {user.phone}

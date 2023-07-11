@@ -132,6 +132,31 @@ export default function ManageProduct() {
     sku: "",
     description: "",
   };
+
+  // const [draftProduct, setDraftProduct] = useState({
+  //   id: uuidv4(),
+  //   name: "",
+  //   img: [""],
+  //   tag: [],
+  //   price: "",
+  //   comparative: "",
+  //   sku: "",
+  //   description: "",
+  // });
+
+  // useEffect(() => {
+  //   setDraftProduct({
+  //     id: uuidv4(),
+  //     name: "",
+  //     img: [""],
+  //     tag: [],
+  //     price: "",
+  //     comparative: "",
+  //     sku: "",
+  //     description: "",
+  //   });
+  // }, [renderProducts]);
+
   return (
     <>
       <NavbarFilter />
