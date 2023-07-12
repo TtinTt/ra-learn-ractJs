@@ -77,6 +77,8 @@
   text-shadow: -1px 0px 7px rgba(255, 0, 0, 0.411),
     0px -13px 13px rgba(255, 0, 0, 0.12), 0px 10px 15px rgba(255, 0, 0, 0.12),
     0px 0px 4px rgba(255, 0, 0, 0.12) !important;
+
+  cursor: pointer;
 }
 
 .imgCatalogue h4,

@@ -95,6 +95,8 @@ td {
   /* box-shadow: rgba(249, 213, 192, 0.9) 0px 7px 29px 0px; */
 }
 .ProductCardThumb:hover {
+  cursor: pointer;
+
   border: none;
   box-shadow: rgba(100, 100, 111, 0.5) 0px 17px 40px 0px;
 }
