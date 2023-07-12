@@ -286,7 +286,10 @@ function CartList() {
             >
               <Form.Control type="text" placeholder="?" />
             </FloatingLabel>
-            {isShowError == true && errorValidateMsg}
+            <p style={{ color: "#dc3545" }}>
+              {" "}
+              {isShowError == true && errorValidateMsg}
+            </p>
           </>
         </Modal.Body>
         <Modal.Footer>
@@ -297,7 +300,7 @@ function CartList() {
             Xác nhận đơn hàng
           </Button>
           <p className="text-center ">
-            Sau khi đặt hàng, bạn có thể huỷ đơn hàng của mình trong vòng 4 giờ.
+            Bạn có thể huỷ đơn hàng của mình trong vòng 4 giờ sau khi đặt hàng.
             Đơn hàng sẽ giao tới địa chỉ của bạn trong vòng 4-10 ngày làm việc.
             Bạn cần thanh toán <strong>{Changedot([total])}</strong> khi nhận
             hàng.
