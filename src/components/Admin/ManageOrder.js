@@ -57,6 +57,7 @@ function ManageOrder() {
       return orders[0];
     }
   };
+
   const handleUpdateStatusOrder = async (event) => {
     await setOrderShowing({ ...orderShowing, status: event.target.value });
     await dispatch(
