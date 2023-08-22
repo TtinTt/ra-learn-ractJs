@@ -11,7 +11,7 @@ import Pagination from "react-bootstrap/Pagination";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { registerUser } from "../actions/userAction";
-
+import authApi from "../apis/auth.api";
 import {
   removeAccentsUpperCase,
   HandleFilter,
@@ -22,8 +22,7 @@ export default function BoxRegister() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
 
   let usersDB = useSelector((state) => state.userReducer.users);
-  // JSON.parse(localStorage.getItem("users")) == null &&
-  //   localStorage.setItem("users", JSON.stringify(usersDB));
+
   useEffect(() => {
     userLogined !== null && navigate("/");
   }, [usersDB]);
@@ -58,6 +57,7 @@ export default function BoxRegister() {
     // // Lỗi thì ngưng chạy
     event.preventDefault();
     await validate(user);
+
     if (error.status) {
       // render lỗi và kết thúc
       await setError({ ...error, isShowStatus: true });
@@ -65,44 +65,54 @@ export default function BoxRegister() {
     } else {
       // render không lỗi
     }
+    // api
 
-    //  Kiểm tra email đã đăng ký chưa
-    let isDulicate = false;
-    usersDB.forEach((item) => {
-      if (item.email === user.email) {
-        isDulicate = true;
-      }
-    });
-
-    if (isDulicate === false) {
-      delete user.confirmPassword;
-
-      user.name = "";
-      user.cart = [];
-      user.bday = "";
-      user.status = true;
-      user.date = getCurrentTimeString();
-      user.add = "";
-      user.phone = "";
-      user.img =
-        "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif";
-
-      //   B6: Đẩy dữ liệu lên store
-
-      dispatch(registerUser(user));
-
-      //   Chuyển sang login
-
-      navigate("/login");
-    } else {
-      await setError({
-        ...error,
-        isShowStatus: true,
-        status: true,
-        errorMsg:
-          "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
+    authApi
+      .register({ email: user.email, password: user.password })
+      .then((response) => {
+        // dispatch(register(response.token));
+        navigate("/login");
+      })
+      .catch((error) => {
+        alert(error.response.statusText);
       });
-    }
+
+    // //  Kiểm tra email đã đăng ký chưa
+    // let isDulicate = false;
+    // usersDB.forEach((item) => {
+    //   if (item.email === user.email) {
+    //     isDulicate = true;
+    //   }
+    // });
+
+    // if (isDulicate === false) {
+    //   delete user.confirmPassword;
+
+    //   user.name = "";
+    //   user.cart = [];
+    //   user.bday = "";
+    //   user.status = true;
+    //   user.date = getCurrentTimeString();
+    //   user.add = "";
+    //   user.phone = "";
+    //   user.img =
+    //     "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif";
+
+    //   B6: Đẩy dữ liệu lên store
+    // dispatch(registerUser(user));
+
+    //   Chuyển sang login
+
+    //   navigate("/login");
+    // } else {
+    //   await setError({
+    //     ...error,
+    //     isShowStatus: true,
+    //     status: true,
+    //     errorMsg:
+    //       "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
+    //   });
+    // }
   };
 
   // validate data register

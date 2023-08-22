@@ -34,7 +34,7 @@ function FooterBot() {
                   <a href="">Chính sách đổi trả</a>
                 </li> */}
                 <li>
-                  <a href="/Admin">Truy cập quyền quản trị</a>
+                  <a href="/admin">Truy cập quyền quản trị</a>
                 </li>
               </ul>
             </nav>

@@ -1,6 +1,9 @@
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import productApi from "../apis/product.api";
 import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+
 export const removeAccentsUpperCase = (str) => {
   return str
     .normalize("NFD")
@@ -8,6 +11,33 @@ export const removeAccentsUpperCase = (str) => {
     .replace(/đ/g, "d")
     .replace(/Đ/g, "D")
     .toUpperCase();
+};
+
+export const fetchProducts = async (keyword, page, NUMBER_RECORDS_PER_PAGE) => {
+  // const navigate = useNavigate();
+
+  return await productApi
+    .searchProducts({
+      name: keyword,
+      page: page,
+      limit: NUMBER_RECORDS_PER_PAGE,
+    })
+    .then((data) => {
+      return data;
+      // setProducts(data.records);
+      // setTotal(data.total);
+    })
+    .catch((error) => {
+      alert(error);
+      // if (error.response.status === 401) {
+      //   alert(error.response.statusText);
+      //   // navigate("/products");
+      // } else {
+      //   alert(error.response.statusText);
+      // }
+    });
+
+  // setSelectedProductIds([]);
 };
 
 export const getStatus = (orderStatus) => {
@@ -165,21 +195,33 @@ const sortPriceFrom = (productList, priceMax) => {
   return sortedList;
 };
 
-export const HandleFilter = (productListInput) => {
-  // lấy giá trị ô productListInput từ store
-  // const productListInput = useSelector(
-  //   (state) => state.productReducer.products
-  // );
+export const HandleFilter = async (
+  currentPage,
+  productsPerPage
+  // productListInput
+) => {
+  console.log("HandleFilter");
+  // lấy giá trị ô search
+  const searchFilter =
+    (await useSelector((state) => state.productReducer.searchFilter)) ?? "";
+
+  // lấy giá trị productListInput từ DB
+  const products = await fetchProducts(
+    searchFilter,
+    currentPage,
+    productsPerPage
+  );
+
+  const productListInput = products.records;
+  const totalProductsDB = products.total;
+
+  console.log("productListInput", productListInput);
 
   // lấy option sort từ store
   const sortOption = useSelector((state) => state.productReducer.sort) ?? 0;
   // lấy max price sort từ store
   const priceFromValue =
     useSelector((state) => state.productReducer.priceFrom) ?? null;
-
-  // lấy giá trị ô search
-  const searchFilter =
-    useSelector((state) => state.productReducer.searchFilter) ?? "";
 
   // sắp xếp thứ tự tăng giảm
   let sortProductList = sortPrice(productListInput, sortOption);
@@ -193,8 +235,8 @@ export const HandleFilter = (productListInput) => {
       removeAccentsUpperCase(searchFilter).toUpperCase()
     )
   );
-  // console.log(listSorted);
-  return listSorted;
+  console.log("listSorted", listSorted);
+  return { totalProductsDB, productList: listSorted };
 };
 
 export const CheckLink = () => {

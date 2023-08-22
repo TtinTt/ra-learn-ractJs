@@ -22,6 +22,7 @@ import {
 import { FormLabel } from "react-bootstrap";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
+import productApi from "../apis/product.api";
 
 function NavbarFilter() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
@@ -29,6 +30,9 @@ function NavbarFilter() {
 
   const [sort, setSort] = useState(0); // Giá trị mặc định
   const [show, setShow] = useState(false);
+
+  const [minPrice, setMinPrice] = useState(0); // Giá trị mặc định
+  const [maxPrice, setMaxPrice] = useState(0); // Giá trị mặc định
 
   let link = CheckLink();
 
@@ -57,30 +61,35 @@ function NavbarFilter() {
     // console.log("LOGOUT");
   };
 
-  // lấy giá trị price lớn nhất và nhỏ nhất của listProduct
-  const minMaxPrice = (productList) => {
-    if (productList.length === 0) {
-      return null; // Trả về null nếu mảng productListInput rỗng
-    }
+  const getPrice = async () => {
+    // const navigate = useNavigate();
 
-    let minPrice = productList[0].price;
-    let maxPrice = productList[0].price;
+    await productApi
+      .getPrice({})
+      .then((data) => {
+        setValue(data.maxPrice);
+        setMinPrice(data.minPrice);
+        setMaxPrice(data.maxPrice);
+      })
+      .catch((error) => {
+        alert(error);
+        if (error.response.status === 401) {
+          alert(error.response.statusText);
+          // navigate("/products");
+        } else {
+          alert(error.response.statusText);
+        }
+      });
 
-    for (let i = 1; i < productList.length; i++) {
-      const price = productList[i].price;
-      if (price < minPrice) {
-        minPrice = price;
-      }
-      if (price > maxPrice) {
-        maxPrice = price;
-      }
-    }
-
-    return [minPrice, maxPrice];
+    // setSelectedProductIds([]);
   };
 
-  let [minPrice, maxPrice] = minMaxPrice(productList);
+  // let [minPrice, maxPrice] = minMaxPrice(productList);
   const [value, setValue] = useState(maxPrice); // Giá trị mặc định
+
+  useEffect(() => {
+    getPrice();
+  }, []);
 
   useEffect(() => {
     dispatch(priceFrom(maxPrice));
