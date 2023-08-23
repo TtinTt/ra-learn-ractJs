@@ -64,18 +64,29 @@ export default function BoxRegister() {
       return;
     } else {
       // render không lỗi
-    }
-    // api
+      // api
 
-    authApi
-      .register({ email: user.email, password: user.password })
-      .then((response) => {
-        // dispatch(register(response.token));
-        navigate("/login");
-      })
-      .catch((error) => {
-        alert(error.response.statusText);
-      });
+      authApi
+        .register({ email: user.email, password: user.password })
+        .then((response) => {
+          // dispatch(register(response.token));
+          navigate("/login");
+        })
+        .catch((error) => {
+          if (error.response.statusText == "Forbidden") {
+            setError({
+              isShowStatus: true,
+              status: true,
+              errorMsg:
+                "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
+            });
+
+            console.log("trùng lặp user");
+          } else {
+            alert(error.response.statusText);
+          }
+        });
+    }
 
     // //  Kiểm tra email đã đăng ký chưa
     // let isDulicate = false;
@@ -141,7 +152,6 @@ export default function BoxRegister() {
     } else {
       newError = { isShowStatus: false, status: false, errorMsg: "" };
     }
-
     setError(newError); // Cập nhật error
   };
 
