@@ -9,7 +9,7 @@ import { Changedot } from "../function/functionData";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
-
+import orderApi from "../apis/order.api";
 import { getCurrentTimeString } from "../function/functionData";
 import Modal from "react-bootstrap/Modal";
 
@@ -133,17 +133,40 @@ function CartList() {
     if (validateAddress(address)) {
       const order = {
         email: userLogined.email,
-        id: uuidv4(),
+        // id: uuidv4(),
         cart: cart,
         address: address,
         date: getCurrentTimeString(),
         status: "0",
       };
       console.log(order);
-      dispatch(createOrder(order)); // Gửi đơn hàng tới store
-      handleClearCart();
-      handleClose();
-      navigate("/order");
+
+      orderApi
+        .createOrder(order)
+        .then((response) => {
+          // dispatch(register(response.token));
+          // handleClearCart();
+          handleClose();
+          navigate("/order");
+        })
+        .catch((error) => {
+          // if (error.response.statusText == "Forbidden") {
+          //   setError({
+          //     isShowStatus: true,
+          //     status: true,
+          //     errorMsg:
+          //       "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
+          //   });
+
+          //   console.log("trùng lặp user");
+          // } else {
+          //   alert(error.response.statusText);
+          // }
+
+          alert(error.response.statusText);
+        });
+
+      // dispatch(createOrder(order)); // Gửi đơn hàng tới store
     } else {
       setIsShowError(true);
     }
@@ -188,7 +211,9 @@ function CartList() {
                   <Form.Control
                     type="number"
                     value={product.quantity}
-                    onChange={(event) => handleChange(event, product.id)}
+                    onChange={(event) =>
+                      handleChange(event, product.product_id)
+                    }
                   />
                 </td>
                 <td className="rightText">
@@ -197,7 +222,7 @@ function CartList() {
                 <td>
                   <Button
                     variant="danger"
-                    onClick={() => handleDelete(product.id)}
+                    onClick={() => handleDelete(product.product_id)}
                   >
                     Xóa
                   </Button>

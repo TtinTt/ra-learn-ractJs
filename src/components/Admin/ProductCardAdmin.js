@@ -332,7 +332,7 @@ function ProductCardAdmin({ render, i, product }) {
                         aria-label="id"
                         aria-describedby="basic-addon1"
                         type="text"
-                        value={newProduct.id}
+                        value={newProduct.product_id}
                       />
                     </InputGroup>
                     <InputGroup className="mb-3">

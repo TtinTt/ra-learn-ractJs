@@ -12,13 +12,14 @@ import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { changePassUser } from "../actions/userAction";
 import Modal from "react-bootstrap/Modal";
-
+import authApi from "../apis/auth.api";
+import userApi from "../apis/user.api";
 import {
   removeAccentsUpperCase,
   HandleFilter,
   getCurrentTimeString,
 } from "../function/functionData";
-
+import { loginUser } from "../actions/userAction";
 export default function BoxChangePass() {
   let usersDB = useSelector((state) => state.userReducer.users);
   let userLogined = useSelector((state) => state.userReducer.userLogined);
@@ -56,6 +57,33 @@ export default function BoxChangePass() {
     await validate(user);
   };
 
+  const changePassByApi = () => {
+    const formData = new FormData();
+    formData.append("password", user.password);
+    userApi
+      .updateUser(userLogined.user_id, formData)
+      .then(() => {
+        authApi
+          .getAuth()
+          .then((response) => {
+            dispatch(loginUser(response));
+            console.log(response);
+          })
+          .catch((error) => {
+            dispatch(loginUser(null));
+            localStorage.removeItem("X-API-Key");
+            console.log(error.response.status, error.response.statusText);
+          });
+      })
+      .catch((error) => {
+        if (error.response.status === 401) {
+          alert(error.response.statusText);
+          navigate("/login");
+        } else {
+          alert(error.response.statusText);
+        }
+      });
+  };
   // handle submit
   const handleSubmit = async (event) => {
     // // Lỗi thì ngưng chạy
@@ -68,10 +96,28 @@ export default function BoxChangePass() {
     } else {
       // render không lỗi
       delete user.confirmPassword;
-      delete user.oldpassword;
-      console.log("ok");
-      dispatch(changePassUser(user));
-      setShow(true);
+      authApi
+        .login(user.email, user.oldpassword, "customer")
+        .then((response) => {
+          // dispatch(login(response.token));
+          console.log(response);
+          window.localStorage.setItem("X-API-Key", response.token);
+          changePassByApi();
+
+          setShow(true);
+        })
+        .catch((error) => {
+          console.log(error.response.statusText);
+          let newError = { ...error };
+          setError({
+            isShowStatus: true,
+            status: true,
+            errorMsg: "Mật khẩu cũ không chính xác",
+          });
+        });
+
+      console.log(user);
+      // dispatch(changePassUser(user));
     }
   };
 
@@ -86,10 +132,12 @@ export default function BoxChangePass() {
     ) {
       newError.status = true;
       newError.errorMsg = "Các thông tin không được để trống";
-    } else if (data.oldpassword !== userLogined.password) {
-      newError.status = true;
-      newError.errorMsg = "Mật khẩu cũ không chính xác";
-    } else if (data.oldpassword == data.password) {
+    }
+    // else if (data.oldpassword !== userLogined.password) {
+    //   newError.status = true;
+    //   newError.errorMsg = "Mật khẩu cũ không chính xác";
+    // }
+    else if (data.oldpassword == data.password) {
       newError.status = true;
       newError.errorMsg = "Mật khẩu mới không được trùng với mật khẩu cũ";
     } else if (data.password !== data.confirmPassword) {

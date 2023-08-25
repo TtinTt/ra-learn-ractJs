@@ -13,22 +13,31 @@ import { inputSearchBox } from "../actions/productAction";
 import InputGroup from "react-bootstrap/InputGroup";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { useNavigate } from "react-router-dom";
+import authApi from "../apis/auth.api";
 
 import Image from "react-bootstrap/Image";
 import "../css/Profile.css";
 import Modal from "react-bootstrap/Modal";
 import { updateInfoUser } from "../actions/userAction";
+import userApi from "../apis/user.api";
+import {
+  prependLocalhost,
+  isArrayContainingObjects,
+} from "../function/functionData";
+import { loginUser } from "../actions/userAction";
 
 function BuyerInfo() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  // const [userLogined, setUserLogined] = useState(state.userReducer.userLogined);
 
   const [isCanEdit, setIsCanEdit] = useState(true);
   const [info, setInfo] = useState({
+    user_id: userLogined.user_id,
     email: userLogined.email,
     name: userLogined.name,
     bday: userLogined.bday,
     status: userLogined.status,
-    add: userLogined.add,
+    add_address: userLogined.add_address,
     note: userLogined.note,
     phone: userLogined.phone,
     img: userLogined.img,
@@ -37,6 +46,7 @@ function BuyerInfo() {
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState(new Map());
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -54,17 +64,117 @@ function BuyerInfo() {
   const handleChangeinfo = (event) => {
     const newInfo = {
       ...info,
-      [event.target.ariaLabel]: event.target.value,
+      [event.target.ariaLabel]:
+        event.target.ariaLabel === "img"
+          ? event.target.files[0]
+          : event.target.ariaLabel === "name"
+          ? event.target.value.trim()
+          : event.target.value,
     };
+    console.log(newInfo);
 
     setInfo(newInfo);
     // validateInfo(newInfo);
   };
 
   const handleSaveInfo = () => {
-    // console.log(info);
-    dispatch(updateInfoUser(info)); // Gửi đơn hàng tới store
+    console.log("info", info);
+
+    const errors = validate(info);
+    if (errors.size == 0) {
+      const formData = new FormData();
+
+      // if (info.password) {
+      //   formData.append("password", info.password);
+      // }
+
+      formData.append("add_address", info.add_address);
+      formData.append("bday", info.bday);
+      formData.append("name", info.name);
+      formData.append("note", info.note);
+      formData.append("phone", info.phone);
+      formData.append("status", info.status);
+
+      if (info.img) {
+        formData.append("img", info.img);
+      }
+      for (let pair of formData.entries()) {
+        console.log("FormData:", pair[0] + ", " + pair[1]);
+      }
+      userApi
+        .updateUser(userLogined.user_id, formData)
+        .then(() => {
+          // for (let pair of formData.entries()) {
+          //   console.log("FormData2:", pair[0] + ", " + pair[1]);
+          // } // navigate('/admin/users');
+          // window.location.reload();
+          authApi
+            .getAuth()
+            .then((response) => {
+              dispatch(loginUser(response));
+              console.log(response);
+            })
+            .catch((error) => {
+              dispatch(loginUser(null));
+              localStorage.removeItem("X-API-Key");
+              console.log(error.response.status, error.response.statusText);
+            });
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            alert(error.response.statusText);
+            navigate("/login");
+          } else {
+            alert(error.response.statusText);
+          }
+        });
+    } else {
+      setErrors(errors);
+      console.log(errors);
+    }
+
     handleClose();
+  };
+
+  const validate = (user) => {
+    const errors = new Map();
+
+    if (
+      user.hasOwnProperty("cart") &&
+      !user.cart == [] &&
+      !isArrayContainingObjects(user.cart)
+    ) {
+      errors.set("cart", "Giỏ hàng không hợp lệ.");
+    }
+
+    // Validate name
+    if (user.hasOwnProperty("name") && typeof user.name !== "string") {
+      errors.set("name", "Tên phải là chuỗi.");
+    } else if (user.first_name && user.first_name.length > 50) {
+      errors.set("name", "Tên chỉ cho phép dưới 50 ký tự.");
+    }
+
+    // Validate password
+    if (
+      user.hasOwnProperty("password") &&
+      (user.password.length < 6 || user.password.length > 200)
+    ) {
+      errors.set("password", "Mật khẩu cần có độ dài 6 tới 200 ký tự");
+    } else if (
+      user.hasOwnProperty("password") &&
+      !(
+        user.password.match(/[a-z]/) &&
+        user.password.match(/[A-Z]/) &&
+        user.password.match(/\d/)
+      )
+    ) {
+      errors.set(
+        "password",
+        "Mật khẩu cần bao gồm ký tự IN HOA, chữ thường và chữ số"
+      );
+    }
+
+    return errors;
   };
 
   return (
@@ -72,7 +182,11 @@ function BuyerInfo() {
       <div className="text-center">
         <h4>Thông tin người dùng</h4>
         <div>
-          <img id="user-img" className="text-center" src={userLogined.img} />
+          <img
+            id="user-img"
+            className="text-center"
+            src={prependLocalhost(userLogined.img)}
+          />
           <InputGroup id="user-info" className="mb-3 mx-auto">
             <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Email</InputGroup.Text>
@@ -112,11 +226,11 @@ function BuyerInfo() {
               <Form.Control
                 disabled
                 // placeholder="Ngày sinh"
-                aria-label="add"
+                aria-label="add_address"
                 aria-describedby="basic-addon1"
                 type="text"
                 // as="textarea"
-                value={userLogined.add}
+                value={userLogined.add_address}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -131,25 +245,20 @@ function BuyerInfo() {
                 value={userLogined.phone}
               />
             </InputGroup>
-            <InputGroup className="mb-3">
-              <InputGroup.Text id="basic-addon1">
-                Url ảnh đại diện
-              </InputGroup.Text>
+            {/* <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">Ảnh đại diện</InputGroup.Text>
               <Form.Control
                 disabled
-                // placeholder="Ngày sinh"
                 aria-label="img"
                 aria-describedby="basic-addon1"
-                type="text"
-                // as="textarea"
-                value={
-                  userLogined.img ==
-                  "https://www.getillustrations.com/photos/pack/video/55895-3D-AVATAR-ANIMATION.gif"
-                    ? ""
-                    : userLogined.img
-                }
+                type="file"
+                name="avatar"
+                accept="image/png, image/jpeg, image/gif"
+                onChange={handleChangeinfo}
+                multiple
               />
-            </InputGroup>
+             
+            </InputGroup> */}
             <div id="groupButton" className="mx-auto">
               <br></br>
               <Button
@@ -227,11 +336,11 @@ function BuyerInfo() {
               <InputGroup.Text id="basic-addon1">Địa chỉ</InputGroup.Text>
               <Form.Control
                 // placeholder="Ngày sinh"
-                aria-label="add"
+                aria-label="add_address"
                 aria-describedby="basic-addon1"
                 type="text"
                 // as="textarea"
-                value={info.add}
+                value={info.add_address}
                 onChange={handleChangeinfo}
               />
             </InputGroup>
@@ -247,7 +356,21 @@ function BuyerInfo() {
                 onChange={handleChangeinfo}
               />
             </InputGroup>
+
             <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">Ảnh đại diện</InputGroup.Text>
+              <Form.Control
+                type="file"
+                name="avatar"
+                aria-label="img"
+                aria-describedby="basic-addon1"
+                accept="image/png, image/jpeg, image/gif"
+                onChange={handleChangeinfo}
+                // multiple
+              />
+            </InputGroup>
+
+            {/* <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">
                 Url ảnh đại diện
               </InputGroup.Text>
@@ -265,7 +388,7 @@ function BuyerInfo() {
                 }
                 onChange={handleChangeinfo}
               />
-            </InputGroup>
+            </InputGroup> */}
           </InputGroup>
         </Modal.Body>
         <Modal.Footer>

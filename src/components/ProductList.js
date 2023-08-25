@@ -50,34 +50,36 @@ export default function ProductList() {
   const [maxPrice, setMaxPrice] = useState(null);
   const [sortType, setSortType] = useState(0);
 
-  const fetchProducts = async (keyword, page, NUMBER_RECORDS_PER_PAGE) => {
-    // const navigate = useNavigate();
+  const fetchProducts = async () =>
+    // keyword, page, NUMBER_RECORDS_PER_PAGE
+    {
+      // const navigate = useNavigate();
 
-    await productApi
-      .searchProducts({
-        name: searchFilter,
-        page: currentPage,
-        limit: productsPerPage,
-        maxPrice: priceFromValue,
-        sortType: sortOption,
-        category: link,
-      })
-      .then((data) => {
-        setProductList(data.records);
-        setTotal(data.total);
-      })
-      .catch((error) => {
-        alert(error);
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
-          // navigate("/products");
-        } else {
-          alert(error.response.statusText);
-        }
-      });
+      await productApi
+        .searchProducts({
+          name: searchFilter,
+          page: currentPage,
+          limit: productsPerPage,
+          maxPrice: priceFromValue,
+          sortType: sortOption,
+          category: link,
+        })
+        .then((data) => {
+          setProductList(data.records);
+          setTotal(data.total);
+        })
+        .catch((error) => {
+          alert(error);
+          if (error.response.status === 401) {
+            alert(error.response.statusText);
+            // navigate("/products");
+          } else {
+            alert(error.response.statusText);
+          }
+        });
 
-    // setSelectedProductIds([]);
-  };
+      // setSelectedProductIds([]);
+    };
   const dispatch = useDispatch();
 
   // thêm vào giỏ hàng

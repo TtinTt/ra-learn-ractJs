@@ -17,12 +17,50 @@ import {
   useGetProductsByTags,
 } from "../function/functionData";
 import UserButton from "./UserButton";
+import authApi from "../apis/auth.api";
+import userApi from "../apis/user.api";
+import { loginUser } from "../actions/userAction";
 
 function NavbarTop() {
+  let link = CheckLink();
+  // let userLogined = null;
+  useEffect(() => {
+    link !== "admin" &&
+      authApi
+        .getAuth()
+        .then((response) => {
+          dispatch(loginUser(response));
+          console.log(response);
+        })
+        .catch((error) => {
+          dispatch(loginUser(null));
+          localStorage.removeItem("X-API-Key");
+          console.log(error.response.status, error.response.statusText);
+        });
+  }, [link]);
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+
+  useEffect(() => {
+    console.log("userLogined", userLogined);
+    if (userLogined !== null) {
+      userApi
+        .updateUser(userLogined.user_id, userLogined)
+        .then(() => {
+          // navigate('/admin/users');
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            // alert(error.response.statusText);
+            // navigate("/login");
+          } else {
+            alert(error.response.statusText);
+          }
+        });
+    }
+  }, [userLogined]);
+
   const navigate = useNavigate();
 
-  let link = CheckLink();
   const dispatch = useDispatch();
 
   // lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm

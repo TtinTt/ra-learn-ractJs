@@ -759,7 +759,7 @@ const productReducer = createReducer(
     EDIT_PRODUCT: (state, action) => {
       // console.log("edit");
       let updatedProduct = state.products.map((product) => {
-        if (product.id === action.payload.id) {
+        if (product.product_id === action.payload.id) {
           return action.payload;
         }
         return product;

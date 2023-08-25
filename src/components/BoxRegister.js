@@ -129,10 +129,14 @@ export default function BoxRegister() {
   // validate data register
   const validate = async (data) => {
     let newError = { ...error }; // Tạo một bản sao của error hiện tại
+    const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 
     if (data.email == "" || data.password == "" || data.confirmPassword == "") {
       newError.status = true;
       newError.errorMsg = "Các thông tin không được để trống";
+    } else if (!regex.test(data.email)) {
+      newError.status = true;
+      newError.errorMsg = "Email không hợp lệ";
     } else if (data.password !== data.confirmPassword) {
       newError.status = true;
       newError.errorMsg = "Mật khẩu nhập lại không chính xác";

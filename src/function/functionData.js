@@ -40,46 +40,75 @@ export const fetchProducts = async (keyword, page, NUMBER_RECORDS_PER_PAGE) => {
   // setSelectedProductIds([]);
 };
 
-export const getStatus = (orderStatus) => {
-  if (orderStatus === "0") {
-    return "Đang xử lý thông tin đơn hàng";
-  } else if (orderStatus === "1") {
-    return "Đơn hàng đang được chuẩn bị";
-  } else if (orderStatus === "2") {
-    return "Đơn hàng đang được giao tới";
-  } else if (orderStatus === "3") {
-    return "Đơn hàng đã được giao thành công";
-  } else if (orderStatus === "4") {
-    return "Giao hàng không thành công và đang chuyển hoàn";
-  } else if (orderStatus === "5") {
-    return "Đơn hàng đã được chuyển hoàn";
-  } else if (orderStatus === "-1") {
-    return "Đơn hàng đã bị huỷ";
-  } else if (orderStatus === "-2") {
-    return "Đơn hàng bị từ chối";
+const ORDER_STATUSES = {
+  0: {
+    message: "Đang xử lý thông tin đơn hàng",
+    color: "#D7D7D7",
+  },
+  1: {
+    message: "Đơn hàng đang được chuẩn bị",
+    color: "PaleGoldenRod",
+  },
+  2: {
+    message: "Đơn hàng đang được giao tới",
+    color: "PaleGoldenRod",
+  },
+  3: {
+    message: "Đơn hàng đã được giao thành công",
+    color: "PaleGoldenRod",
+  },
+  4: {
+    message: "Giao hàng không thành công và đang chuyển hoàn",
+    color: "PaleGoldenRod",
+  },
+  5: {
+    message: "Đơn hàng đã được chuyển hoàn",
+    color: "#ffdab9",
+  },
+  "-1": {
+    message: "Đơn hàng đã bị huỷ",
+    color: "#ffdab9",
+  },
+  "-2": {
+    message: "Đơn hàng bị từ chối",
+    color: "#ffdab9",
+  },
+};
+
+export const getStatus = (status) => {
+  if (status === null || status === undefined)
+    return "Trạng thái không xác định";
+
+  const orderStatus = status.toString();
+  return ORDER_STATUSES[orderStatus]?.message || "Trạng thái không xác định";
+};
+
+export const isArrayContainingObjects = (obj) => {
+  if (!Array.isArray(obj)) {
+    return false;
   }
+
+  for (let item of obj) {
+    if (typeof item !== "object" || item === null || Array.isArray(item)) {
+      return false;
+    }
+  }
+
+  return true;
 };
 
-export const hanleGetColor = (orderStatus) => {
-  if (orderStatus === "0") {
-    return "#D7D7D7";
-  } else if (orderStatus === "1") {
-    return "PaleGoldenRod";
-  } else if (orderStatus === "2") {
-    return "PaleGoldenRod";
-  } else if (orderStatus === "3") {
-    return "PaleGoldenRod";
-  } else if (orderStatus === "4") {
-    return "PaleGoldenRod";
-  } else if (orderStatus === "5") {
-    return "#ffdab9";
-  } else if (orderStatus === "-1") {
-    return "#ffdab9";
-  } else if (orderStatus === "-2") {
-    return "#ffdab9";
-  } else return "none";
-};
+export const hanleGetColor = (status) => {
+  if (status === null || status === undefined) return "none";
 
+  const orderStatus = status.toString();
+  return ORDER_STATUSES[orderStatus]?.color || "none";
+};
+export const prependLocalhost = (str) => {
+  if (!str.startsWith("http://")) {
+    return "http://localhost:8000/" + str;
+  }
+  return str;
+};
 // lấy thời gian hiện tại và sửa dịnh dạng
 export const getCurrentTimeString = () => {
   const now = new Date();
@@ -93,18 +122,27 @@ export const getCurrentTimeString = () => {
 };
 
 // lấy số giờ từ thời điểm hiện tại đến một thời điểm khác (truyền vào dưới dạng string)
-export const getDaysDifference = (dateString) => {
-  const [time, date] = dateString.split(" ");
-  const [hour, minute] = time.slice(0, -1).split(":");
-  const [day, month, year] = date.split("/");
+export const getDaysDifference = (date) => {
+  if (!date) {
+    return "";
+  }
 
-  const now = new Date();
-  const dateObject = new Date(year, month - 1, day, hour, minute);
+  let dateString = date.toString();
+  if (dateString == "") {
+    return "";
+  } else {
+    const [time, date] = dateString.split(" ");
+    const [hour, minute] = time.slice(0, -1).split(":");
+    const [day, month, year] = date.split("/");
 
-  const differenceInTime = now.getTime() - dateObject.getTime();
-  const differenceInDays = differenceInTime / (1000 * 3600);
+    const now = new Date();
+    const dateObject = new Date(year, month - 1, day, hour, minute);
 
-  return Math.abs(Math.round(differenceInDays));
+    const differenceInTime = now.getTime() - dateObject.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600);
+
+    return Math.abs(Math.round(differenceInDays));
+  }
 };
 
 // console.log(getCurrentTimeString());

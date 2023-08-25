@@ -16,6 +16,7 @@ import {
 } from "../function/functionData";
 import Badge from "react-bootstrap/Badge";
 import { logoutAdmin } from "../actions/adminAction";
+import authApi from "../apis/auth.api";
 
 function UserButton({ link }) {
   let countCart = 0;
@@ -33,7 +34,15 @@ function UserButton({ link }) {
   // console.log(!link.includes("/admin"));
 
   const handleLogout = () => {
-    dispatch(logoutUser());
+    authApi
+      .logout()
+      .then((response) => {
+        dispatch(logoutUser());
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+
     // console.log("LOGOUT");
   };
 
@@ -91,6 +100,8 @@ function UserButton({ link }) {
               }}
             >
               {userLogined.name == ""
+                ? TruncateString(userLogined.email, 9)
+                : TruncateName(userLogined.name, 12) == ""
                 ? TruncateString(userLogined.email, 9)
                 : TruncateName(userLogined.name, 12)}
             </Button>

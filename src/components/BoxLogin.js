@@ -11,6 +11,7 @@ import Pagination from "react-bootstrap/Pagination";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../actions/userAction";
+import authApi from "../apis/auth.api";
 
 export default function BoxLogin() {
   let usersDB = useSelector((state) => state.userReducer.users);
@@ -52,39 +53,18 @@ export default function BoxLogin() {
       return;
     } else {
       // render không lỗi
-    }
-
-    //  Kiểm tra email đã đăng ký chưa
-    let isDulicate = false;
-    let userLogin = { ...user };
-    usersDB.forEach(async (item) => {
-      if (item.email === user.email && item.password === user.password) {
-        item.status == true ? (isDulicate = true) : (isDulicate = null);
-        userLogin = item;
-      }
-    });
-
-    if (isDulicate === true) {
-      dispatch(loginUser(userLogin));
-
-      //   Chuyển sang login
-
-      navigate("/");
-    } else if (isDulicate === false) {
-      await setError({
-        ...error,
-        isShowStatus: true,
-        status: true,
-        errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
-      });
-    } else if (isDulicate === null) {
-      await setError({
-        ...error,
-        isShowStatus: true,
-        status: true,
-        errorMsg:
-          "Tài khoản của bạn đã bị đình chỉ, vui lòng liên hệ với chúng tôi để biết thông tin chi tiết",
-      });
+      // console.log(user);
+      authApi
+        .login(user.email, user.password, "customer")
+        .then((response) => {
+          // dispatch(login(response.token));
+          console.log(response);
+          window.localStorage.setItem("X-API-Key", response.token);
+          navigate("/");
+        })
+        .catch((error) => {
+          alert(error.response.statusText);
+        });
     }
   };
 

@@ -110,7 +110,7 @@ const userReducer = createReducer(
       let flag = false;
 
       let updatedATC = state.userLogined.cart.map((product) => {
-        if (product.id === action.payload.id) {
+        if (product.product_id === action.payload.product_id) {
           flag = true;
           return {
             ...product,
@@ -145,7 +145,7 @@ const userReducer = createReducer(
 
     DELETE_FROM_CART: (state, action) => {
       let updatedATC = state.userLogined.cart.filter(
-        (item) => item.id !== action.payload
+        (item) => item.product_id !== action.payload
       );
 
       return {
@@ -157,7 +157,7 @@ const userReducer = createReducer(
     CHANGE_QUANTITY: (state, action) => {
       // console.log(action.payload);
       let updatedATC = state.userLogined.cart.map((product) => {
-        if (product.id === action.payload.id) {
+        if (product.product_id === action.payload.id) {
           return {
             ...product,
             quantity: action.payload.quantity,
@@ -189,13 +189,13 @@ const userReducer = createReducer(
         userLogined: {
           ...state.userLogined,
           email: action.payload.email,
-          name: action.payload.name,
-          bday: action.payload.bday,
-          status: action.payload.status,
-          add: action.payload.add,
-          // note: action.payload.note,
-          phone: action.payload.phone,
-          img: img,
+          // name: action.payload.name,
+          // bday: action.payload.bday,
+          // status: action.payload.status,
+          // add_address: action.payload.add_address,
+          // // note: action.payload.note,
+          // phone: action.payload.phone,
+          // img: img,
         },
       };
     },

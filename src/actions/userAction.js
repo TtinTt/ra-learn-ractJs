@@ -29,6 +29,7 @@ export const logoutUser = () => {
   // gỡ userLogined từ localStorage
 
   localStorage.removeItem("userLogined");
+  localStorage.removeItem("X-API-Key");
 
   return {
     type: "LOGOUT_USER",

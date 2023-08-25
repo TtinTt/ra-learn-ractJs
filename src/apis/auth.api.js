@@ -1,8 +1,8 @@
 import api, { getHeaders } from "./api";
 
-const login = async (username, password, type = "customer") => {
+const login = async (email, password, type) => {
   const requestBody = {
-    username: username,
+    email: email,
     password: password,
     type: type,
   };
