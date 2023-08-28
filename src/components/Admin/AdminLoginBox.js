@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import Container from "react-bootstrap/Container";
 import Modal from "react-bootstrap/Modal";
-
+import authApi from "../../apis/auth.api";
 import "../../css/Cart.css";
 import { loginAdmin } from "../../actions/adminAction";
 
@@ -50,30 +50,22 @@ function AdminLoginBox() {
       // render không lỗi
     }
 
-    //  Kiểm tra email đã đăng ký chưa
-    let isDulicate = false;
-    let adminLogin = { ...admin };
-    admins.forEach(async (item) => {
-      if (item.email === admin.email && item.password === admin.password) {
-        isDulicate = true;
-        adminLogin = item;
-      }
-    });
-
-    if (isDulicate === true) {
-      dispatch(loginAdmin(adminLogin));
-
-      //   Chuyển sang login
-
-      navigate("/admin");
-    } else {
-      await setError({
-        ...error,
-        isShowStatus: true,
-        status: true,
-        errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
+    authApi
+      .login(admin.email, admin.password, "admin")
+      .then((response) => {
+        // dispatch(login(response.token));
+        console.log(response);
+        window.localStorage.setItem("X-API-Key-Admin", response.token);
+        window.location.reload();
+      })
+      .catch((error) => {
+        setError({
+          isShowStatus: true,
+          status: true,
+          errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
+        });
+        console.log(error.response.statusText);
       });
-    }
   };
   // validate data login
   const validate = async (data) => {
@@ -85,7 +77,6 @@ function AdminLoginBox() {
     } else {
       newError = { isShowStatus: false, status: false, errorMsg: "" };
     }
-
     setError(newError); // Cập nhật error
   };
 

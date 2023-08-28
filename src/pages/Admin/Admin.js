@@ -34,6 +34,7 @@ function Admin() {
         <Tab eventKey="order" title="Đơn hàng">
           <ManageOrder />
         </Tab>
+        {/* 
         <Tab eventKey="products" title="Sản phẩm">
           <ManageProduct />
         </Tab>
@@ -42,7 +43,7 @@ function Admin() {
         </Tab>
         <Tab eventKey="contact" title="Lời nhắn">
           <ManageMess />
-        </Tab>
+        </Tab> */}
       </Tabs>
 
       <FooterBot />

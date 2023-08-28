@@ -72,8 +72,21 @@ const getPrice = async (params = {}) => {
     });
 };
 
+const getTag = async (params = {}) => {
+  return await api
+    .get("/products/tag", { params: params })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("API Error", error);
+      throw error;
+    });
+};
+
 export default {
   getPrice,
+  getTag,
   searchProducts,
   createProduct,
   getProductByProductId,

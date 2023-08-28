@@ -60,6 +60,7 @@ function App() {
       <Route
         path="/admin"
         element={adminLogined == null ? <AdminLogin /> : <Admin />}
+        // element={adminLogined == null && <AdminLogin />}
       />
       {catalogue}
       <Route path="*" element={<PageNotFound />} />

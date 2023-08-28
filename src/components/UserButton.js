@@ -47,6 +47,7 @@ function UserButton({ link }) {
   };
 
   const handleLogoutAdmin = () => {
+    localStorage.removeItem("X-API-Key-Admin");
     dispatch(logoutAdmin());
     // console.log("LOGOUT ADMIN");
   };

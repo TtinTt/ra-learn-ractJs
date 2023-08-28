@@ -1,16 +1,16 @@
 import api, { getHeaders } from "./api";
 
-// const searchOrders = async (params = {}) => {
-//   return await api
-//     .get("/orders", { params: params, headers: getHeaders() })
-//     .then((response) => {
-//       return response.data;
-//     })
-//     .catch((error) => {
-//       console.error("API Error", error);
-//       throw error;
-//     });
-// };
+const searchOrders = async (params = {}) => {
+  return await api
+    .get("/orders", { params: params, headers: getHeaders() })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error("API Error", error);
+      throw error;
+    });
+};
 
 const createOrder = async (requestBody) => {
   return await api
@@ -74,7 +74,7 @@ const updateOrder = async (orderId, requestBody) => {
 // };
 
 export default {
-  //   searchOrders,
+  searchOrders,
   createOrder,
   getOrderByUserEmail,
   //   getOrderByOrderId,

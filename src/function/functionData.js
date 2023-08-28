@@ -424,21 +424,6 @@ export const useGetProductsByTags = () => {
   let products = useSelector((state) => state.productReducer.products);
   let listCatalogueByTag = useGetTagsProducts();
 
-  // listCatalogueByTag.forEach((tag) => {
-  //   // Lọc ra các sản phẩm có tag tương ứng
-  //   const filteredProducts = products.filter((product) => {
-  //     let tagDraft = product.tag.toString();
-
-  //     if (tagDraft.toLocaleLowerCase().includes(tag)) {
-  //       return true;
-  //     } else {
-  //       return false;
-  //     }
-  //   });
-
-  //   result[tag] = filteredProducts;
-  // });
-
   listCatalogueByTag.forEach((tag) => {
     // Lọc ra các sản phẩm có tag tương ứng
     const filteredProducts = products.filter((product) => {

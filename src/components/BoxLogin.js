@@ -63,7 +63,12 @@ export default function BoxLogin() {
           navigate("/");
         })
         .catch((error) => {
-          alert(error.response.statusText);
+          setError({
+            isShowStatus: true,
+            status: true,
+            errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
+          });
+          console.log(error.response.statusText);
         });
     }
   };
@@ -78,7 +83,6 @@ export default function BoxLogin() {
     } else {
       newError = { isShowStatus: false, status: false, errorMsg: "" };
     }
-
     setError(newError); // Cập nhật error
   };
 

@@ -19,6 +19,7 @@ import { clearCart } from "../actions/userAction";
 function CartList() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   let cart = userLogined.cart;
+  // userLogined.cart && cart=userLogined.cart
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

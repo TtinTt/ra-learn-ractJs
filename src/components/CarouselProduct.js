@@ -11,12 +11,12 @@ import { inputSearchBox } from "../actions/productAction";
 import { useEffect, useState } from "react";
 import "./../css/CarouselProduct.css";
 import Image from "react-bootstrap/Image";
-
+import productApi from "../apis/product.api";
 import {
   TruncateString,
   CheckLink,
   useGetTagsProducts,
-  useGetProductsByTags,
+  // fetchProductsByTags,
   Changedot,
 } from "../function/functionData";
 import UserButton from "./UserButton";
@@ -28,6 +28,7 @@ function CarouselProduct() {
   let link = CheckLink();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const [index, setIndex] = useState(0);
 
@@ -44,97 +45,220 @@ function CarouselProduct() {
     return array[randomIndex];
   };
 
+  const getTag = async () => {
+    // const navigate = useNavigate();
+    setLoading(true);
+
+    await productApi
+      .getTag({})
+      .then((data) => {
+        console.log("1-lấy các tag", data.tags);
+        // setValue(data.maxPrice);
+        // setMinPrice(data.minPrice);
+        // setMaxPrice(data.maxPrice);
+        setTagsProducts(data.tags);
+        fetchProductsByTags(data.tags);
+        console.log("data.tags", data.tags);
+        setLoading(false);
+      })
+      .catch((error) => {
+        alert(error);
+        if (error.response.status === 401) {
+          alert(error.response.statusText);
+          // navigate("/products");
+        } else {
+          alert(error.response.statusText);
+        }
+      });
+
+    // setSelectedProductIds([]);
+  };
+  const [tagsProducts, setTagsProducts] = useState([]);
+
+  useEffect(() => {
+    getTag();
+  }, []);
+
+  // useEffect(() => {
+  //   fetchProductsByTags();
+  // }, [tagsProducts]);
+
   // lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm
-  let tagsProducts = useGetTagsProducts();
+  // let tagsProducts = useGetTagsProducts();
 
   // lấy ra các array là list product từ products trên store theo từng tag
-  let productsByTags = useGetProductsByTags();
+
+  const fetchProductsByTags = async (listCatalogueByTag) => {
+    console.log("listCatalogueByTag", listCatalogueByTag);
+
+    const promises = listCatalogueByTag.map(async (tag) => {
+      try {
+        const data = await productApi.searchProducts({
+          name: "",
+          page: 1,
+          limit: 8,
+          maxPrice: null,
+          sortType: 0,
+          category: tag,
+        });
+        return { tag, data: data.records };
+      } catch (error) {
+        alert(error);
+        if (error.response && error.response.status === 401) {
+          alert(error.response.statusText);
+        } else {
+          alert(error.response.statusText);
+        }
+        return null; // hoặc return { tag, data: null } tùy thuộc vào cách bạn muốn xử lý
+      }
+    });
+
+    const results = await Promise.all(promises);
+    const resultMap = {};
+    results.forEach(({ tag, data }) => {
+      if (data) {
+        resultMap[tag] = data;
+      }
+    });
+
+    setProductsByTags(resultMap);
+    console.log("result", resultMap);
+  };
+
+  const [productsByTags, setProductsByTags] = useState({});
+
+  // let productsByTags = fetchProductsByTags();
+
+  // lấy ra các array là list product từ products trên store theo từng tag
 
   const carouselItem = tagsProducts.map((tag) => {
-    // lấy ra các phần tử ngẫu nhiên của array chứa các sản phẩm theo từng tag
-    let productShow = getRandomElement(productsByTags[tag.toString()]);
+    if (loading) {
+      return <h5 className="text-center msgCartTop">Loading...</h5>;
+    } else {
+      const productsForTag = productsByTags[tag.toString().toLowerCase()];
 
-    // console.log(productShow);
-    return (
-      <Carousel.Item key={productShow.id} className="CarouselItem">
-        <ProductCard screen={productShow.img[0]} product={productShow} />
-        <Carousel.Caption>
-          <h4 className="CarouselProductText">{productShow.name}</h4>
-          <h4 className="CarouselProductText ">
-            {Changedot([productShow.price])}
-            {productShow.comparative > productShow.price && (
-              <>
-                {" "}
-                <strike
-                  style={{
-                    paddingLeft: "5px",
-                    color: "#DADADA",
-                    fontWeight: "400",
-                  }}
-                >
-                  {Changedot([productShow.comparative])}
-                </strike>
-                <span
-                  style={{
-                    paddingLeft: "5px",
-                    color: "#FFA500",
-                    fontWeight: "400",
-                  }}
-                >
-                  {"(Giảm giá "}
-                  {(
-                    100 -
-                    (productShow.price / productShow.comparative) * 100
-                  ).toFixed(0)}
-                  {"%)"}
-                </span>
-              </>
-            )}
-          </h4>
-          {/* <p className="CarouselProductText">
-            {TruncateString(productShow.description, 100)}
-          </p> */}
-        </Carousel.Caption>
-      </Carousel.Item>
-    );
+      // Thêm điều kiện kiểm tra
+      if (!productsForTag || productsForTag.length === 0) {
+        return null; // Không trả về gì cả nếu không có sản phẩm cho tag này
+      }
+      // const productsForTag = fetchProducts(tag.toString().toLowerCase());
+      let productShow = getRandomElement(productsForTag);
+
+      if (!productShow) {
+        return null; // Không trả về gì nếu không có sản phẩm được chọn
+      }
+      // console.log(productShow);
+      if (productShow && productsByTags) {
+        return (
+          <Carousel.Item key={productShow.id} className="CarouselItem">
+            <ProductCard screen={productShow.img[0]} product={productShow} />
+            <Carousel.Caption>
+              <h4 className="CarouselProductText">{productShow.name}</h4>
+              <h4 className="CarouselProductText ">
+                {Changedot([productShow.price])}
+                {productShow.comparative > productShow.price && (
+                  <>
+                    {" "}
+                    <strike
+                      style={{
+                        paddingLeft: "5px",
+                        color: "#DADADA",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {Changedot([productShow.comparative])}
+                    </strike>
+                    <span
+                      style={{
+                        paddingLeft: "5px",
+                        color: "#FFA500",
+                        fontWeight: "400",
+                      }}
+                    >
+                      {"(Giảm giá "}
+                      {(
+                        100 -
+                        (productShow.price / productShow.comparative) * 100
+                      ).toFixed(0)}
+                      {"%)"}
+                    </span>
+                  </>
+                )}
+              </h4>
+              {/* <p className="CarouselProductText">
+                {TruncateString(productShow.description, 100)}
+              </p> */}
+            </Carousel.Caption>
+          </Carousel.Item>
+        );
+      } else {
+        return null;
+      }
+    }
   });
 
   const cataloguelItem = tagsProducts.map((tag) => {
-    // lấy ra các phần tử ngẫu nhiên của array chứa các sản phẩm theo từng tag
-    let productShow = getRandomElement(productsByTags[tag.toString()]);
-    let urlLink = "/" + tag;
-    let lastItem = productShow.img.length - 1;
-    return (
-      <div
-        href={urlLink}
-        onClick={() => {
-          navigate(urlLink);
-        }}
-        className="imgCatalogue"
-        style={{
-          backgroundImage: `url(${productShow.img[lastItem]})`,
-        }}
-      >
-        <p>Bộ sưu tập</p>
-        <h4>{tag.toLocaleUpperCase()}</h4>
-      </div>
-    );
+    if (loading) {
+      return <h5 className="text-center msgCartTop">Loading...</h5>;
+    } else {
+      const productsForTag = productsByTags[tag.toString().toLowerCase()];
+
+      // Thêm điều kiện kiểm tra
+      if (!productsForTag || productsForTag.length === 0) {
+        return null; // Không trả về gì cả nếu không có sản phẩm cho tag này
+      }
+
+      let productShow = getRandomElement(productsForTag);
+
+      if (!productShow) {
+        return null; // Không trả về gì nếu không có sản phẩm được chọn
+      }
+      if (productsForTag && productsForTag.length > 0) {
+        productShow = getRandomElement(productsForTag);
+      }
+      let urlLink = "/" + tag;
+      let lastItem = productShow.img.length - 1;
+      if (productShow && productsByTags) {
+        return (
+          <div
+            href={urlLink}
+            onClick={() => {
+              navigate(urlLink);
+            }}
+            className="imgCatalogue"
+            style={{
+              backgroundImage: `url(${productShow.img[lastItem]})`,
+            }}
+          >
+            <p>Bộ sưu tập</p>
+            <h4>{tag.toLocaleUpperCase()}</h4>
+          </div>
+        );
+      } else {
+        return null;
+      }
+    }
   });
 
-  return (
-    <div id="bundleCarouselAndCatalouge">
-      <Carousel
-        fade
-        id="carouselScreen"
-        activeIndex={index}
-        onSelect={handleSelect}
-      >
-        {carouselItem}
-      </Carousel>
+  if (loading && productsByTags) {
+    return <h5 className="text-center msgCartTop">Loading...</h5>;
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+  } else {
+    return (
+      <div id="bundleCarouselAndCatalouge">
+        <Carousel
+          fade
+          id="carouselScreen"
+          activeIndex={index}
+          onSelect={handleSelect}
+        >
+          {carouselItem}
+        </Carousel>
 
-      <div id="catalogueScreen"> {cataloguelItem}</div>
-    </div>
-  );
+        <div id="catalogueScreen"> {cataloguelItem}</div>
+      </div>
+    );
+  }
 }
 
 export default CarouselProduct;

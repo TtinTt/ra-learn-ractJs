@@ -20,29 +20,43 @@ import UserButton from "./UserButton";
 import authApi from "../apis/auth.api";
 import userApi from "../apis/user.api";
 import { loginUser } from "../actions/userAction";
-
+import { loginAdmin } from "../actions/adminAction";
 function NavbarTop() {
   let link = CheckLink();
   // let userLogined = null;
   useEffect(() => {
-    link !== "admin" &&
-      authApi
-        .getAuth()
-        .then((response) => {
-          dispatch(loginUser(response));
-          console.log(response);
-        })
-        .catch((error) => {
-          dispatch(loginUser(null));
+    authApi
+      .getAuth()
+      .then((response) => {
+        // Kiểm tra nếu response có user
+        if (response.user) {
+          dispatch(loginUser(response.user));
+        } else {
+          // Xóa X-API-Key nếu không có user trong phản hồi
           localStorage.removeItem("X-API-Key");
-          console.log(error.response.status, error.response.statusText);
-        });
+          dispatch(loginUser(null));
+        }
+        // Kiểm tra nếu response có admin
+        if (response.admin) {
+          dispatch(loginAdmin(response.admin));
+        } else {
+          // Xóa X-API-Key-Admin nếu không có admin trong phản hồi
+          localStorage.removeItem("-Admin");
+          dispatch(loginAdmin(null));
+        }
+        console.log("verify:", response);
+      })
+      .catch((error) => {
+        //
+        console.log(error.response.status, error.response.statusText);
+      });
   }, [link]);
+
   let userLogined = useSelector((state) => state.userReducer.userLogined);
 
   useEffect(() => {
     console.log("userLogined", userLogined);
-    if (userLogined !== null) {
+    if (userLogined && userLogined.user_id) {
       userApi
         .updateUser(userLogined.user_id, userLogined)
         .then(() => {

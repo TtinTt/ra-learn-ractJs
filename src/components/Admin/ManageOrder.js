@@ -14,54 +14,120 @@ import { useNavigate } from "react-router-dom";
 import {
   getCurrentTimeString,
   getDaysDifference,
+  CheckLink,
 } from "../../function/functionData";
 import Modal from "react-bootstrap/Modal";
 import "../../css/Cart.css";
 import { updateStatusOrder } from "../../actions/orderAction";
 import OrderFilter from "../OrderFilter";
 import Pagination from "react-bootstrap/Pagination";
+import orderApi from "../../apis/order.api";
 
 function ManageOrder() {
+  let link = null;
+  let checkLink = CheckLink();
   // debugger;
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [orderDescription, setOrderDescription] = useState("");
+  const [total, setTotal] = useState([]);
 
-  let ordersStore = useSelector((state) => state.orderReducer.orders);
+  // let ordersStore = useSelector((state) => state.orderReducer.orders);
 
   let searchValue = useSelector((state) => state.orderReducer.searchFilter);
 
-  let orders = HandleFilterOrder();
+  let filter = useSelector((state) => state.orderReducer.filter);
+
+  // let orders = HandleFilterOrder();
+  const [orders, setOrders] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const checkTotal = (cart) => {
     let total = 0;
-    cart.forEach((order) => {
-      total = total + order.price * order.quantity;
-    });
+    if (cart !== undefined) {
+      cart.forEach((order) => {
+        total = total + order.price * order.quantity;
+      });
+    }
     return total;
   };
 
   const checkQuantity = (cart) => {
     let total = 0;
-    cart.forEach((order) => {
-      total = total + order.quantity;
-    });
+    if (cart !== undefined) {
+      cart.forEach((order) => {
+        total = total + order.quantity;
+      });
+    }
+
     return total;
   };
 
   const draftOrder = () => {
-    if (orders.length == 0) {
+    if (total == 0) {
       return null;
     } else {
       return orders[0];
     }
   };
+
+  const fetchOrders = async () => {
+    // console.log("đang lấy oder của user có email là ", userEmail);
+    // setLoading(true); // Cập nhật trạng thái loading ở đây trước khi gọi API
+    await orderApi
+      .searchOrders({
+        name: searchValue,
+        page: currentPage,
+        limit: ordersPerPage,
+        sortType: filter,
+      })
+      .then((data) => {
+        setOrders(data.records);
+        setTotal(data.total);
+        setLoading(false);
+        if (data.total <= 10) {
+          setCurrentPage(1);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+        if (error.response.status === 401) {
+          alert(error.response.statusText);
+          // navigate("/orders");
+        } else {
+          alert(error.response.statusText);
+          setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+        }
+      });
+  };
+
+  useEffect(() => {
+    fetchOrders();
+  }, [currentPage, searchValue, filter, link]);
+
   const handleUpdateStatusOrder = async (event) => {
     await setOrderShowing({ ...orderShowing, status: event.target.value });
-    await dispatch(
-      updateStatusOrder({ ...orderShowing, status: event.target.value })
-    );
+
+    // await dispatch(
+    //   updateStatusOrder({ ...orderShowing, status: event.target.value })
+    // );
+
+    // setLoading(true);
+    let newOrder = { status: event.target.value };
+    console.log(newOrder);
+    orderApi
+      .updateOrder(orderShowing.id, newOrder)
+      .then((response) => {
+        handleClose();
+        fetchOrders();
+        setLoading(false); // Cập nhật trạng thái loading ở đây
+      })
+      .catch((error) => {
+        alert(error.response.statusText);
+        setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+      });
   };
 
   const [orderShowing, setOrderShowing] = useState(draftOrder());
@@ -76,17 +142,17 @@ function ManageOrder() {
   };
 
   // Pagination phân trang
-  const [currentPage, setCurrentPage] = useState(1);
+
   const ordersPerPage = 10;
 
   const indexOfLastOrder = currentPage * ordersPerPage;
   const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
 
-  const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+  // const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
 
-  const totalPages = Math.ceil(orders.length / ordersPerPage);
+  const totalPages = Math.ceil(total / ordersPerPage);
 
-  const ordersCard = currentOrders.map((order, index) => {
+  const ordersCard = orders.map((order, index) => {
     return (
       <>
         <tr
@@ -144,14 +210,15 @@ function ManageOrder() {
   const changePage = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
+
   // khi 1 trong các biến phụ [currentPage, orders, indexOfFirstOrder, indexOfLastOrder]
   // thay đổi sẽ chạy lại để lấy giá trị mới nhất
   useEffect(() => {
     const description = `Đang hiển thị đơn hàng thứ ${
       indexOfFirstOrder + 1
     } đến ${
-      indexOfLastOrder > orders.length ? orders.length : indexOfLastOrder
-    } trong tổng số ${orders.length} đơn hàng`;
+      indexOfLastOrder > total ? total : indexOfLastOrder
+    } trong tổng số ${total} đơn hàng`;
     setOrderDescription(description);
   }, [currentPage, orders, indexOfFirstOrder, indexOfLastOrder]);
 
@@ -284,145 +351,153 @@ function ManageOrder() {
   };
 
   // console.log("orderShowing", orderShowing);
+  if (loading) {
+    return <h5 className="text-center msgCartTop">Loading...</h5>;
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+  } else {
+    return (
+      <>
+        {" "}
+        <OrderFilter></OrderFilter>
+        {total == 0 ? (
+          <h6 className="text-center msgCartTop">
+            Không có đơn hàng nào giống như bạn đang tìm kiếm.
+          </h6>
+        ) : (
+          <>
+            <div className="text-center">
+              <>
+                <Table striped bordered hover variant="light">
+                  <thead>
+                    <tr>
+                      <th className="text-center">#</th>
+                      <th
+                        className="text-left position-relative"
+                        style={{ padding: "auto" }}
+                      >
+                        Khách hàng
+                      </th>
+                      <th className="text-center">Thời gian</th>
+                      <th className="text-center">Số lượng sản phẩm</th>
+                      <th className="text-center">Giá đơn hàng</th>
+                      <th className="text-center">Trạng thái đơn hàng</th>
+                    </tr>
+                  </thead>
+                  <tbody>{ordersCard}</tbody>
+                </Table>
+                {PaginationSet()}
+              </>
 
-  return (
-    <>
-      {" "}
-      <OrderFilter></OrderFilter>
-      {orders.length == 0 ? (
-        <h6 className="text-center msgCartTop">
-          Không có đơn hàng nào giống như bạn đang tìm kiếm.
-        </h6>
-      ) : (
-        <>
-          <div className="text-center">
-            <>
-              <Table striped bordered hover variant="light">
-                <thead>
-                  <tr>
-                    <th className="text-center">#</th>
-                    <th
-                      className="text-left position-relative"
-                      style={{ padding: "auto" }}
-                    >
-                      Khách hàng
-                    </th>
-                    <th className="text-center">Thời gian</th>
-                    <th className="text-center">Số lượng sản phẩm</th>
-                    <th className="text-center">Giá đơn hàng</th>
-                    <th className="text-center">Trạng thái đơn hàng</th>
-                  </tr>
-                </thead>
-                <tbody>{ordersCard}</tbody>
-              </Table>
-              {PaginationSet()}
-            </>
-
-            <>
-              {/* modal */}
-              <Modal size="lg" show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Chi tiết đơn hàng</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                  {orderShowing && orderInfo(orderShowing)}
-                  {orderShowing && (
-                    <div>
-                      <br></br>
-                      <h6>
-                        <strong>Thông tin giao hàng</strong>
-                      </h6>
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1">
-                          Người nhận
-                        </InputGroup.Text>
-                        <Form.Control
-                          disabled
-                          value={orderShowing.address.name}
-                        />
-                        <InputGroup.Text id="basic-addon1">
-                          Số điện thoại
-                        </InputGroup.Text>
-                        <Form.Control
-                          disabled
-                          value={orderShowing.address.phoneNumber}
-                        />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1">
-                          Địa chỉ nhận hàng
-                        </InputGroup.Text>
-                        <Form.Control
-                          disabled
-                          value={orderShowing.address.address}
-                        />
-                      </InputGroup>
-                      <InputGroup className="mb-3">
-                        <InputGroup.Text id="basic-addon1">
-                          Lưu ý giao hàng
-                        </InputGroup.Text>
-                        <Form.Control
-                          placeholder="Không có lưu ý giao hàng"
-                          disabled
-                          value={orderShowing.address.note}
-                        />
-                      </InputGroup>
-
-                      <>
+              <>
+                {/* modal */}
+                <Modal size="lg" show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Chi tiết đơn hàng</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {orderShowing && orderInfo(orderShowing)}
+                    {orderShowing && (
+                      <div>
                         <br></br>
-                        <p>
-                          <strong>Cập nhật trạng thái đơn hàng</strong>
-                        </p>
-                        <Form.Select
-                          aria-label="Default select example"
-                          onChange={(event) => {
-                            handleUpdateStatusOrder(event);
-                          }}
-                          value={orderShowing.status}
-                        >
-                          <option value="0">
-                            Đang xử lý thông tin đơn hàng
-                          </option>
-                          <option value="1">Đơn hàng đang được chuẩn bị</option>
-                          <option value="2">Đơn hàng đang được giao tới</option>
-                          <option value="3">
-                            Đơn hàng đã được giao thành công
-                          </option>
-                          <option value="4">
-                            Đơn hàng giao không thành công và đang chuyển hoàn
-                          </option>
-                          <option value="5">
-                            Đơn hàng đã được chuyển hoàn
-                          </option>
-                          <option value="-1">
-                            Đơn hàng đã bị huỷ bởi khách hàng
-                          </option>
-                          <option value="-2">Từ chối đơn hàng</option>
-                        </Form.Select>
-                      </>
-                      {getDaysDifference(orderShowing.date) < 4 && (
+                        <h6>
+                          <strong>Thông tin giao hàng</strong>
+                        </h6>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text id="basic-addon1">
+                            Người nhận
+                          </InputGroup.Text>
+                          <Form.Control
+                            disabled
+                            value={orderShowing.address.name}
+                          />
+                          <InputGroup.Text id="basic-addon1">
+                            Số điện thoại
+                          </InputGroup.Text>
+                          <Form.Control
+                            disabled
+                            value={orderShowing.address.phoneNumber}
+                          />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text id="basic-addon1">
+                            Địa chỉ nhận hàng
+                          </InputGroup.Text>
+                          <Form.Control
+                            disabled
+                            value={orderShowing.address.address}
+                          />
+                        </InputGroup>
+                        <InputGroup className="mb-3">
+                          <InputGroup.Text id="basic-addon1">
+                            Lưu ý giao hàng
+                          </InputGroup.Text>
+                          <Form.Control
+                            placeholder="Không có lưu ý giao hàng"
+                            disabled
+                            value={orderShowing.address.note}
+                          />
+                        </InputGroup>
+
                         <>
                           <br></br>
-                          <p
-                            className="text-center"
-                            style={{ color: "#dc3545" }}
-                          >
-                            Đơn hàng đang được xử lý và còn trong thời gian có
-                            thể huỷ bởi khách hàng
+                          <p>
+                            <strong>Cập nhật trạng thái đơn hàng</strong>
                           </p>
+                          <Form.Select
+                            aria-label="Default select example"
+                            onChange={(event) => {
+                              handleUpdateStatusOrder(event);
+                            }}
+                            value={orderShowing.status}
+                          >
+                            <option value="0">
+                              Đang xử lý thông tin đơn hàng
+                            </option>
+                            <option value="1">
+                              Đơn hàng đang được chuẩn bị
+                            </option>
+                            <option value="2">
+                              Đơn hàng đang được giao tới
+                            </option>
+                            <option value="3">
+                              Đơn hàng đã được giao thành công
+                            </option>
+                            <option value="4">
+                              Đơn hàng giao không thành công và đang chuyển hoàn
+                            </option>
+                            <option value="5">
+                              Đơn hàng đã được chuyển hoàn
+                            </option>
+                            <option value="-1">
+                              Đơn hàng đã bị huỷ bởi khách hàng
+                            </option>
+                            <option value="-2">Từ chối đơn hàng</option>
+                          </Form.Select>
                         </>
-                      )}
-                      <br></br>
-                    </div>
-                  )}
-                </Modal.Body>
-              </Modal>
-            </>
-          </div>
-        </>
-      )}
-    </>
-  );
+                        {getDaysDifference(orderShowing.date) < 4 && (
+                          <>
+                            <br></br>
+                            <p
+                              className="text-center"
+                              style={{ color: "#dc3545" }}
+                            >
+                              Đơn hàng đang được xử lý và còn trong thời gian có
+                              thể huỷ bởi khách hàng
+                            </p>
+                          </>
+                        )}
+                        <br></br>
+                      </div>
+                    )}
+                  </Modal.Body>
+                </Modal>
+              </>
+            </div>
+          </>
+        )}
+      </>
+    );
+  }
 }
 
 export default ManageOrder;
