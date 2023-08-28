@@ -41,9 +41,9 @@ function Admin() {
         <Tab eventKey="admin" title="Người dùng">
           <ManageUser />
         </Tab>
-        {/* <Tab eventKey="contact" title="Lời nhắn">
+        <Tab eventKey="contact" title="Lời nhắn">
           <ManageMess />
-        </Tab> */}
+        </Tab>
       </Tabs>
 
       <FooterBot />

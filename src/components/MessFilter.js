@@ -22,12 +22,13 @@ import {
   inputSearchBox,
 } from "../actions/productAction";
 import { inputSearchMess } from "../actions/messAction";
-
 import { FormLabel } from "react-bootstrap";
+import { filterMess } from "../actions/messAction";
+
 function MessFilter() {
   let valueSearch = useSelector((state) => state.orderReducer.searchFilter);
 
-  const [sort, setSort] = useState(0); // Giá trị mặc định
+  const [sort, setSort] = useState(2); // Giá trị mặc định
 
   const [searchValue, setSearchValue] = useState(""); // Giá trị mặc định
 
@@ -51,6 +52,20 @@ function MessFilter() {
   const handleGetInput = (event) => {
     dispatch(inputSearchMess(event.target.value));
   };
+  const setFilterMess = () => {
+    if (sort == "2") {
+      return "Tất cả";
+    } else if (sort == 1) {
+      return "Chưa phản hồi";
+    } else if (sort == 0) {
+      return "Đã phản hồi";
+    }
+  };
+
+  const changeFilter = (value) => {
+    setSort(Number(value));
+    dispatch(filterMess(Number(value)));
+  };
 
   return (
     <Navbar expand="lg" className="bg-body-tertiary navbar-filter">
@@ -63,6 +78,33 @@ function MessFilter() {
           </div>
           <div id="groupSearchProduct">
             {" "}
+            <Nav className="d-flex position-relative" style={{ top: "0px" }}>
+              {" "}
+              <Form.Control
+                placeholder="Hiển thị"
+                for="input-group-dropdown-2"
+                disabled
+                aria-label="Text input with dropdown button"
+                className="sortStatus2"
+                // style={{ width: "155px !important" }}
+              />
+              <DropdownButton
+                variant="outline-secondary"
+                title={setFilterMess()}
+                id="input-group-dropdown-3"
+                align="end"
+              >
+                <Dropdown.Item onClick={() => changeFilter(2)} href="#">
+                  Tất cả
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => changeFilter(1)} href="#">
+                  Chưa phản hồi{" "}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => changeFilter(0)} href="#">
+                  Đã phản hồi{" "}
+                </Dropdown.Item>
+              </DropdownButton>
+            </Nav>
             <Nav
               className="d-flex position-relative"
               style={{ top: "8px" }}

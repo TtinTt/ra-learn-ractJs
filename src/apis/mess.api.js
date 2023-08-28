@@ -1,8 +1,8 @@
 import api, { getHeaders } from "./api";
 
-const searchUsers = async (params = {}) => {
+const searchMesss = async (params = {}) => {
   return await api
-    .get("/users", { params: params, headers: getHeaders() })
+    .get("/messs", { params: params, headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -12,9 +12,9 @@ const searchUsers = async (params = {}) => {
     });
 };
 
-const createUser = async (requestBody) => {
+const createMess = async (requestBody) => {
   return await api
-    .postForm("/users", requestBody, { headers: getHeaders() })
+    .post("/messs", requestBody, { headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -24,9 +24,9 @@ const createUser = async (requestBody) => {
     });
 };
 
-const getUserByUserId = async (userId) => {
+const getMessByMessId = async (messId) => {
   return await api
-    .get(`/users/${userId}`, { headers: getHeaders() })
+    .get(`/messs/${messId}`, { headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -36,11 +36,11 @@ const getUserByUserId = async (userId) => {
     });
 };
 
-const updateUser = async (userId, requestBody) => {
-  //   await console.log("requestBody", requestBody);
+const updateMess = async (messId, requestBody) => {
+  await console.log("requestBody mess", requestBody);
 
   return await api
-    .put(`/users/${userId}`, requestBody, { headers: getHeaders() })
+    .put(`/messs/${messId}`, requestBody, { headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -50,9 +50,9 @@ const updateUser = async (userId, requestBody) => {
     });
 };
 
-const deleteUser = async (userId) => {
+const deleteMess = async (messId) => {
   return await api
-    .delete(`/users/${userId}`, { headers: getHeaders() })
+    .delete(`/messs/${messId}`, { headers: getHeaders() })
     .then((response) => {
       return response.data;
     })
@@ -63,9 +63,9 @@ const deleteUser = async (userId) => {
 };
 
 export default {
-  searchUsers,
-  createUser,
-  getUserByUserId,
-  updateUser,
-  deleteUser,
+  searchMesss,
+  createMess,
+  getMessByMessId,
+  updateMess,
+  deleteMess,
 };

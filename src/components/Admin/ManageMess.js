@@ -14,6 +14,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import { useNavigate } from "react-router-dom";
 import {
   getCurrentTimeString,
+  CheckLink,
   getDaysDifference,
 } from "../../function/functionData";
 import Modal from "react-bootstrap/Modal";
@@ -23,45 +24,82 @@ import MessFilter from "../MessFilter";
 import Pagination from "react-bootstrap/Pagination";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
+import messApi from "../../apis/mess.api";
+
 function ManageMess() {
   // debugger;
+  let link = CheckLink();
+  const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [messDescription, setMessDescription] = useState("");
+  const [messs, setMesss] = useState([]);
+  const [total, setTotal] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  let messsStore = useSelector((state) => state.messReducer.messs);
-
+  // let messsStore = useSelector((state) => state.messReducer.messs);
+  let filter = useSelector((state) => state.messReducer.filter);
   let searchValue = useSelector((state) => state.messReducer.searchFilter);
 
-  let messs = HandleFilterMess();
-
-  const checkTotal = (cart) => {
-    let total = 0;
-    cart.forEach((mess) => {
-      total = total + mess.price * mess.quantity;
-    });
-    return total;
+  // let messs = HandleFilterMess();
+  const fetchMesss = async () => {
+    // console.log("đang lấy oder của mess có email là ", messEmail);
+    // setLoading(true); // Cập nhật trạng thái loading ở đây trước khi gọi API
+    await messApi
+      .searchMesss({
+        name: searchValue,
+        page: currentPage,
+        limit: messsPerPage,
+        sortType: filter,
+      })
+      .then((data) => {
+        setMesss(data.records);
+        setTotal(data.total);
+        setLoading(false);
+        if (data.total <= 10) {
+          setCurrentPage(1);
+        }
+      })
+      .catch((error) => {
+        alert(error);
+        if (error.response.status === 401) {
+          alert(error.response.statusText);
+          // navigate("/messs");
+        } else {
+          alert(error.response.statusText);
+          setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+        }
+      });
   };
 
-  const checkQuantity = (cart) => {
-    let total = 0;
-    cart.forEach((mess) => {
-      total = total + mess.quantity;
-    });
-    return total;
-  };
+  useEffect(() => {
+    fetchMesss();
+  }, [currentPage, searchValue, filter, link]);
 
   const handleUpdateStatusMess = async (event, mess) => {
-    let value = true;
-    if (event.target.value == "false") {
-      value = false;
+    let value = 1;
+    if (event.target.value == "0") {
+      value = 0;
     }
+    console.log("mess check value", value, mess.id, { ...mess, status: value });
+    messApi
+      .updateMess(mess.id, { ...mess, status: value })
+      .then((response) => {
+        handleClose();
+        fetchMesss();
+        setLoading(false); // Cập nhật trạng thái loading ở đây
+      })
+      .catch((error) => {
+        alert(error.response.statusText);
+        setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+      });
+
     await setMessShowing({ ...mess, status: value });
-    await dispatch(updateStatusMess({ ...mess, status: value }));
+    // await dispatch(updateStatusMess({ ...mess, status: value }));
   };
   // const draftMess = () => {
-  //   if (messs.length == 0) {
+  //   if (total == 0) {
   //     return null;
   //   } else {
   //     return messs[0];
@@ -80,7 +118,6 @@ function ManageMess() {
   };
 
   // Pagination phân trang
-  const [currentPage, setCurrentPage] = useState(1);
   const messsPerPage = 10;
 
   const indexOfLastMess = currentPage * messsPerPage;
@@ -88,12 +125,12 @@ function ManageMess() {
 
   const currentMesss = messs.slice(indexOfFirstMess, indexOfLastMess);
 
-  const totalPages = Math.ceil(messs.length / messsPerPage);
+  const totalPages = Math.ceil(total / messsPerPage);
 
   // const messsCard = currentMesss.map((mess, index) => {
 
   const messsCard = messs.map((mess, index) => {
-    console.log(mess);
+    // console.log(mess);
     return (
       <>
         <tr>
@@ -172,8 +209,8 @@ function ManageMess() {
                 // .toString()
               }
             >
-              <option value="true">Đã phản hồi</option>
-              <option value="false">Chưa phản hồi</option>
+              <option value="0">Đã phản hồi</option>
+              <option value="1">Chưa phản hồi</option>
             </Form.Select>
           </td>
         </tr>
@@ -190,8 +227,8 @@ function ManageMess() {
     const description = `Đang hiển thị lời nhắn thứ ${
       indexOfFirstMess + 1
     } đến ${
-      indexOfLastMess > messs.length ? messs.length : indexOfLastMess
-    } trong tổng số ${messs.length} lời nhắn`;
+      indexOfLastMess > total ? total : indexOfLastMess
+    } trong tổng số ${total} lời nhắn`;
     setMessDescription(description);
   }, [currentPage, messs, indexOfFirstMess, indexOfLastMess]);
 
@@ -309,8 +346,8 @@ function ManageMess() {
                 // .toString()
               }
             >
-              <option value="true">Đã phản hồi</option>
-              <option value="false">Chưa phản hồi</option>
+              <option value="0">Đã phản hồi</option>
+              <option value="1">Chưa phản hồi</option>
             </Form.Select>
           </InputGroup>
         </InputGroup>
@@ -321,55 +358,61 @@ function ManageMess() {
   };
 
   // console.log("messShowing", messShowing);
+  if (loading) {
+    return <h5 className="text-center msgCartTop">Loading...</h5>;
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+  } else {
+    return (
+      <>
+        {" "}
+        <MessFilter></MessFilter>
+        {total == 0 ? (
+          <h6 className="text-center msgCartTop">
+            Không có lời nhắn nào giống như bạn đang tìm kiếm.
+          </h6>
+        ) : (
+          <>
+            <div className="text-center">
+              <>
+                <Table striped bmessed hover variant="light">
+                  <thead>
+                    <tr>
+                      <th className="text-center">#</th>
+                      <th
+                        className="text-left position-relative"
+                        style={{ padding: "auto" }}
+                      >
+                        Ngày tạo lời nhắn
+                      </th>
+                      <th className="text-center">Email</th>
+                      <th className="text-center">Tên</th>
+                      <th className="text-center">Số điện thoại</th>
+                      <th className="text-center">Nội dung</th>
+                      <th className="text-center"></th>
+                    </tr>
+                  </thead>
+                  <tbody>{messsCard}</tbody>
+                </Table>
+                {PaginationSet()}
+              </>
 
-  return (
-    <>
-      {" "}
-      <MessFilter></MessFilter>
-      {messs.length == 0 ? (
-        <h6 className="text-center msgCartTop">
-          Không có lời nhắn nào giống như bạn đang tìm kiếm.
-        </h6>
-      ) : (
-        <>
-          <div className="text-center">
-            <>
-              <Table striped bmessed hover variant="light">
-                <thead>
-                  <tr>
-                    <th className="text-center">#</th>
-                    <th
-                      className="text-left position-relative"
-                      style={{ padding: "auto" }}
-                    >
-                      Ngày tạo lời nhắn
-                    </th>
-                    <th className="text-center">Email</th>
-                    <th className="text-center">Tên</th>
-                    <th className="text-center">Số điện thoại</th>
-                    <th className="text-center">Nội dung</th>
-                    <th className="text-center"></th>
-                  </tr>
-                </thead>
-                <tbody>{messsCard}</tbody>
-              </Table>
-              {PaginationSet()}
-            </>
-
-            <>
-              {/* modal */}
-              <Modal size="lg" show={show} onHide={handleClose}>
-                <Modal.Header closeButton>
-                  <Modal.Title>Thông tin lời nhắn</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>{messShowing && messInfo(messShowing)}</Modal.Body>
-              </Modal>
-            </>
-          </div>
-        </>
-      )}
-    </>
-  );
+              <>
+                {/* modal */}
+                <Modal size="lg" show={show} onHide={handleClose}>
+                  <Modal.Header closeButton>
+                    <Modal.Title>Thông tin lời nhắn</Modal.Title>
+                  </Modal.Header>
+                  <Modal.Body>
+                    {messShowing && messInfo(messShowing)}
+                  </Modal.Body>
+                </Modal>
+              </>
+            </div>
+          </>
+        )}
+      </>
+    );
+  }
 }
 
 export default ManageMess;

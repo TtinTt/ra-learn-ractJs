@@ -104,10 +104,12 @@ export const hanleGetColor = (status) => {
   return ORDER_STATUSES[orderStatus]?.color || "none";
 };
 export const prependLocalhost = (str) => {
-  if (!str.startsWith("https://") || str.startsWith("http://")) {
-    return "http://localhost:8000/" + str;
-  }
-  return str;
+  if (str) {
+    if (!str.startsWith("https://") || str.startsWith("http://")) {
+      return "http://localhost:8000/" + str;
+    }
+    return str;
+  } else return str;
 };
 // lấy thời gian hiện tại và sửa dịnh dạng
 export const getCurrentTimeString = () => {
@@ -161,12 +163,16 @@ export const TruncateString = (str, lenInput) => {
 
 // cắt lấy tên từ họ và tên ...
 export const TruncateName = (name, lenInput) => {
-  let fullName = name.split(" ");
-  let Fname = fullName[fullName.length - 1];
-  if (Fname.length > lenInput) {
-    return Fname.substring(0, lenInput) + "...";
+  if (name) {
+    let fullName = name.split(" ");
+    let Fname = fullName[fullName.length - 1];
+    if (Fname.length > lenInput) {
+      return Fname.substring(0, lenInput) + "...";
+    } else {
+      return Fname;
+    }
   } else {
-    return Fname;
+    return name;
   }
 };
 

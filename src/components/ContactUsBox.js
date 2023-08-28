@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import { saveMess } from "../actions/messAction";
 import { getCurrentTimeString } from "../function/functionData";
 import { v4 as uuidv4 } from "uuid";
-
+import messApi from "../apis/mess.api";
 function ContactUsBox() {
   const navigate = useNavigate();
 
@@ -37,23 +37,23 @@ function ContactUsBox() {
   const draftInfo = () => {
     if (userLogined) {
       return {
-        id: uuidv4(),
+        // id: uuidv4(),
         email: userLogined.email,
         name: userLogined.name ?? "",
         phone: userLogined.phone ?? "",
         date: getCurrentTimeString(),
         mess: "",
-        status: false,
+        status: 1,
       };
     } else {
       return {
-        id: uuidv4(),
+        // id: uuidv4(),
         email: "",
         name: "",
         phone: "",
         date: getCurrentTimeString(),
         mess: "",
-        status: false,
+        status: 1,
       };
     }
   };
@@ -100,8 +100,17 @@ function ContactUsBox() {
       setShowErr(true);
     } else {
       setShowErr(false);
-      setShow(true);
-      dispatch(saveMess(info)); // Gửi tới store
+      console.log(info);
+      messApi
+        .createMess(info)
+        .then((response) => {
+          setShow(true);
+        })
+        .catch((error) => {
+          console.log(error.response.statusText);
+        });
+
+      // dispatch(saveMess(info)); // Gửi tới store
     }
   };
 

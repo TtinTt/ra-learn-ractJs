@@ -27,8 +27,8 @@ import DropdownButton from "react-bootstrap/DropdownButton";
 import userApi from "../../apis/user.api";
 function ManageUser() {
   // debugger;
-  let link = null;
-  let checkLink = CheckLink();
+  let link = CheckLink();
+
   const [loading, setLoading] = useState(true);
 
   const navigate = useNavigate();
@@ -101,8 +101,13 @@ function ManageUser() {
   }, [currentPage, searchValue, filter, link]);
 
   const handleUpdateStatusUser = async (event, user) => {
+    let value = 1;
+    if (event.target.value == "0") {
+      value = 0;
+    }
+    console.log("user", user);
     userApi
-      .updateUser(user.email, { ...user, status: value })
+      .updateUser(user.user_id, { ...user, status: value })
       .then((response) => {
         handleClose();
         fetchUsers();
@@ -113,21 +118,28 @@ function ManageUser() {
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
 
-    let value = true;
-    if (event.target.value == "false") {
-      value = false;
-    }
-
     await setUserShowing({ ...user, status: value });
     await dispatch(updateStatusUser({ ...user, status: value }));
   };
 
   const handleUpdateStatusMultiUser = async (event, listUser) => {
     console.log(event);
-    let value = event.target.value === "true" ? true : false;
+    let value = event.target.value === "1" ? 1 : 0;
     console.log(listUser);
     listUser.forEach((user) => {
-      dispatch(updateStatusUser({ ...user, status: value }));
+      userApi
+        .updateUser(user.user_id, { ...user, status: value })
+        .then((response) => {
+          handleClose();
+          fetchUsers();
+          // setLoading(false); // Cập nhật trạng thái loading ở đây
+        })
+        .catch((error) => {
+          alert(error.response.statusText);
+        });
+      setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+
+      // dispatch(updateStatusUser({ ...user, status: value }));
     });
 
     setListCheck([]);
@@ -227,8 +239,8 @@ function ManageUser() {
               }}
               value={user.status.toString()}
             >
-              <option value="true">Đang hoạt động</option>
-              <option value="false">Đình chỉ</option>
+              <option value="1">Đang hoạt động</option>
+              <option value="0">Đình chỉ</option>
             </Form.Select>
           </td>
         </tr>
@@ -389,8 +401,8 @@ function ManageUser() {
               }}
               value={info.status.toString()}
             >
-              <option value="true">Đang hoạt động</option>
-              <option value="false">Đình chỉ</option>
+              <option value="1">Đang hoạt động</option>
+              <option value="0">Đình chỉ</option>
             </Form.Select>
           </InputGroup>
         </InputGroup>
@@ -448,8 +460,8 @@ function ManageUser() {
                               }}
                             >
                               <option>Huỷ</option>
-                              <option value="true">Đang hoạt động</option>
-                              <option value="false">Đình chỉ</option>
+                              <option value="1">Đang hoạt động</option>
+                              <option value="0">Đình chỉ</option>
                             </Form.Select>
                           </span>
                         )}
@@ -461,7 +473,12 @@ function ManageUser() {
                         Email
                       </th>
                       <th className="text-center">Ngày tạo tài khoản</th>
-                      <th className="text-center">Tên</th>
+                      <th
+                        className="text-left position-relative headTable-Set"
+                        style={{ padding: "auto", textAlign: "left" }}
+                      >
+                        Tên
+                      </th>
                       <th className="text-center">Số điện thoại</th>
                       <th className="text-center">Trạng thái tài khoản</th>
                     </tr>

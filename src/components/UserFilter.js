@@ -69,26 +69,33 @@ function UserFilter() {
           </div>
           <div id="groupSearchProduct">
             {" "}
-            <Nav
-              className="d-flex position-relative"
-              style={{ top: "8px" }}
-            ></Nav>
-            <DropdownButton
-              variant="outline-secondary"
-              title={setFilterOrder()}
-              id="input-group-dropdown-3"
-              align="end"
-            >
-              <Dropdown.Item onClick={() => changeFilter(2)} href="#">
-                Tất cả
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeFilter(1)} href="#">
-                Đang hoạt động{" "}
-              </Dropdown.Item>
-              <Dropdown.Item onClick={() => changeFilter(0)} href="#">
-                Đình chỉ{" "}
-              </Dropdown.Item>
-            </DropdownButton>
+            <Nav className="d-flex position-relative" style={{ top: "0px" }}>
+              {" "}
+              <Form.Control
+                placeholder="Hiển thị"
+                for="input-group-dropdown-2"
+                disabled
+                aria-label="Text input with dropdown button"
+                className="sortStatus2"
+                // style={{ width: "155px !important" }}
+              />
+              <DropdownButton
+                variant="outline-secondary"
+                title={setFilterOrder()}
+                id="input-group-dropdown-3"
+                align="end"
+              >
+                <Dropdown.Item onClick={() => changeFilter(2)} href="#">
+                  Tất cả
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => changeFilter(1)} href="#">
+                  Đang hoạt động{" "}
+                </Dropdown.Item>
+                <Dropdown.Item onClick={() => changeFilter(0)} href="#">
+                  Đình chỉ{" "}
+                </Dropdown.Item>
+              </DropdownButton>
+            </Nav>
             <OverlayTrigger
               key={"left"}
               placement={"left"}

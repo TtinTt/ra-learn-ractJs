@@ -3,6 +3,7 @@ import { createReducer } from "@reduxjs/toolkit";
 const messReducer = createReducer(
   {
     searchFilter: "",
+    filter: 2,
     messs: [
       {
         id: "49621beb-c75f-459e-8706-00304e281122",
@@ -47,6 +48,12 @@ const messReducer = createReducer(
       return {
         ...state,
         messs: [...state.messs, action.payload],
+      };
+    },
+    FILTER_MESS: (state, action) => {
+      return {
+        ...state,
+        filter: action.payload,
       };
     },
 

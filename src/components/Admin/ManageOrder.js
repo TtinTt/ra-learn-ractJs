@@ -24,8 +24,8 @@ import Pagination from "react-bootstrap/Pagination";
 import orderApi from "../../apis/order.api";
 
 function ManageOrder() {
-  let link = null;
-  let checkLink = CheckLink();
+  let link = CheckLink();
+  // let checkLink = CheckLink();
   // debugger;
   const [loading, setLoading] = useState(true);
 

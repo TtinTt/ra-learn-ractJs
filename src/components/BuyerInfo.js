@@ -36,12 +36,27 @@ function BuyerInfo() {
     email: userLogined.email,
     name: userLogined.name,
     bday: userLogined.bday,
-    status: userLogined.status,
+    // status: userLogined.status,
     add_address: userLogined.add_address,
     note: userLogined.note,
     phone: userLogined.phone,
     img: userLogined.img,
   });
+
+  useEffect(() => {
+    setInfo({
+      ...info,
+      user_id: userLogined.user_id,
+      email: userLogined.email,
+      name: userLogined.name,
+      bday: userLogined.bday,
+      // status: userLogined.status,
+      add_address: userLogined.add_address,
+      note: userLogined.note,
+      phone: userLogined.phone,
+      img: userLogined.img,
+    });
+  }, [userLogined]);
   // modal
   const dispatch = useDispatch();
   const [show, setShow] = useState(false);
@@ -93,7 +108,7 @@ function BuyerInfo() {
       formData.append("name", info.name);
       formData.append("note", info.note);
       formData.append("phone", info.phone);
-      formData.append("status", info.status);
+      // formData.append("status", info.status);
 
       if (info.img) {
         formData.append("img", info.img);
@@ -111,8 +126,8 @@ function BuyerInfo() {
           authApi
             .getAuth()
             .then((response) => {
-              dispatch(loginUser(response));
-              console.log(response);
+              dispatch(loginUser(response.user));
+              console.log("updateUser", response.user);
             })
             .catch((error) => {
               dispatch(loginUser(null));
