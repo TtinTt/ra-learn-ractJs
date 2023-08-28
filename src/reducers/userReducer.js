@@ -4,6 +4,7 @@ const userReducer = createReducer(
   {
     userLogined: null,
     searchFilter: "",
+    filter: null,
     users: [
       {
         email: "demoUser1@gmail.com",
@@ -68,6 +69,12 @@ const userReducer = createReducer(
     ],
   },
   {
+    FILTER_USER: (state, action) => {
+      return {
+        ...state,
+        filter: action.payload,
+      };
+    },
     ADD_USER: (state, action) => {
       return {
         ...state,

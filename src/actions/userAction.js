@@ -36,6 +36,7 @@ export const logoutUser = () => {
     payload: null,
   };
 };
+export const filterUser = createAction("FILTER_USER");
 
 export const clearCart = createAction("CLEAR_CART");
 export const updateInfoUser = createAction("UPDATE_INFO");

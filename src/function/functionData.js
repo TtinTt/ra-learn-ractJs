@@ -104,7 +104,7 @@ export const hanleGetColor = (status) => {
   return ORDER_STATUSES[orderStatus]?.color || "none";
 };
 export const prependLocalhost = (str) => {
-  if (!str.startsWith("http://")) {
+  if (!str.startsWith("https://") || str.startsWith("http://")) {
     return "http://localhost:8000/" + str;
   }
   return str;
@@ -355,10 +355,9 @@ export const HandleFilterUser = () => {
   // lấy listUsers lọc theo ô search
   let listSorted = userList.filter((user) =>
     removeAccentsUpperCase(
-      getEmailName(user.email) +
-        user.name +
-        user.phone +
-        getStatusUser(user.status)
+      getEmailName(user.email) + user.name + user.phone
+      // +
+      // getStatusUser(user.status)
     ).includes(removeAccentsUpperCase(searchFilter).toUpperCase())
   );
   return listSorted;

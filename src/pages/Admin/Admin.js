@@ -37,11 +37,11 @@ function Admin() {
         {/* 
         <Tab eventKey="products" title="Sản phẩm">
           <ManageProduct />
-        </Tab>
+        </Tab>*/}
         <Tab eventKey="admin" title="Người dùng">
           <ManageUser />
         </Tab>
-        <Tab eventKey="contact" title="Lời nhắn">
+        {/* <Tab eventKey="contact" title="Lời nhắn">
           <ManageMess />
         </Tab> */}
       </Tabs>
