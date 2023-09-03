@@ -38,6 +38,7 @@ function UserButton({ link }) {
       .logout()
       .then((response) => {
         dispatch(logoutUser());
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -100,7 +101,7 @@ function UserButton({ link }) {
                 left: "-7px",
               }}
             >
-              {userLogined.name == ""
+              {userLogined.name == "" || !userLogined.name
                 ? TruncateString(userLogined.email, 9)
                 : TruncateName(userLogined.name, 12) == ""
                 ? TruncateString(userLogined.email, 9)

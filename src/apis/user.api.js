@@ -46,7 +46,7 @@ const updateUser = async (userId, requestBody) => {
     })
     .catch((error) => {
       console.error("API Error", error);
-      throw error;
+      return error;
     });
 };
 

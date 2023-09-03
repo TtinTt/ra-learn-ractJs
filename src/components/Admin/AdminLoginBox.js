@@ -64,7 +64,7 @@ function AdminLoginBox() {
           status: true,
           errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
         });
-        console.log(error.response.statusText);
+        console.log(error.response?.statusText);
       });
   };
   // validate data login

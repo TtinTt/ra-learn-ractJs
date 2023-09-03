@@ -3,7 +3,11 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { Changedot, getCurrentTimeString } from "../../function/functionData";
+import {
+  Changedot,
+  getCurrentTimeString,
+  CheckLink,
+} from "../../function/functionData";
 import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
@@ -15,59 +19,104 @@ import ProductCardAdmin from "./ProductCardAdmin";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Pagination from "react-bootstrap/Pagination";
-
+import productApi from "../../apis/product.api";
 export default function ManageProduct() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [total, setTotal] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const productListStore = useSelector(
     (state) => state.productReducer.products
   );
+  let link = CheckLink();
+  // lấy giá trị ô search
+  let searchFilter =
+    useSelector((state) => state.productReducer.searchFilter) ?? "";
+  const [loading, setLoading] = useState(true);
 
-  const productList = HandleFilter(productListStore);
-
+  // const productList = HandleFilter(productListStore);
+  const [productList, setProductList] = useState([]);
   const [productDescription, setProductDescription] = useState("");
+  // lấy option sort từ store
+  let sortOption = useSelector((state) => state.productReducer.sort) ?? 0;
+  // lấy max price sort từ store
+  let priceFromValue =
+    useSelector((state) => state.productReducer.priceFrom) ?? null;
 
   // Pagination phân trang
-  const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 10;
+
+  const fetchProducts = async () =>
+    // keyword, page, NUMBER_RECORDS_PER_PAGE
+    {
+      // const navigate = useNavigate();
+
+      await productApi
+        .searchProducts({
+          name: searchFilter,
+          page: currentPage,
+          limit: productsPerPage,
+          maxPrice: priceFromValue,
+          sortType: sortOption,
+          category: null,
+        })
+        .then((data) => {
+          setProductList(data.records);
+          setTotal(data.total);
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error);
+          if (error.response?.status === 401) {
+            console.log(error.response?.statusText);
+            // navigate("/products");
+          } else {
+            console.log(error.response?.statusText);
+          }
+        });
+
+      // setSelectedProductIds([]);
+    };
+
+  useEffect(() => {
+    fetchProducts();
+    console.log(searchFilter, currentPage, priceFromValue, sortOption, link);
+  }, [searchFilter, currentPage, priceFromValue, sortOption, link, loading]);
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  const currentProducts = productList.slice(
-    indexOfFirstProduct,
-    indexOfLastProduct
-  );
+  // const currentProducts = productList.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
 
-  const renderProducts = currentProducts.map((product, index) => {
+  const renderProducts = productList.map((product, index) => {
     return (
       <ProductCardAdmin
         key={index}
         render={"productCard"}
         i={index}
         product={product}
+        setLoading={setLoading}
       />
     );
   });
 
   // làm tròn
-  const totalPages = Math.ceil(productList.length / productsPerPage);
+  const totalPages = Math.ceil(total / productsPerPage);
 
   const changePage = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
   // khi 1 trong các biến phụ [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]
-  // thay đổi sẽ chạy lại để lấy giá trị mới nhất
+  // thay đổi sẽ chạy lại để lấy giá trị tất cả
   useEffect(() => {
-    const description = `Đang hiển thị sản phẩm thứ ${
-      indexOfFirstProduct + 1
-    } đến ${
-      indexOfLastProduct > productList.length
-        ? productList.length
-        : indexOfLastProduct
-    } trong tổng số ${productList.length} sản phẩm`;
+    const description = `${indexOfFirstProduct + 1} - ${
+      indexOfLastProduct > total ? total : indexOfLastProduct
+    } trong ${total} sản phẩm`;
     setProductDescription(description);
   }, [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]);
 
@@ -123,9 +172,10 @@ export default function ManageProduct() {
   };
 
   let draftProduct = {
-    id: uuidv4(),
+    id: null,
+    // uuidv4(),
     name: "",
-    img: [""],
+    img: [],
     tag: [],
     price: "",
     comparative: "",
@@ -182,12 +232,14 @@ export default function ManageProduct() {
                   {" "}
                   Thông tin sản phẩm{" "}
                 </h6>
+
                 <span style={{ float: "right" }}>
                   <ProductCardAdmin
                     key={0}
                     render={"addProduct"}
                     i={0}
                     product={draftProduct}
+                    setLoading={setLoading}
                   />
                 </span>
               </th>
@@ -198,7 +250,12 @@ export default function ManageProduct() {
               <th className="text-center"></th>
             </tr>
           </thead>
-          <tbody>{renderProducts}</tbody>
+
+          {loading ? (
+            <h5 className="text-center msgCartTop">Loading...</h5>
+          ) : (
+            <tbody>{renderProducts}</tbody>
+          )}
         </Table>
       )}
       {PaginationSet()}{" "}

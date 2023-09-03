@@ -66,24 +66,25 @@ export default function BoxChangePass() {
         authApi
           .getAuth()
           .then((response) => {
-            dispatch(loginUser(response));
+            // dispatch(loginUser(response));
             console.log(response);
           })
           .catch((error) => {
             dispatch(loginUser(null));
             localStorage.removeItem("X-API-Key");
-            console.log(error.response.status, error.response.statusText);
+            console.log(error.response?.status, error.response?.statusText);
           });
       })
       .catch((error) => {
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
           navigate("/login");
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         }
       });
   };
+
   // handle submit
   const handleSubmit = async (event) => {
     // // Lỗi thì ngưng chạy
@@ -103,11 +104,10 @@ export default function BoxChangePass() {
           console.log(response);
           window.localStorage.setItem("X-API-Key", response.token);
           changePassByApi();
-
           setShow(true);
         })
         .catch((error) => {
-          console.log(error.response.statusText);
+          console.log(error.response?.statusText);
           let newError = { ...error };
           setError({
             isShowStatus: true,
@@ -146,6 +146,9 @@ export default function BoxChangePass() {
     } else if (data.password.length < 6) {
       newError.status = true;
       newError.errorMsg = "Mật khẩu không được ngắn hơn 6 ký tự";
+    } else if (data.password.length > 200) {
+      newError.status = true;
+      newError.errorMsg = "Mật khẩu không được dài quá 200 ký tự";
     } else if (
       !(
         data.password.match(/[a-z]/) &&

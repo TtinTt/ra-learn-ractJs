@@ -1,8 +1,10 @@
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import productApi from "../apis/product.api";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../actions/userAction";
+import { loginAdmin } from "../actions/adminAction";
 
 export const removeAccentsUpperCase = (str) => {
   return str
@@ -28,12 +30,12 @@ export const fetchProducts = async (keyword, page, NUMBER_RECORDS_PER_PAGE) => {
       // setTotal(data.total);
     })
     .catch((error) => {
-      alert(error);
-      // if (error.response.status === 401) {
-      //   alert(error.response.statusText);
+      console.log(error);
+      // if (error.response?.status === 401) {
+      //   alert(error.response?.statusText);
       //   // navigate("/products");
       // } else {
-      //   alert(error.response.statusText);
+      //   alert(error.response?.statusText);
       // }
     });
 
@@ -121,6 +123,27 @@ export const getCurrentTimeString = () => {
   const minutes = ("0" + now.getMinutes()).slice(-2);
 
   return `${hours}:${minutes} ${date}/${month}/${year}`;
+};
+
+export const useClearLogined = () => {
+  const dispatch = useDispatch();
+
+  const clearLogined = (type) => {
+    if (type === "user") {
+      localStorage.removeItem("X-API-Key");
+      dispatch(loginUser(null));
+    } else if (type === "admin") {
+      localStorage.removeItem("X-API-Key-Admin");
+      dispatch(loginAdmin(null));
+    } else if (type === "all") {
+      localStorage.removeItem("X-API-Key");
+      dispatch(loginUser(null));
+      localStorage.removeItem("X-API-Key-Admin");
+      dispatch(loginAdmin(null));
+    }
+  };
+
+  return clearLogined;
 };
 
 // lấy số giờ từ thời điểm hiện tại đến một thời điểm khác (truyền vào dưới dạng string)

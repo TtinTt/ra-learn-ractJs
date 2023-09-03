@@ -11,6 +11,7 @@ import {
   addSpace,
   splitArray,
   removeDot,
+  prependLocalhost,
 } from "../../function/functionData";
 import { useNavigate } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
@@ -24,16 +25,17 @@ import {
   addProduct,
   deleteProduct,
 } from "../../actions/adminAction";
-
-function ProductCardAdmin({ render, i, product }) {
-  // console.log(render);
+import productApi from "../../apis/product.api";
+function ProductCardAdmin({ render, i, product, setLoading }) {
   const [currentImg, setCurrentImg] = useState(product.img[0]);
   const [quantity, setQuantity] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [newProduct, setNewProduct] = useState(product);
   const [showConfirmDeleProduct, setShowConfirmDeleProduct] = useState(false);
+  const [errors, setErrors] = useState(new Map());
 
+  // let loading = setLoading();
   useEffect(() => {
     setCurrentImg(product.img[0]);
   }, [product]);
@@ -68,9 +70,54 @@ function ProductCardAdmin({ render, i, product }) {
       </>
     );
   };
+
+  const [valueLink, setValueLink] = useState("");
+
+  const handleAddLink = (event) => {
+    if (!valueLink) {
+      return;
+    }
+
+    const currentImages = newProduct.img || []; // Nếu newProduct.img không tồn tại, sử dụng array rỗng
+    console.log(newProduct.img);
+    console.log("valueLink", valueLink);
+    console.log("new array", [...currentImages, valueLink]);
+    if (newProduct.img.length + 1 >= 10) {
+      const errors = new Map();
+      errors.set("img", "Bạn chỉ có thể tải lên tối đa 10 ảnh.");
+      setErrors({ errors });
+      return;
+    } else {
+      const currentImages = newProduct.img || []; // Nếu newProduct.img không tồn tại, sử dụng array rỗng
+      const newImages = [...currentImages, valueLink]; // Thêm vào array
+      setNewProduct({
+        ...newProduct,
+        img: newImages,
+      });
+    }
+    setValueLink("");
+  };
+
   const handleChangeProduct = (event) => {
     let key = event.target.ariaLabel;
-    if (key == "tag" || key == "img") {
+    if (key === "img") {
+      let files = event.target.files;
+
+      if (newProduct.img.length + files.length >= 10) {
+        const errors = new Map();
+        errors.set("value", "Bạn chỉ có thể tải lên tối đa 10 ảnh.");
+        setErrors({ errors });
+        return;
+      } else {
+        const newFiles = Array.from(files); // Tạo array từ danh sách File
+        const currentImages = newProduct.img || []; // Nếu newProduct.img không tồn tại, sử dụng array rỗng
+        const newImages = currentImages.concat(newFiles); // Nối hai array
+        setNewProduct({
+          ...newProduct,
+          [key]: newImages,
+        });
+      }
+    } else if (key == "tag") {
       setNewProduct({
         ...newProduct,
         [key]: splitArray(event.target.value),
@@ -86,30 +133,176 @@ function ProductCardAdmin({ render, i, product }) {
         [key]: event.target.value,
       });
     }
-
-    // console.log(newProduct);
   };
+
+  useEffect(() => {
+    console.log(newProduct);
+  }, [newProduct]);
 
   const handleSaveProduct = () => {
-    // console.log(newProduct);
-    dispatch(updateEditProduct(newProduct));
-    handleClose();
-  };
-  const handleAddNewProduct = () => {
-    // console.log(newProduct);
-    dispatch(addProduct(newProduct));
-    handleClose();
+    // setLoading(true);
+
+    console.log(newProduct);
+    const errors = validate(newProduct);
+
+    if (errors.size == 0) {
+      setLoading(true);
+
+      console.log(errors);
+      const formData = new FormData();
+
+      // Thêm các trường thông tin
+      formData.append("name", newProduct.name);
+      formData.append("price", newProduct.price);
+      formData.append("comparative", newProduct.comparative);
+      formData.append("description", newProduct.description);
+
+      if (newProduct.sku) {
+        formData.append("sku", newProduct.sku);
+      }
+
+      if (newProduct.tag) {
+        formData.append("tag", newProduct.tag);
+      }
+
+      // Thêm các tập tin hoặc URL
+      newProduct.img.forEach((item, index) => {
+        // Kiểm tra nếu đó là một đối tượng File
+        if (item instanceof File) {
+          formData.append(`imgFile${index}`, item);
+        } else if (typeof item === "string") {
+          // Nếu đó là một string, đó là URL
+          formData.append(`imgUrl${index}`, item);
+        }
+      });
+
+      productApi
+        .updateProduct(newProduct.product_id, formData)
+        .then(() => {
+          handleClose();
+          setLoading(false);
+        })
+        .catch((error) => {
+          console.log(error.response?.statusText);
+        });
+      // dispatch(updateEditProduct(newProduct));
+    } else {
+      console.log(errors);
+      setErrors(errors);
+    }
   };
 
+  const handleAddNewProduct = () => {
+    console.log(newProduct);
+    const errors = validate(newProduct);
+
+    if (errors.size == 0) {
+      setLoading(true);
+
+      const formData = new FormData();
+
+      // Thêm các trường thông tin
+      formData.append("name", newProduct.name);
+      formData.append("price", newProduct.price);
+      formData.append("comparative", newProduct.comparative);
+      formData.append("description", newProduct.description);
+
+      if (newProduct.sku) {
+        formData.append("sku", newProduct.sku);
+      }
+
+      if (newProduct.tag) {
+        formData.append("tag", newProduct.tag);
+      }
+
+      // Thêm các tập tin hoặc URL
+      newProduct.img.forEach((item, index) => {
+        // Kiểm tra nếu đó là một đối tượng File
+        if (item instanceof File) {
+          formData.append(`imgFile${index}`, item);
+        } else if (typeof item === "string") {
+          // Nếu đó là một string, đó là URL
+          formData.append(`imgUrl${index}`, item);
+        }
+      });
+
+      productApi
+        .createProduct(formData)
+        .then(() => {
+          setLoading(false);
+
+          handleClose();
+        })
+        .catch((error) => {
+          console.log(error.response?.statusText);
+        });
+      // dispatch(updateEditProduct(newProduct));
+    } else {
+      console.log(errors);
+      setErrors(errors);
+    }
+  };
+
+  // const handleAddNewProduct = () => {
+  //   // console.log(newProduct);
+  //   dispatch(addProduct(newProduct));
+  //   handleClose();
+  // };
+
   const handleDeleteProduct = () => {
-    dispatch(deleteProduct(product));
-    handleClose();
-    setShowConfirmDeleProduct(false);
+    setLoading(true);
+
+    console.log(product.product_id);
+
+    productApi
+      .deleteProduct(product.product_id)
+      .then(() => {
+        setLoading(false);
+        handleClose();
+        setShowConfirmDeleProduct(false);
+      })
+      .catch((error) => {
+        console.log(error.response?.statusText);
+      });
+    // dispatch(deleteProduct(product.product_id));
+  };
+
+  const validate = (product) => {
+    let errors = new Map();
+
+    if (!product.name) {
+      errors.set("value", "Tên sản phẩm không hợp lệ.");
+    }
+
+    if (!product.price) {
+      errors.set("value", "Giá sản phẩm không hợp lệ.");
+    }
+
+    if (typeof product.name !== "string") {
+      errors.set("value", "Tên sản phẩm không hợp lệ.");
+    } else if (product.name.length < 3 || product.name.length > 250) {
+      errors.set("value", "Tên sản phẩm chỉ cho phép dài từ 3 tới 250 ký tự.");
+    }
+
+    if (product.sku && typeof product.sku !== "string") {
+      errors.set("value", "Sku sản phẩm không hợp lệ.");
+    } else if (product.sku && product.sku.length > 250) {
+      errors.set("value", "Sku sản phẩm không hợp lệ.");
+    }
+
+    if (product.description && typeof product.description !== "string") {
+      errors.set("value", "Sku sản phẩm không hợp lệ.");
+    } else if (product.description && product.description.length > 1000) {
+      errors.set("value", "Sku sản phẩm chỉ không hợp lệ.");
+    }
+    console.log("errors", errors);
+    return errors;
   };
 
   const [show, setShow] = useState(false);
 
   const handleClose = () => {
+    setErrors(new Map());
     setShow(false);
     setQuantity(1);
     setNewProduct(product);
@@ -122,19 +315,81 @@ function ProductCardAdmin({ render, i, product }) {
     setIndex(selectedIndex);
   };
 
-  const renderCarousel = newProduct.img.map((img, indexCarousel) => {
+  const renderCarousel = newProduct.img.map((imgItem, indexCarousel) => {
+    let imgUrl;
+
+    // Kiểm tra nếu imgItem là một đối tượng File
+    if (imgItem instanceof File) {
+      imgUrl = URL.createObjectURL(imgItem);
+    } else if (typeof imgItem === "string") {
+      // Kiểm tra nếu imgItem là một URL
+      imgUrl = imgItem.startsWith("http")
+        ? imgItem
+        : `http://localhost:8000/${imgItem}`;
+    }
+
     return (
-      <Carousel.Item>
+      <Carousel.Item key={indexCarousel}>
         <img
           className="productImgLarger d-block w-100"
           alt="Hình ảnh lỗi"
           src={
-            img == ""
-              ? "https://img.freepik.com/premium-vector/product-concept-line-icon-simple-element-illustration-product-concept-outline-symbol-design-can-be-used-web-mobile-ui-ux_159242-2076.jpg?w=2000"
-              : img
+            imgUrl ||
+            "https://img.freepik.com/premium-vector/product-concept-line-icon-simple-element-illustration-product-concept-outline-symbol-design-can-be-used-web-mobile-ui-ux_159242-2076.jpg?w=2000"
           }
-        />{" "}
+        />
       </Carousel.Item>
+    );
+  });
+
+  const handleDeletePhoto = (indexToRemove) => {
+    // Tạo một bản sao của mảng img và xóa phần tử tại indexToRemove
+    const updatedImgArray = [...newProduct.img];
+    updatedImgArray.splice(indexToRemove, 1);
+
+    // Cập nhật state
+    setNewProduct({
+      ...newProduct,
+      img: updatedImgArray,
+    });
+  };
+
+  const renderDeletePhotoButton = newProduct.img.map((imgItem, index) => {
+    let imgUrl;
+
+    // Kiểm tra nếu imgItem là một đối tượng File
+    if (imgItem instanceof File) {
+      imgUrl = URL.createObjectURL(imgItem);
+    } else if (typeof imgItem === "string") {
+      // Kiểm tra nếu imgItem là một URL
+      imgUrl = imgItem.startsWith("http")
+        ? imgItem
+        : `http://localhost:8000/${imgItem}`;
+    }
+
+    return (
+      <OverlayTrigger
+        style={{ width: "320px !importan" }}
+        key={"left"}
+        placement={"left"}
+        overlay={
+          <Tooltip id={`tooltip-left`}>
+            <p></p>
+            <p>Xóa ảnh</p>
+          </Tooltip>
+        }
+      >
+        <div
+          key={index}
+          className="clickDeletePhoto"
+          onClick={() => handleDeletePhoto(index)} // Thêm hàm xử lý click vào đây
+          style={{
+            padding: "10px !important",
+          }}
+        >
+          <img className="imgDeletePhoto" alt="Hình ảnh lỗi" src={imgUrl} />
+        </div>
+      </OverlayTrigger>
     );
   });
 
@@ -165,7 +420,15 @@ function ProductCardAdmin({ render, i, product }) {
           </Modal.Title>
 
           <Carousel activeIndex={indexCarousel} onSelect={handleSelect}>
-            {renderCarousel}
+            {newProduct.img.length > 0 ? (
+              renderCarousel
+            ) : (
+              <img
+                className="productImgLarger d-block w-100"
+                alt="Hình ảnh lỗi"
+                src="https://img.freepik.com/premium-vector/product-concept-line-icon-simple-element-illustration-product-concept-outline-symbol-design-can-be-used-web-mobile-ui-ux_159242-2076.jpg?w=2000"
+              ></img>
+            )}
           </Carousel>
 
           <Card.Body>
@@ -460,17 +723,17 @@ function ProductCardAdmin({ render, i, product }) {
                         <Tooltip id={`tooltip-left`}>
                           <p></p>
                           <p>
-                            Các link ảnh viết lần lượt ngăn cách bởi dấu phẩy,
-                            không giới hạn số lượng.
+                            Các file được tải lên sẽ được thêm vào hình ảnh mô
+                            tả sản phẩm.
                           </p>
                         </Tooltip>
                       }
                     >
                       <InputGroup className="mb-3">
                         <InputGroup.Text id="basic-addon1">
-                          Hình ảnh
+                          Tải lên hình ảnh
                         </InputGroup.Text>
-                        <Form.Control
+                        {/* <Form.Control
                           as="textarea"
                           // placeholder="Tên của bạn"
                           aria-label="img"
@@ -478,26 +741,99 @@ function ProductCardAdmin({ render, i, product }) {
                           type="text"
                           value={addSpace(newProduct.img)}
                           onChange={handleChangeProduct}
+                        /> */}
+
+                        <Form.Control
+                          // disabled
+                          aria-label="img"
+                          aria-describedby="basic-addon1"
+                          type="file"
+                          name="avatar"
+                          accept="image/png, image/jpeg, image/tif, image/webp"
+                          onChange={handleChangeProduct}
+                          multiple
                         />
                       </InputGroup>
                     </OverlayTrigger>
+
+                    <OverlayTrigger
+                      style={{ width: "320px !importan" }}
+                      key={"left"}
+                      placement={"left"}
+                      overlay={
+                        <Tooltip id={`tooltip-left`}>
+                          <p></p>
+                          <p>
+                            Các ảnh sẽ được thêm vào hình ảnh mô tả sản phẩm,
+                            chỉ có thể tải lên lần lượt từng liên kết ảnh.
+                          </p>
+                        </Tooltip>
+                      }
+                    >
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="basic-addon1">
+                          Thêm liên kết hình ảnh
+                        </InputGroup.Text>
+                        <Form.Control
+                          // as="textarea"
+                          // placeholder="Tên của bạn"
+                          aria-label="img"
+                          aria-describedby="basic-addon1"
+                          type="text"
+                          value={valueLink}
+                          onChange={(e) => setValueLink(e.target.value)}
+                        />
+                        <Button
+                          className="btn btn-light"
+                          onClick={handleAddLink}
+                        >
+                          Thêm
+                        </Button>
+                      </InputGroup>
+                    </OverlayTrigger>
+
+                    {renderDeletePhotoButton}
                   </InputGroup>
                 </Card.Text>
+                {show && errors.size !== 0 && (
+                  <p
+                    className="text-center"
+                    style={{ color: "rgb(161, 21, 21)" }}
+                  >
+                    {errors?.get("value")}
+                  </p>
+                )}
                 <Modal.Footer>
                   <Button variant="secondary" onClick={handleClose}>
                     Huỷ
                   </Button>
-                  <Button
-                    variant="dark"
-                    onClick={
-                      render == "productCard"
-                        ? handleSaveProduct
-                        : handleAddNewProduct
+
+                  <OverlayTrigger
+                    style={{ width: "320px !importan" }}
+                    key={"left"}
+                    placement={"left"}
+                    overlay={
+                      <Tooltip id={`tooltip-left`}>
+                        <p></p>
+                        <p>
+                          Vui lòng kiểm tra và chắc chắn rằng không có ảnh sản
+                          phẩm lỗi trước khi lưu.
+                        </p>
+                      </Tooltip>
                     }
                   >
-                    {" "}
-                    Lưu sản phẩm
-                  </Button>
+                    <Button
+                      variant="dark"
+                      onClick={
+                        render == "productCard"
+                          ? handleSaveProduct
+                          : handleAddNewProduct
+                      }
+                    >
+                      {" "}
+                      Lưu sản phẩm
+                    </Button>
+                  </OverlayTrigger>
                 </Modal.Footer>
               </Card.Body>
             </div>
@@ -517,7 +853,7 @@ function ProductCardAdmin({ render, i, product }) {
               width: "10px",
             }}
           >
-            {Number(i) + 1}{" "}
+            {product.product_id}{" "}
           </td>
           <td
             className=" text-left"
@@ -528,8 +864,10 @@ function ProductCardAdmin({ render, i, product }) {
               onClick={handleShow}
               className="productImgThumbSmall"
               variant="top"
-              src={currentImg}
-              onMouseOver={() => setCurrentImg(product.img[1])}
+              src={prependLocalhost(currentImg)}
+              onMouseOver={() =>
+                product.img[1] && setCurrentImg(product.img[1])
+              }
               onMouseOut={() => setCurrentImg(product.img[0])}
             />
           </td>

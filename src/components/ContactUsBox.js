@@ -107,7 +107,7 @@ function ContactUsBox() {
           setShow(true);
         })
         .catch((error) => {
-          console.log(error.response.statusText);
+          console.log(error.response?.statusText);
         });
 
       // dispatch(saveMess(info)); // Gửi tới store

@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 import {
   getCurrentTimeString,
   getDaysDifference,
+  prependLocalhost,
 } from "../function/functionData";
 import Modal from "react-bootstrap/Modal";
 import "../css/Cart.css";
@@ -20,7 +21,9 @@ import { clearCart } from "../actions/userAction";
 function CartList() {
   const dispatch = useDispatch();
   let userLogined = useSelector((state) => state.userReducer.userLogined);
-
+  if (userLogined == null) {
+    navigate("/login");
+  }
   // let ListOrder = useSelector((state) => state.orderReducer.orders);
   // let orders = ListOrder.filter((order) => order.email == userLogined.email);
   const [orders, setOrders] = useState([]);
@@ -36,7 +39,7 @@ function CartList() {
         setLoading(false);
       })
       .catch((error) => {
-        alert(error.response.statusText);
+        console.log(error.response?.statusText);
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
   };
@@ -100,7 +103,8 @@ function CartList() {
         setLoading(false); // Cập nhật trạng thái loading ở đây
       })
       .catch((error) => {
-        alert(error.response.statusText);
+        console.log(error.response);
+        // alert(error.response);
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
     // dispatch(cancelOrder(id));
@@ -155,7 +159,7 @@ function CartList() {
                           height: "60px",
                           object: "cover",
                         }}
-                        src={product.img[0]}
+                        src={prependLocalhost(product.img[0])}
                       ></img>
                     </td>
                     <td

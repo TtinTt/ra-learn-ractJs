@@ -25,6 +25,9 @@ import Pagination from "react-bootstrap/Pagination";
 import Dropdown from "react-bootstrap/Dropdown";
 import DropdownButton from "react-bootstrap/DropdownButton";
 import userApi from "../../apis/user.api";
+import eye from "../../imgs/eye.png";
+import hidden from "../../imgs/hidden.png";
+
 function ManageUser() {
   // debugger;
   let link = CheckLink();
@@ -37,6 +40,11 @@ function ManageUser() {
   const [listCheck, setListCheck] = useState([]);
   const [total, setTotal] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [showPass, setShowPass] = useState(true);
+  const [showResetPass, setShowResetPass] = useState(false);
+
+  const [newPassword, setNewPassword] = useState("");
+  const [errorPassword, setErrorPassword] = useState("");
 
   // let usersStore = useSelector((state) => state.userReducer.users);
 
@@ -85,12 +93,12 @@ function ManageUser() {
         }
       })
       .catch((error) => {
-        alert(error);
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
+        console.log(error);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
           // navigate("/users");
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
           setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
         }
       });
@@ -101,25 +109,61 @@ function ManageUser() {
   }, [currentPage, searchValue, filter, link]);
 
   const handleUpdateStatusUser = async (event, user) => {
-    let value = 1;
-    if (event.target.value == "0") {
-      value = 0;
-    }
+    let value = event.target.value == "1" ? 1 : 0;
+
     console.log("user", user);
     userApi
-      .updateUser(user.user_id, { ...user, status: value })
+      .updateUser(user.user_id, {
+        ...user,
+        status: event.target.value == "0" ? 0 : 1,
+      })
       .then((response) => {
-        handleClose();
+        // handleClose();
         fetchUsers();
         setLoading(false); // Cập nhật trạng thái loading ở đây
       })
       .catch((error) => {
-        alert(error.response.statusText);
+        console.log(error.response?.statusText);
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
 
     await setUserShowing({ ...user, status: value });
-    await dispatch(updateStatusUser({ ...user, status: value }));
+    // await dispatch(updateStatusUser({ ...user, status: value }));
+  };
+
+  const handleUpdatePasswordUser = async (newPassword, user) => {
+    if (errorPassword.length !== 0) {
+      return;
+    } else {
+      console.log("user", user);
+      userApi
+        .updateUser(user.user_id, {
+          ...user,
+          resetPassword: newPassword,
+        })
+        .then((response) => {
+          setShowResetPass(false);
+          setErrorPassword("");
+          setNewPassword("");
+        })
+        .catch((error) => {
+          console.log("Mật khẩu không hợp lệ");
+          setErrorPassword("Mật khẩu không hợp lệ");
+          console.log(error);
+        });
+    }
+  };
+
+  const validatePassword = (password) => {
+    let errorMessage = "";
+
+    if (!(password.length >= 6 && password.length <= 200)) {
+      errorMessage = "Mật khẩu chỉ cho phép từ 6 đến 200 ký tự.";
+    }
+
+    setErrorPassword(errorMessage);
+
+    console.log(errorMessage);
   };
 
   const handleUpdateStatusMultiUser = async (event, listUser) => {
@@ -135,7 +179,7 @@ function ManageUser() {
           // setLoading(false); // Cập nhật trạng thái loading ở đây
         })
         .catch((error) => {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         });
       setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
 
@@ -149,7 +193,12 @@ function ManageUser() {
 
   const [show, setShow] = useState(false);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShowResetPass(false);
+    setErrorPassword("");
+    setNewPassword("");
+    setShow(false);
+  };
 
   const handleShow = (user) => {
     setShow(true);
@@ -252,13 +301,11 @@ function ManageUser() {
     setCurrentPage(pageNumber);
   };
   // khi 1 trong các biến phụ [currentPage, users, indexOfFirstUser, indexOfLastUser]
-  // thay đổi sẽ chạy lại để lấy giá trị mới nhất
+  // thay đổi sẽ chạy lại để lấy giá trị tất cả
   useEffect(() => {
-    const description = `Đang hiển thị người dùng thứ ${
-      indexOfFirstUser + 1
-    } đến ${
+    const description = `${indexOfFirstUser + 1} - ${
       indexOfLastUser > total ? total : indexOfLastUser
-    } trong tổng số ${total} người dùng`;
+    } trong ${total}`;
     setUserDescription(description);
   }, [currentPage, users, indexOfFirstUser, indexOfLastUser]);
 
@@ -376,20 +423,7 @@ function ManageUser() {
               disabled
             />
           </InputGroup>
-          {/* <InputGroup className="mb-3">
-            <InputGroup.Text id="basic-addon1">
-              Url ảnh đại diện
-            </InputGroup.Text>
-            <Form.Control
-              // placeholder="Ngày sinh"
-              aria-label="img"
-              aria-describedby="basic-addon1"
-              type="text"
-              // as="textarea"
-              value={prependLocalhost(info.img)}
-              disabled
-            />
-          </InputGroup> */}
+
           <InputGroup className="mb-3">
             <InputGroup.Text id="basic-addon1">
               Trạng thái tài khoản
@@ -405,6 +439,55 @@ function ManageUser() {
               <option value="0">Đình chỉ</option>
             </Form.Select>
           </InputGroup>
+          {!showResetPass ? (
+            <div style={{ width: "100%" }}>
+              <Button
+                variant="light"
+                onClick={() => {
+                  setShowResetPass(true);
+                }}
+              >
+                Đặt lại mật khẩu
+              </Button>
+            </div>
+          ) : (
+            <InputGroup className="mb-3">
+              <InputGroup.Text id="basic-addon1">Mật khẩu mới</InputGroup.Text>
+              <Form.Control
+                placeholder={null}
+                aria-describedby="basic-addon1"
+                type={!showPass ? "Password" : "text"}
+                value={newPassword}
+                onChange={(event) => {
+                  setNewPassword(event.target.value);
+                  validatePassword(event.target.value);
+                }}
+              />
+
+              <Button
+                variant="light"
+                onClick={() => {
+                  setShowPass(!showPass);
+                }}
+              >
+                <img
+                  src={!showPass ? hidden : eye}
+                  style={{ width: "20px" }}
+                ></img>
+              </Button>
+              <Button
+                variant="light"
+                onClick={() => {
+                  handleUpdatePasswordUser(newPassword, info);
+                }}
+              >
+                Đặt lại mật khẩu
+              </Button>
+              {errorPassword && (
+                <p style={{ width: "100%" }}>{errorPassword}</p>
+              )}
+            </InputGroup>
+          )}
         </InputGroup>
         <br></br>
         <br></br>
@@ -494,7 +577,7 @@ function ManageUser() {
                   <Modal.Header closeButton>
                     <Modal.Title>Thông tin người dùng</Modal.Title>
                   </Modal.Header>
-                  <Modal.Body>
+                  <Modal.Body className="text-center">
                     {userShowing && userInfo(userShowing)}
                   </Modal.Body>
                 </Modal>

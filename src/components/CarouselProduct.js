@@ -18,6 +18,7 @@ import {
   useGetTagsProducts,
   // fetchProductsByTags,
   Changedot,
+  prependLocalhost,
 } from "../function/functionData";
 import UserButton from "./UserButton";
 import Carousel from "react-bootstrap/Carousel";
@@ -62,12 +63,12 @@ function CarouselProduct() {
         setLoading(false);
       })
       .catch((error) => {
-        alert(error);
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
+        console.log(error);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
           // navigate("/products");
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         }
       });
 
@@ -103,11 +104,11 @@ function CarouselProduct() {
         });
         return { tag, data: data.records };
       } catch (error) {
-        alert(error);
-        if (error.response && error.response.status === 401) {
-          alert(error.response.statusText);
+        console.log(error);
+        if (error.response && error.response?.status === 401) {
+          console.log(error.response?.statusText);
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         }
         return null; // hoặc return { tag, data: null } tùy thuộc vào cách bạn muốn xử lý
       }
@@ -151,7 +152,10 @@ function CarouselProduct() {
       if (productShow && productsByTags) {
         return (
           <Carousel.Item key={productShow.id} className="CarouselItem">
-            <ProductCard screen={productShow.img[0]} product={productShow} />
+            <ProductCard
+              screen={prependLocalhost(productShow.img[0])}
+              product={productShow}
+            />
             <Carousel.Caption>
               <h4 className="CarouselProductText">{productShow.name}</h4>
               <h4 className="CarouselProductText ">
@@ -227,7 +231,9 @@ function CarouselProduct() {
             }}
             className="imgCatalogue"
             style={{
-              backgroundImage: `url(${productShow.img[lastItem]})`,
+              backgroundImage: `url(${prependLocalhost(
+                productShow.img[lastItem]
+              )})`,
             }}
           >
             <p>Bộ sưu tập</p>

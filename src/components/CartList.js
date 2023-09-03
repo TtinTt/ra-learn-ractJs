@@ -10,7 +10,10 @@ import FloatingLabel from "react-bootstrap/FloatingLabel";
 import { v4 as uuidv4 } from "uuid";
 import { useNavigate } from "react-router-dom";
 import orderApi from "../apis/order.api";
-import { getCurrentTimeString } from "../function/functionData";
+import {
+  getCurrentTimeString,
+  prependLocalhost,
+} from "../function/functionData";
 import Modal from "react-bootstrap/Modal";
 
 import "../css/Cart.css";
@@ -18,6 +21,9 @@ import "../css/Cart.css";
 import { clearCart } from "../actions/userAction";
 function CartList() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  if (userLogined == null) {
+    navigate("/login");
+  }
   let cart = userLogined.cart;
   // userLogined.cart && cart=userLogined.cart
   const dispatch = useDispatch();
@@ -83,9 +89,9 @@ function CartList() {
   const handleShow = () => setShow(true);
 
   const [address, setAddress] = useState({
-    name: "",
-    address: "",
-    phoneNumber: "",
+    name: userLogined.name,
+    address: userLogined.add_address,
+    phoneNumber: userLogined.phone,
     note: "",
   });
 
@@ -117,10 +123,10 @@ function CartList() {
       setIsValidateError(true);
       setErrorValidateMsg("Số điện thoại không hợp lệ.");
       return false;
-    } else if (address && address.length < 20) {
+    } else if (address && address.length < 10) {
       setIsValidateError(true);
       setErrorValidateMsg(
-        "Địa chỉ không hợp lệ. Vui lòng viết địa chỉ chi tiết hơn"
+        "Địa chỉ không hợp lệ. Vui lòng điền địa chỉ chi tiết hơn"
       );
       return false;
     } else {
@@ -151,7 +157,7 @@ function CartList() {
           navigate("/order");
         })
         .catch((error) => {
-          // if (error.response.statusText == "Forbidden") {
+          // if (error.response?.statusText == "Forbidden") {
           //   setError({
           //     isShowStatus: true,
           //     status: true,
@@ -161,10 +167,10 @@ function CartList() {
 
           //   console.log("trùng lặp user");
           // } else {
-          //   alert(error.response.statusText);
+          //   alert(error.response?.statusText);
           // }
 
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         });
 
       // dispatch(createOrder(order)); // Gửi đơn hàng tới store
@@ -198,7 +204,7 @@ function CartList() {
                 <td className="p-0" style={{ width: "60px", height: "60px" }}>
                   <img
                     style={{ width: "60px", height: "60px", object: "cover" }}
-                    src={product.img[0]}
+                    src={prependLocalhost(product.img[0])}
                   ></img>
                 </td>
                 <td
@@ -286,7 +292,7 @@ function CartList() {
               className="mb-3"
               onChange={handleChangeAddress}
             >
-              <Form.Control type="text" placeholder="?" />
+              <Form.Control type="text" placeholder="?" value={address.name} />
             </FloatingLabel>
             <FloatingLabel
               controlId="floatingInput phoneNumber"
@@ -294,7 +300,11 @@ function CartList() {
               className="mb-3"
               onChange={handleChangeAddress}
             >
-              <Form.Control type="number" placeholder="?" />
+              <Form.Control
+                type="number"
+                placeholder="?"
+                value={address.phoneNumber}
+              />
             </FloatingLabel>
             <FloatingLabel
               controlId="floatingInput address"
@@ -302,7 +312,11 @@ function CartList() {
               className="mb-3"
               onChange={handleChangeAddress}
             >
-              <Form.Control type="text" placeholder="?" />
+              <Form.Control
+                type="text"
+                placeholder="?"
+                value={address.address}
+              />
             </FloatingLabel>
             <FloatingLabel
               controlId="floatingInput note"
@@ -310,7 +324,7 @@ function CartList() {
               className="mb-3"
               onChange={handleChangeAddress}
             >
-              <Form.Control type="text" placeholder="?" />
+              <Form.Control type="text" placeholder="?" value={address.note} />
             </FloatingLabel>
             <p style={{ color: "#dc3545" }}>
               {" "}

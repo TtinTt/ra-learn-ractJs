@@ -19,7 +19,7 @@ import {
 
 export default function ProductList() {
   // lấy ra các array là list product từ products trên store theo từng tag
-  let productsByTags = useGetProductsByTags();
+  // let productsByTags = useGetProductsByTags();
 
   const productListStore = useSelector(
     (state) => state.productReducer.products
@@ -69,12 +69,12 @@ export default function ProductList() {
           setTotal(data.total);
         })
         .catch((error) => {
-          alert(error);
-          if (error.response.status === 401) {
-            alert(error.response.statusText);
+          console.log(error);
+          if (error.response?.status === 401) {
+            console.log(error.response?.statusText);
             // navigate("/products");
           } else {
-            alert(error.response.statusText);
+            console.log(error.response?.statusText);
           }
         });
 
@@ -161,7 +161,7 @@ export default function ProductList() {
   };
 
   // khi 1 trong các biến phụ [currentPage, productList, indexOfFirstProduct, indexOfLastProduct]
-  // thay đổi sẽ chạy lại để lấy giá trị mới nhất
+  // thay đổi sẽ chạy lại để lấy giá trị tất cả
   useEffect(() => {
     const description = `Đang hiển thị sản phẩm thứ ${
       indexOfFirstProduct + 1

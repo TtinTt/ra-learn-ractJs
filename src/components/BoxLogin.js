@@ -14,12 +14,12 @@ import { loginUser } from "../actions/userAction";
 import authApi from "../apis/auth.api";
 
 export default function BoxLogin() {
-  let usersDB = useSelector((state) => state.userReducer.users);
+  // let usersDB = useSelector((state) => state.userReducer.users);
   let userLogined = useSelector((state) => state.userReducer.userLogined);
 
-  useEffect(() => {
-    userLogined !== null && navigate("/");
-  }, [usersDB]);
+  // useEffect(() => {
+  //   userLogined !== null && navigate("/");
+  // }, [usersDB]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -63,12 +63,22 @@ export default function BoxLogin() {
           navigate("/");
         })
         .catch((error) => {
-          setError({
-            isShowStatus: true,
-            status: true,
-            errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác",
-          });
-          console.log(error.response.statusText);
+          if (error.response?.status == "406") {
+            setError({
+              isShowStatus: true,
+              status: true,
+              errorMsg:
+                "Tài khoản bị vô hiệu hóa, vui lòng liên hệ với quản trị viên để biết thêm thông tin.",
+            });
+          }
+          // if (error.response?.status == "401")
+          else
+            setError({
+              isShowStatus: true,
+              status: true,
+              errorMsg: "Email không tồn tại hoặc mật khẩu không chính xác.",
+            });
+          console.log(error);
         });
     }
   };

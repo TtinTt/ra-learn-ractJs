@@ -110,11 +110,11 @@ function UserFilter() {
             >
               <Navbar.Brand className="d-flex">
                 <Form.Control
+                  name="search"
                   type="search"
                   placeholder="Tìm kiếm người dùng"
-                  // className="me-2"
                   aria-label="Search"
-                  onChange={handleGetInput}
+                  onChange={(event) => handleGetInput(event)}
                 />
               </Navbar.Brand>
             </OverlayTrigger>

@@ -15,71 +15,133 @@ import {
   CheckLink,
   useGetTagsProducts,
   useGetProductsByTags,
+  useClearLogined,
 } from "../function/functionData";
 import UserButton from "./UserButton";
 import authApi from "../apis/auth.api";
 import userApi from "../apis/user.api";
 import { loginUser } from "../actions/userAction";
 import { loginAdmin } from "../actions/adminAction";
+import productApi from "../apis/product.api";
 function NavbarTop() {
   let link = CheckLink();
   // let userLogined = null;
+  const clearLogined = useClearLogined();
+  let userLogined = useSelector((state) => state.userReducer.userLogined);
+  let APIKey = localStorage.getItem("X-API-Key");
+  let APIKeyAdmin = localStorage.getItem("X-API-Key-Admin");
+  console.log(APIKey, APIKeyAdmin);
   useEffect(() => {
+    if ((APIKey = null)) {
+      dispatch(loginUser(null));
+    }
+    if ((APIKeyAdmin = null)) {
+      dispatch(loginAdmin(null));
+    }
     authApi
       .getAuth()
       .then((response) => {
+        console.log("response", response);
         // Kiểm tra nếu response có user
-        if (response.user) {
+        if (response.user?.user_id && response.user?.status == 1) {
           dispatch(loginUser(response.user));
         } else {
+          // window.location.reload();
           // Xóa X-API-Key nếu không có user trong phản hồi
-          localStorage.removeItem("X-API-Key");
-          dispatch(loginUser(null));
+          clearLogined("user");
         }
+
         // Kiểm tra nếu response có admin
-        if (response.admin) {
+        if (response.admin?.admin_id) {
           dispatch(loginAdmin(response.admin));
         } else {
           // Xóa X-API-Key-Admin nếu không có admin trong phản hồi
-          localStorage.removeItem("-Admin");
-          dispatch(loginAdmin(null));
+          clearLogined("admin");
         }
         console.log("verify:", response);
       })
       .catch((error) => {
-        //
-        console.log(error.response.status, error.response.statusText);
+        console.log("Lỗi là", error);
+        if (error.response.data.error == "Không thể xác thực người dùng.") {
+          clearLogined("user");
+        } else if (
+          error.response.data.error == "Không thể xác thực quản trị viên."
+        ) {
+          clearLogined("admin");
+        } else {
+          clearLogined("all");
+        }
+
+        // localStorage.removeItem("X-API-Key");
+        // dispatch(loginUser(null));
+        // localStorage.removeItem("X-API-Key-Admin");
+        // dispatch(loginAdmin(null));
       });
   }, [link]);
 
-  let userLogined = useSelector((state) => state.userReducer.userLogined);
+  let cartUserLogined = useSelector(
+    (state) => state.userReducer.userLogined?.cart
+  );
 
   useEffect(() => {
     console.log("userLogined", userLogined);
     if (userLogined && userLogined.user_id) {
       userApi
-        .updateUser(userLogined.user_id, userLogined)
+        .updateUser(userLogined.user_id, { cart: userLogined.cart })
         .then(() => {
           // navigate('/admin/users');
         })
         .catch((error) => {
-          if (error.response.status === 401) {
-            // alert(error.response.statusText);
+          if (error.response?.status === 401) {
+            // alert(error.response?.statusText);
             // navigate("/login");
           } else {
-            alert(error.response.statusText);
+            console.log(error.response?.statusText);
           }
         });
+    } else {
+      console.log("userLogined is null or user_id is missing");
     }
-  }, [userLogined]);
+  }, [cartUserLogined]);
 
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
 
   // lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm
-  let tagsProducts = useGetTagsProducts();
+  // let tagsProducts = useGetTagsProducts();
+  const getTag = async () => {
+    // const navigate = useNavigate();
+    // setLoading(true);
 
+    await productApi
+      .getTag({})
+      .then((data) => {
+        console.log("1-lấy các tag", data.tags);
+        // setValue(data.maxPrice);
+        // setMinPrice(data.minPrice);
+        // setMaxPrice(data.maxPrice);
+        setTagsProducts(data.tags);
+        console.log("data.tags", data.tags);
+        // setLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
+          // navigate("/products");
+        } else {
+          console.log(error.response?.statusText);
+        }
+      });
+
+    // setSelectedProductIds([]);
+  };
+  const [tagsProducts, setTagsProducts] = useState([]);
+
+  useEffect(() => {
+    getTag();
+  }, []);
   const carouselItem = tagsProducts.map((tag) => {
     let urlLink = "/" + tag;
     return (

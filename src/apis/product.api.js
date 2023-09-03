@@ -13,8 +13,15 @@ const searchProducts = async (params = {}) => {
 };
 
 const createProduct = async (requestBody) => {
+  const originalHeaders = getHeaders();
+
   return await api
-    .postForm("/products", requestBody, { headers: getHeaders() })
+    .post("/products", requestBody, {
+      headers: {
+        ...originalHeaders,
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((response) => {
       return response.data;
     })
@@ -37,8 +44,15 @@ const getProductByProductId = async (productId) => {
 };
 
 const updateProduct = async (productId, requestBody) => {
+  const originalHeaders = getHeaders();
+
   return await api
-    .putForm(`/products/${productId}`, requestBody, { headers: getHeaders() })
+    .put(`/products/${productId}`, requestBody, {
+      headers: {
+        ...originalHeaders,
+        "Content-Type": "multipart/form-data",
+      },
+    })
     .then((response) => {
       return response.data;
     })

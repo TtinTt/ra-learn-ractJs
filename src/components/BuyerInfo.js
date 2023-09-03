@@ -62,9 +62,15 @@ function BuyerInfo() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState(new Map());
+  const [imgScr, setImgScr] = useState(prependLocalhost(userLogined.img));
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
+  useEffect(() => {
+    setImgScr(prependLocalhost(userLogined.img));
+  }, [userLogined]);
+
   // const handleLogout = () => {
   //   dispatch(logoutUser());
   //   console.log("LOGOUT");
@@ -80,10 +86,8 @@ function BuyerInfo() {
     const newInfo = {
       ...info,
       [event.target.ariaLabel]:
-        event.target.ariaLabel === "img"
-          ? event.target.files[0]
-          : event.target.ariaLabel === "name"
-          ? event.target.value.trim()
+        event.target.ariaLabel == "img"
+          ? event.target.files[0] // : event.target.ariaLabel === "name"// ? event.target.value.trim()
           : event.target.value,
     };
     console.log(newInfo);
@@ -94,6 +98,7 @@ function BuyerInfo() {
 
   const handleSaveInfo = () => {
     console.log("info", info);
+    setImgScr("");
 
     const errors = validate(info);
     if (errors.size == 0) {
@@ -108,14 +113,18 @@ function BuyerInfo() {
       formData.append("name", info.name);
       formData.append("note", info.note);
       formData.append("phone", info.phone);
+      formData.append("cart", info.cart);
+
       // formData.append("status", info.status);
 
       if (info.img) {
         formData.append("img", info.img);
       }
+      //
       for (let pair of formData.entries()) {
         console.log("FormData:", pair[0] + ", " + pair[1]);
       }
+      //
       userApi
         .updateUser(userLogined.user_id, formData)
         .then(() => {
@@ -126,29 +135,34 @@ function BuyerInfo() {
           authApi
             .getAuth()
             .then((response) => {
+              // let user = { ...response.user, cart: userLogined.cart };
+              // dispatch(loginUser(user));
+
               dispatch(loginUser(response.user));
               console.log("updateUser", response.user);
+
+              window.location.reload();
+              // handleClose();
             })
             .catch((error) => {
               dispatch(loginUser(null));
               localStorage.removeItem("X-API-Key");
-              console.log(error.response.status, error.response.statusText);
+              console.log(error.response?.status, error.response?.statusText);
+              window.location.reload();
             });
         })
         .catch((error) => {
-          if (error.response.status === 401) {
-            alert(error.response.statusText);
+          if (error.response?.status === 401) {
+            console.log(error.response?.statusText);
             navigate("/login");
           } else {
-            alert(error.response.statusText);
+            console.log(error.response?.statusText);
           }
         });
     } else {
       setErrors(errors);
       console.log(errors);
     }
-
-    handleClose();
   };
 
   const validate = (user) => {
@@ -197,11 +211,9 @@ function BuyerInfo() {
       <div className="text-center">
         <h4>Thông tin người dùng</h4>
         <div>
-          <img
-            id="user-img"
-            className="text-center"
-            src={prependLocalhost(userLogined.img)}
-          />
+          {imgScr == "" ? null : (
+            <img id="user-img" className="text-center" src={imgScr} />
+          )}
           <InputGroup id="user-info" className="mb-3 mx-auto">
             <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Email</InputGroup.Text>

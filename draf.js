@@ -1,11 +1,18 @@
-messApi
-  .updateMess(messShowing.id, newMess)
-  .then((response) => {
-    handleClose();
-    fetchMesss();
-    setLoading(false); // Cập nhật trạng thái loading ở đây
+productApi
+  .updateProduct(newProduct.product_id, formData)
+  .then(() => {
+    // for (let pair of formData.entries()) {
+    //   console.log("FormData2:", pair[0] + ", " + pair[1]);
+    // }
+    authApi
+      .getAuth()
+      .then(() => {
+        handleClose();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   })
   .catch((error) => {
-    alert(error.response.statusText);
-    setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
+    alert(error.response?.statusText);
   });

@@ -73,7 +73,7 @@ export default function BoxRegister() {
           navigate("/login");
         })
         .catch((error) => {
-          if (error.response.statusText == "Forbidden") {
+          if (error.response?.statusText == "Forbidden") {
             setError({
               isShowStatus: true,
               status: true,
@@ -83,7 +83,7 @@ export default function BoxRegister() {
 
             console.log("trùng lặp user");
           } else {
-            alert(error.response.statusText);
+            console.log(error.response?.statusText);
           }
         });
     }

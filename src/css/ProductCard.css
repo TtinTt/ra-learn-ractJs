@@ -23,6 +23,14 @@
 #adminProductCard h6 {
   margin: 0;
 }
+.imgDeletePhoto {
+  border-radius: 25px;
+  border: 2px solid rgb(156, 156, 156);
+  height: 30px;
+  width: 60px;
+  object-fit: cover;
+  margin-right: 5px;
+}
 td {
   vertical-align: middle !important;
   padding: 30px;

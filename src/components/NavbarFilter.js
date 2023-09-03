@@ -49,7 +49,7 @@ function NavbarFilter() {
 
   const sortValue = () => {
     if (sort == 0) {
-      return "Mới nhất";
+      return "Tất cả";
     } else if (sort == 1) {
       return "Giá giảm dần";
     } else if (sort == 2) {
@@ -72,12 +72,12 @@ function NavbarFilter() {
         setMaxPrice(data.maxPrice);
       })
       .catch((error) => {
-        alert(error);
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
+        console.log(error);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
           // navigate("/products");
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
         }
       });
 
@@ -153,7 +153,7 @@ function NavbarFilter() {
                   align="end"
                 >
                   <Dropdown.Item onClick={() => changeSort(0)} href="#">
-                    Mới nhất
+                    Tất cả
                   </Dropdown.Item>
                   <Dropdown.Item onClick={() => changeSort(1)} href="#">
                     Giá giảm dần

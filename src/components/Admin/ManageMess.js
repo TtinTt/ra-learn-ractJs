@@ -62,12 +62,12 @@ function ManageMess() {
         }
       })
       .catch((error) => {
-        alert(error);
-        if (error.response.status === 401) {
-          alert(error.response.statusText);
+        console.log(error);
+        if (error.response?.status === 401) {
+          console.log(error.response?.statusText);
           // navigate("/messs");
         } else {
-          alert(error.response.statusText);
+          console.log(error.response?.statusText);
           setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
         }
       });
@@ -91,7 +91,7 @@ function ManageMess() {
         setLoading(false); // Cập nhật trạng thái loading ở đây
       })
       .catch((error) => {
-        alert(error.response.statusText);
+        console.log(error.response?.statusText);
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
 
@@ -142,7 +142,7 @@ function ManageMess() {
               textAlign: "center",
             }}
           >
-            {index + 1}
+            {mess.id}
           </td>
           <td
             onClick={() => {
@@ -222,13 +222,11 @@ function ManageMess() {
     setCurrentPage(pageNumber);
   };
   // khi 1 trong các biến phụ [currentPage, messs, indexOfFirstMess, indexOfLastMess]
-  // thay đổi sẽ chạy lại để lấy giá trị mới nhất
+  // thay đổi sẽ chạy lại để lấy giá trị tất cả
   useEffect(() => {
-    const description = `Đang hiển thị lời nhắn thứ ${
-      indexOfFirstMess + 1
-    } đến ${
+    const description = `${indexOfFirstMess + 1} - ${
       indexOfLastMess > total ? total : indexOfLastMess
-    } trong tổng số ${total} lời nhắn`;
+    } trong ${total} `;
     setMessDescription(description);
   }, [currentPage, messs, indexOfFirstMess, indexOfLastMess]);
 
@@ -334,7 +332,7 @@ function ManageMess() {
           </InputGroup>
           <InputGroup className="mb-3">
             <InputGroup.Text id="basic-addon1">
-              Trạng thái tài khoản
+              Trạng thái lời nhắn
             </InputGroup.Text>
             <Form.Select
               aria-label="Default select example"

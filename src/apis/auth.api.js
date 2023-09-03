@@ -1,5 +1,4 @@
 import api, { getHeaders } from "./api";
-
 const login = async (email, password, type) => {
   const requestBody = {
     email: email,
@@ -48,6 +47,7 @@ const getAuth = async () => {
       return response.data;
     })
     .catch((error) => {
+      // window.location.reload();
       console.error(error);
       throw error;
     });

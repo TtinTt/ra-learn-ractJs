@@ -6,7 +6,12 @@ import Stack from "react-bootstrap/Stack";
 import { useEffect, useMemo, useState } from "react";
 import { addToCart } from "../actions/cartAction";
 import "../css/ProductCard.css";
-import { TruncateString, Changedot, CheckLink } from "../function/functionData";
+import {
+  TruncateString,
+  Changedot,
+  CheckLink,
+  prependLocalhost,
+} from "../function/functionData";
 import { Link, useNavigate } from "react-router-dom";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -67,7 +72,10 @@ function ProductCard({ screen, product }) {
   const renderCarousel = product.img.map((img, index) => {
     return (
       <Carousel.Item>
-        <img className="productImgLarger d-block w-100" src={img} />{" "}
+        <img
+          className="productImgLarger d-block w-100"
+          src={prependLocalhost(img)}
+        />{" "}
       </Carousel.Item>
     );
   });
@@ -88,7 +96,7 @@ function ProductCard({ screen, product }) {
               onClick={handleShow}
               className="productImgThumb"
               variant="top"
-              src={currentImg}
+              src={prependLocalhost(currentImg)}
               onMouseOver={() => {
                 let item = 1;
                 if (product.img.length < 2) {
