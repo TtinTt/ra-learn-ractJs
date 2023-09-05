@@ -77,7 +77,7 @@ export default {
   searchOrders,
   createOrder,
   getOrderByUserEmail,
-  //   getOrderByOrderId,
   updateOrder,
+  //   getOrderByOrderId,
   //   deleteOrder,
 };

@@ -178,21 +178,17 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
         .updateProduct(newProduct.product_id, formData)
         .then(() => {
           handleClose();
-          setLoading(false);
+          // setLoading(true);
           // console.log("loading false");
         })
         .catch((error) => {
-          setLoading(false);
-
           console.log(error.response?.statusText);
         });
       // dispatch(updateEditProduct(newProduct));
     } else {
       console.log(errors);
       setErrors(errors);
-      setLoading(false);
     }
-    setLoading(false);
     handleClose();
   };
 
@@ -202,7 +198,6 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
 
     if (errors.size == 0) {
       const formData = new FormData();
-      setLoading(true);
 
       // Thêm các trường thông tin
       formData.append("name", newProduct.name);
@@ -233,11 +228,9 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
         .createProduct(formData)
         .then(() => {
           handleClose();
-          setLoading(false);
+          setLoading(true);
         })
         .catch((error) => {
-          setLoading(false);
-
           console.log(error.response?.statusText);
         });
       // dispatch(updateEditProduct(newProduct));
@@ -245,7 +238,6 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
       console.log(errors);
       setErrors(errors);
     }
-    setLoading(false);
   };
 
   // const handleAddNewProduct = () => {

@@ -15,28 +15,6 @@ const login = async (email, password, type) => {
       console.error(error);
       throw error;
     });
-
-  // if (type == "customer") {
-  //   return await api
-  //     .post("/login", requestBody)
-  //     .then((response) => {
-  //       return response.data;
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       throw error;
-  //     });
-  // } else if (type == "admin") {
-  //   return await api
-  //     .post("/admin/login", requestBody)
-  //     .then((response) => {
-  //       return response.data;
-  //     })
-  //     .catch((error) => {
-  //       console.error(error);
-  //       throw error;
-  //     });
-  // }
 };
 
 const getAuth = async () => {

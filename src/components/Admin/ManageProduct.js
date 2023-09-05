@@ -33,7 +33,7 @@ export default function ManageProduct() {
   // lấy giá trị ô search
   let searchFilter =
     useSelector((state) => state.productReducer.searchFilter) ?? "";
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   // const productList = HandleFilter(productListStore);
   const [productList, setProductList] = useState([]);
@@ -51,7 +51,7 @@ export default function ManageProduct() {
     // keyword, page, NUMBER_RECORDS_PER_PAGE
     {
       // const navigate = useNavigate();
-      setLoading(true);
+      // !loading && setLoading(true);
 
       await productApi
         .searchProducts({
@@ -76,10 +76,12 @@ export default function ManageProduct() {
           } else {
             console.log(error.response?.statusText);
           }
+          setLoading(false);
         });
 
       // setSelectedProductIds([]);
     };
+
   console.log("loading", loading);
   useEffect(() => {
     fetchProducts();

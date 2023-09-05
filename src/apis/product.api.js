@@ -31,17 +31,17 @@ const createProduct = async (requestBody) => {
     });
 };
 
-const getProductByProductId = async (productId) => {
-  return await api
-    .get(`/products/${productId}`, { headers: getHeaders() })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("API Error", error);
-      throw error;
-    });
-};
+// const getProductByProductId = async (productId) => {
+//   return await api
+//     .get(`/products/${productId}`, { headers: getHeaders() })
+//     .then((response) => {
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.error("API Error", error);
+//       throw error;
+//     });
+// };
 
 const updateProduct = async (productId, requestBody) => {
   const originalHeaders = getHeaders();
@@ -103,7 +103,7 @@ export default {
   getTag,
   searchProducts,
   createProduct,
-  getProductByProductId,
   updateProduct,
   deleteProduct,
+  // getProductByProductId,
 };

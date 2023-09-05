@@ -159,6 +159,7 @@ function CartList() {
                           height: "60px",
                           object: "cover",
                         }}
+                        alt="Ảnh bị gỡ"
                         src={prependLocalhost(product.img[0])}
                       ></img>
                     </td>

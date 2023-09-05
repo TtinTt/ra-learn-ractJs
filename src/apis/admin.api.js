@@ -12,29 +12,29 @@ const searchAdmins = async (params = {}) => {
     });
 };
 
-const createAdmin = async (requestBody) => {
-  return await api
-    .postForm("/admins", requestBody, { headers: getHeaders() })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("API Error", error);
-      throw error;
-    });
-};
+// const createAdmin = async (requestBody) => {
+//   return await api
+//     .postForm("/admins", requestBody, { headers: getHeaders() })
+//     .then((response) => {
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.error("API Error", error);
+//       throw error;
+//     });
+// };
 
-const getAdminByAdminId = async (adminId) => {
-  return await api
-    .get(`/admins/${adminId}`, { headers: getHeaders() })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("API Error", error);
-      throw error;
-    });
-};
+// const getAdminByAdminId = async (adminId) => {
+//   return await api
+//     .get(`/admins/${adminId}`, { headers: getHeaders() })
+//     .then((response) => {
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.error("API Error", error);
+//       throw error;
+//     });
+// };
 
 const updateAdmin = async (adminId, requestBody) => {
   //   await console.log("requestBody", requestBody);
@@ -50,17 +50,17 @@ const updateAdmin = async (adminId, requestBody) => {
     });
 };
 
-const deleteAdmin = async (adminId) => {
-  return await api
-    .delete(`/admins/${adminId}`, { headers: getHeaders() })
-    .then((response) => {
-      return response.data;
-    })
-    .catch((error) => {
-      console.error("API Error", error);
-      throw error;
-    });
-};
+// const deleteAdmin = async (adminId) => {
+//   return await api
+//     .delete(`/admins/${adminId}`, { headers: getHeaders() })
+//     .then((response) => {
+//       return response.data;
+//     })
+//     .catch((error) => {
+//       console.error("API Error", error);
+//       throw error;
+//     });
+// };
 
 const addAdmin = async (requestBody) => {
   return await api
@@ -76,9 +76,10 @@ const addAdmin = async (requestBody) => {
 
 export default {
   searchAdmins,
-  createAdmin,
-  getAdminByAdminId,
   updateAdmin,
-  deleteAdmin,
   addAdmin,
+
+  // deleteAdmin,
+  // createAdmin,
+  // getAdminByAdminId,
 };
