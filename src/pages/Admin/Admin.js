@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import ManageUser from "../../components/admin/ManageUser";
 import ManageOrder from "../../components/admin/ManageOrder";
 import ManageMess from "../../components/admin/ManageMess";
+import ManageAdmin from "../../components/admin/ManageAdmin";
 import { useNavigate } from "react-router-dom";
 import ManageProduct from "../../components/admin/ManageProduct";
 import Tab from "react-bootstrap/Tab";
@@ -38,11 +39,17 @@ function Admin() {
         <Tab eventKey="products" title="Sản phẩm">
           <ManageProduct />
         </Tab>
-        <Tab eventKey="admin" title="Người dùng">
+
+        <Tab eventKey="user" title="Người dùng">
           <ManageUser />
         </Tab>
+
         <Tab eventKey="contact" title="Lời nhắn">
           <ManageMess />
+        </Tab>
+
+        <Tab eventKey="admin" title="Quản trị viên">
+          <ManageAdmin />
         </Tab>
       </Tabs>
 

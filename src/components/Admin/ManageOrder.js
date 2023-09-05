@@ -352,7 +352,7 @@ function ManageOrder() {
   // console.log("orderShowing", orderShowing);
   if (loading) {
     return <h5 className="text-center msgCartTop">Loading...</h5>;
-    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader
   } else {
     return (
       <>

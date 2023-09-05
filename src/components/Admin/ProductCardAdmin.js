@@ -140,15 +140,13 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
   }, [newProduct]);
 
   const handleSaveProduct = () => {
-    // setLoading(true);
-
     console.log(newProduct);
     const errors = validate(newProduct);
 
     if (errors.size == 0) {
       setLoading(true);
+      // console.log("loading true");
 
-      console.log(errors);
       const formData = new FormData();
 
       // Thêm các trường thông tin
@@ -181,15 +179,21 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
         .then(() => {
           handleClose();
           setLoading(false);
+          // console.log("loading false");
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error.response?.statusText);
         });
       // dispatch(updateEditProduct(newProduct));
     } else {
       console.log(errors);
       setErrors(errors);
+      setLoading(false);
     }
+    setLoading(false);
+    handleClose();
   };
 
   const handleAddNewProduct = () => {
@@ -197,9 +201,8 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
     const errors = validate(newProduct);
 
     if (errors.size == 0) {
-      setLoading(true);
-
       const formData = new FormData();
+      setLoading(true);
 
       // Thêm các trường thông tin
       formData.append("name", newProduct.name);
@@ -229,11 +232,12 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
       productApi
         .createProduct(formData)
         .then(() => {
-          setLoading(false);
-
           handleClose();
+          setLoading(false);
         })
         .catch((error) => {
+          setLoading(false);
+
           console.log(error.response?.statusText);
         });
       // dispatch(updateEditProduct(newProduct));
@@ -241,6 +245,7 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
       console.log(errors);
       setErrors(errors);
     }
+    setLoading(false);
   };
 
   // const handleAddNewProduct = () => {
@@ -295,7 +300,7 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
     } else if (product.description && product.description.length > 1000) {
       errors.set("value", "Sku sản phẩm chỉ không hợp lệ.");
     }
-    console.log("errors", errors);
+    // console.log("errors", errors);
     return errors;
   };
 
@@ -395,138 +400,151 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
 
   const PreviewProduct = (product) => {
     return (
-      <Modal.Body closeButton>
-        <Button
-          variant="light"
-          // onClick={handleClose}
-          style={{
-            marginBottom: "10px",
-            float: "right",
-          }}
+      <>
+        <OverlayTrigger
+          key={"right"}
+          placement={"right"}
+          overlay={
+            <Tooltip id={`tooltip-right`}>
+              Xem trước hiển thị
+              <strong>thông tin sản phẩm</strong> trên trang bán hàng.
+            </Tooltip>
+          }
         >
-          X
-        </Button>
-        <div>
-          <Modal.Title>
-            <Card.Title>
-              <h4
-                style={{
-                  textAlign: "center",
-                }}
-              >
-                {product.name == "" ? "Tên sản phẩm" : product.name}
-              </h4>
-            </Card.Title>
-          </Modal.Title>
-
-          <Carousel activeIndex={indexCarousel} onSelect={handleSelect}>
-            {newProduct.img.length > 0 ? (
-              renderCarousel
-            ) : (
-              <img
-                className="productImgLarger d-block w-100"
-                alt="Hình ảnh lỗi"
-                src="https://img.freepik.com/premium-vector/product-concept-line-icon-simple-element-illustration-product-concept-outline-symbol-design-can-be-used-web-mobile-ui-ux_159242-2076.jpg?w=2000"
-              ></img>
-            )}
-          </Carousel>
-
-          <Card.Body>
-            <div
-              className="noWrap"
+          <Modal.Body closeButton>
+            <Button
+              variant="light"
+              // onClick={handleClose}
               style={{
-                justifyContent: "space-between",
-                gap: "15px",
-                // alignItems: "center",
+                marginBottom: "10px",
+                float: "right",
               }}
             >
-              <OverlayTrigger
-                key={"right"}
-                placement={"right"}
-                overlay={
-                  <Tooltip id={`tooltip-right`}>
-                    Xem các sản phẩm tương tự trong bộ sưu tập{" "}
-                    <strong>...</strong>{" "}
-                  </Tooltip>
-                }
-              >
-                <p
+              X
+            </Button>
+            <div>
+              <Modal.Title>
+                <Card.Title>
+                  <h4
+                    style={{
+                      textAlign: "center",
+                    }}
+                  >
+                    {product.name == "" ? "Tên sản phẩm" : product.name}
+                  </h4>
+                </Card.Title>
+              </Modal.Title>
+
+              <Carousel activeIndex={indexCarousel} onSelect={handleSelect}>
+                {newProduct.img.length > 0 ? (
+                  renderCarousel
+                ) : (
+                  <img
+                    className="productImgLarger d-block w-100"
+                    alt="Hình ảnh lỗi"
+                    src="https://img.freepik.com/premium-vector/product-concept-line-icon-simple-element-illustration-product-concept-outline-symbol-design-can-be-used-web-mobile-ui-ux_159242-2076.jpg?w=2000"
+                  ></img>
+                )}
+              </Carousel>
+
+              <Card.Body>
+                <div
                   className="noWrap"
                   style={{
-                    paddingTop: "15px",
-                    color: "grey",
-                    width: "420px !importan",
+                    justifyContent: "space-between",
+                    gap: "15px",
+                    // alignItems: "center",
                   }}
-                  onClick={handleClose}
                 >
-                  Tương tự...
-                </p>
-              </OverlayTrigger>
+                  <OverlayTrigger
+                    key={"right"}
+                    placement={"right"}
+                    overlay={
+                      <Tooltip id={`tooltip-right`}>
+                        Xem các sản phẩm tương tự trong bộ sưu tập{" "}
+                        <strong>...</strong>{" "}
+                      </Tooltip>
+                    }
+                  >
+                    <p
+                      className="noWrap"
+                      style={{
+                        paddingTop: "15px",
+                        color: "grey",
+                        width: "420px !importan",
+                      }}
+                      onClick={handleClose}
+                    >
+                      Tương tự...
+                    </p>
+                  </OverlayTrigger>
+                  <Card.Text>
+                    <h5
+                      style={{
+                        padding: "10px 5px 15px 0",
+                        textAlign: "right",
+                        fontWeight: "600",
+                      }}
+                    >
+                      {product.comparative > product.price &&
+                        product.price !== 0 && (
+                          <>
+                            <span
+                              style={{
+                                paddingLeft: "5px",
+                                color: "#dc3545",
+                                fontWeight: "200",
+                              }}
+                            >
+                              {"(Giảm giá "}
+                              {(
+                                100 -
+                                (product.price / product.comparative) * 100
+                              ).toFixed(0)}
+                              {"%)"}
+                            </span>
+                            <strike
+                              style={{
+                                paddingLeft: "5px",
+                                color: "grey",
+                                fontWeight: "200",
+                              }}
+                            >
+                              {Changedot([product.comparative * quantity])}
+                            </strike>
+                          </>
+                        )}{" "}
+                      {product.price == 0
+                        ? "Giá sản phẩm"
+                        : Changedot([product.price * quantity])}
+                    </h5>
+                  </Card.Text>
+                </div>
+                <div id="modalFotter">
+                  <Form.Control
+                    type="number"
+                    value={quantity}
+                    onChange={handleChangeQuantity}
+                    min={1}
+                  />
+                  <Button
+                    style={{ width: "300px" }}
+                    variant="secondary"
+                    // onClick={handleAdd}
+                  >
+                    Thêm vào giỏ hàng
+                  </Button>
+                </div>
+              </Card.Body>
+              <br></br>
               <Card.Text>
-                <h5
-                  style={{
-                    padding: "10px 5px 15px 0",
-                    textAlign: "right",
-                    fontWeight: "600",
-                  }}
-                >
-                  {product.comparative > product.price &&
-                    product.price !== 0 && (
-                      <>
-                        <span
-                          style={{
-                            paddingLeft: "5px",
-                            color: "#dc3545",
-                            fontWeight: "200",
-                          }}
-                        >
-                          {"(Giảm giá "}
-                          {(
-                            100 -
-                            (product.price / product.comparative) * 100
-                          ).toFixed(0)}
-                          {"%)"}
-                        </span>
-                        <strike
-                          style={{
-                            paddingLeft: "5px",
-                            color: "grey",
-                            fontWeight: "200",
-                          }}
-                        >
-                          {Changedot([product.comparative * quantity])}
-                        </strike>
-                      </>
-                    )}{" "}
-                  {product.price == 0
-                    ? "Giá sản phẩm"
-                    : Changedot([product.price * quantity])}
-                </h5>
+                <p className="text-center">{product.description}</p>
               </Card.Text>
             </div>
-            <div id="modalFotter">
-              <Form.Control
-                type="number"
-                value={quantity}
-                onChange={handleChangeQuantity}
-                min={1}
-              />
-              <Button
-                style={{ width: "300px" }}
-                variant="secondary"
-                // onClick={handleAdd}
-              >
-                Thêm vào giỏ hàng
-              </Button>
-            </div>
-          </Card.Body>
-          <br></br>
-          <Card.Text>
-            <p className="text-center">{product.description}</p>
-          </Card.Text>
-        </div>
-        <p className="subPreview">(Xem trước sản phẩm)</p>
-      </Modal.Body>
+            <p className="subPreview">(Xem trước sản phẩm)</p>
+          </Modal.Body>
+        </OverlayTrigger>
+      </>
     );
   };
 
@@ -1009,9 +1027,14 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
       <>
         {" "}
         <Button
-          variant="secondary"
+          variant="light"
           onClick={handleShow}
-          style={{ marginRight: "5px" }}
+          style={{
+            height: "35px",
+            paddingBottom: "-20px",
+            marginTop: "5px",
+            backgroundColor: "#DDDDDD",
+          }}
         >
           Thêm sản phẩm mới
         </Button>

@@ -223,7 +223,7 @@ function CartList() {
 
   if (loading) {
     return <h5 className="text-center msgCartTop">Loading...</h5>;
-    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader
   } else {
     return orders.length == 0 ? (
       <h5 className="text-center msgCartTop">Bạn không có đơn hàng nào.</h5>

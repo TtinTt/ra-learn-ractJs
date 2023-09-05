@@ -51,6 +51,7 @@ export default function ManageProduct() {
     // keyword, page, NUMBER_RECORDS_PER_PAGE
     {
       // const navigate = useNavigate();
+      setLoading(true);
 
       await productApi
         .searchProducts({
@@ -62,6 +63,7 @@ export default function ManageProduct() {
           category: null,
         })
         .then((data) => {
+          console.log("data.records product", data.records);
           setProductList(data.records);
           setTotal(data.total);
           setLoading(false);
@@ -78,11 +80,18 @@ export default function ManageProduct() {
 
       // setSelectedProductIds([]);
     };
-
+  console.log("loading", loading);
   useEffect(() => {
     fetchProducts();
-    console.log(searchFilter, currentPage, priceFromValue, sortOption, link);
-  }, [searchFilter, currentPage, priceFromValue, sortOption, link, loading]);
+    console.log(
+      searchFilter,
+      currentPage,
+      priceFromValue,
+      sortOption,
+      link,
+      loading
+    );
+  }, [loading, searchFilter, currentPage, priceFromValue, sortOption, link]);
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
@@ -210,7 +219,7 @@ export default function ManageProduct() {
   return (
     <>
       <NavbarFilter />
-      {renderProducts.length > 8 && PaginationSet()}
+      {/* {renderProducts.length > 8 && PaginationSet()} */}
       {renderProducts.length !== 0 && (
         <Table striped bordered hover variant="light">
           <thead>

@@ -17,7 +17,8 @@ import {
 import Badge from "react-bootstrap/Badge";
 import { logoutAdmin } from "../actions/adminAction";
 import authApi from "../apis/auth.api";
-
+import { OverlayTrigger } from "react-bootstrap";
+import { Tooltip } from "react-bootstrap";
 function UserButton({ link }) {
   let countCart = 0;
   let cart = [];
@@ -138,7 +139,17 @@ function UserButton({ link }) {
           top: "4px",
         }}
       >
-        <Link to="/profile">
+        <OverlayTrigger
+          key={"left"}
+          placement={"left"}
+          overlay={
+            <Tooltip id={`tooltip-left`}>
+              <strong>{adminLogined.email}</strong>
+              {/* hoặc{" "}
+                  <strong>trạng thái tài khoản</strong> */}
+            </Tooltip>
+          }
+        >
           <p
             style={{
               position: "relative ",
@@ -160,7 +171,7 @@ function UserButton({ link }) {
               {TruncateString(adminLogined.email, 9)}
             </Button>
           </p>
-        </Link>
+        </OverlayTrigger>
 
         {/* <Link to="/cart">
           <Button style={{ marginRight: "2px" }} variant="secondary">

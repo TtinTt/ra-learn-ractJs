@@ -248,7 +248,7 @@ function CarouselProduct() {
 
   if (loading && productsByTags) {
     return <h5 className="text-center msgCartTop">Loading...</h5>;
-    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader
   } else {
     return (
       <div id="bundleCarouselAndCatalouge">

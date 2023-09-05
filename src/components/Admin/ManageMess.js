@@ -358,7 +358,7 @@ function ManageMess() {
   // console.log("messShowing", messShowing);
   if (loading) {
     return <h5 className="text-center msgCartTop">Loading...</h5>;
-    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader
   } else {
     return (
       <>
@@ -372,7 +372,7 @@ function ManageMess() {
           <>
             <div className="text-center">
               <>
-                <Table striped bmessed hover variant="light">
+                <Table striped bordered hover variant="light">
                   <thead>
                     <tr>
                       <th className="text-center">#</th>

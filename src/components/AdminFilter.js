@@ -8,7 +8,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 import NavDropdown from "react-bootstrap/NavDropdown";
 import { Link } from "react-router-dom";
-import { logoutUser } from "../actions/userAction";
+import { logoutAdmin } from "../actions/adminAction";
 import { useDispatch, useSelector } from "react-redux";
 import OverlayTrigger from "react-bootstrap/OverlayTrigger";
 import Tooltip from "react-bootstrap/Tooltip";
@@ -21,15 +21,14 @@ import {
   priceFrom,
   inputSearchBox,
 } from "../actions/productAction";
-import { inputSearchUser } from "../actions/adminAction";
-import { filterUser } from "../actions/userAction";
+import { inputSearchAdmin } from "../actions/adminAction";
+import { filterAdmin } from "../actions/adminAction";
 import { FormLabel } from "react-bootstrap";
-
-function UserFilter() {
+function AdminFilter() {
   //
   const changeFilter = (value) => {
     setSort(Number(value));
-    dispatch(filterUser(Number(value)));
+    dispatch(filterAdmin(Number(value)));
   };
 
   let valueSearch = useSelector((state) => state.orderReducer.searchFilter);
@@ -41,7 +40,7 @@ function UserFilter() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(inputSearchUser(""));
+    dispatch(inputSearchAdmin(""));
   }, []);
 
   const setFilterOrder = () => {
@@ -56,7 +55,7 @@ function UserFilter() {
 
   // lấy dữ liệu search
   const handleGetInput = (event) => {
-    dispatch(inputSearchUser(event.target.value));
+    dispatch(inputSearchAdmin(event.target.value));
   };
 
   return (
@@ -66,7 +65,7 @@ function UserFilter() {
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
           <div id="groupSortMaxPrice">
-            <h5 className="text-center ">Danh sách người dùng</h5>
+            <h5 className="text-center ">Danh sách quản trị viên</h5>
           </div>
           <div id="groupSearchProduct">
             {" "}
@@ -102,8 +101,7 @@ function UserFilter() {
               placement={"left"}
               overlay={
                 <Tooltip id={`tooltip-left`}>
-                  Tìm kiếm theo{" "}
-                  <strong>email, tên, số điện thoại khách hàng</strong>
+                  Tìm kiếm theo <strong>email</strong>
                   {/* hoặc{" "}
                   <strong>trạng thái tài khoản</strong> */}
                 </Tooltip>
@@ -113,7 +111,7 @@ function UserFilter() {
                 <Form.Control
                   name="search"
                   type="search"
-                  placeholder="Tìm kiếm người dùng"
+                  placeholder="Tìm kiếm quản trị viên"
                   aria-label="Search"
                   onChange={(event) => handleGetInput(event)}
                 />
@@ -126,4 +124,4 @@ function UserFilter() {
   );
 }
 
-export default UserFilter;
+export default AdminFilter;

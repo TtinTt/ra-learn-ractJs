@@ -498,7 +498,7 @@ function ManageUser() {
   // console.log("userShowing", userShowing);
   if (loading) {
     return <h5 className="text-center msgCartTop">Loading...</h5>;
-    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader của bạn
+    // Thay "Loading..." bằng spinner hoặc hình ảnh gif loader
   } else {
     return (
       <>
@@ -512,7 +512,7 @@ function ManageUser() {
           <>
             <div className="text-center">
               <>
-                <Table striped busered hover variant="light">
+                <Table striped bordered hover variant="light">
                   <thead>
                     <tr>
                       <th>
@@ -530,6 +530,8 @@ function ManageUser() {
                         style={{
                           textAlign: "center",
                           width: "70px",
+
+                          borderRight: "none",
                         }}
                       >
                         {" "}
@@ -551,7 +553,11 @@ function ManageUser() {
                       </th>
                       <th
                         className="text-left position-relative headTable-Set"
-                        style={{ padding: "auto", textAlign: "left" }}
+                        style={{
+                          padding: "auto",
+                          textAlign: "left",
+                          borderLeft: "none",
+                        }}
                       >
                         Email
                       </th>
