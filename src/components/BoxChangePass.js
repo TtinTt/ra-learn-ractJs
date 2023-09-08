@@ -35,7 +35,7 @@ export default function BoxChangePass() {
   const handleShow = () => setShow(true);
 
   const [user, setUser] = useState({
-    email: userLogined.email,
+    email: userLogined?.email,
     oldpassword: "",
     password: "",
     confirmPassword: "",
@@ -61,7 +61,7 @@ export default function BoxChangePass() {
     const formData = new FormData();
     formData.append("password", user.password);
     userApi
-      .updateUser(userLogined.user_id, formData)
+      .updateUser(userLogined?.user_id, formData)
       .then(() => {
         authApi
           .getAuth()
@@ -133,7 +133,7 @@ export default function BoxChangePass() {
       newError.status = true;
       newError.errorMsg = "Các thông tin không được để trống";
     }
-    // else if (data.oldpassword !== userLogined.password) {
+    // else if (data.oldpassword !== userLogined?.password) {
     //   newError.status = true;
     //   newError.errorMsg = "Mật khẩu cũ không chính xác";
     // }
@@ -186,7 +186,7 @@ export default function BoxChangePass() {
             type="email"
             className="form-control"
             id="email"
-            value={userLogined.email}
+            value={userLogined?.email}
             aria-describedby="emailHelp"
           />
         </div>
@@ -267,7 +267,7 @@ export default function BoxChangePass() {
           <h5>Mật khẩu đã được đổi thành công</h5>
         </Modal.Header>
         <Modal.Body style={{ margin: "10px", textAlign: "center" }}>
-          Chúng tôi cập nhật mật khẩu mới cho bạn.
+          Bạn cần đăng nhập bằng mật khẩu mới vào lần tới.
         </Modal.Body>
         <Modal.Footer className="modalCenter">
           <Button variant="secondary" onClick={handleClose}>

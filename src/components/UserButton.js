@@ -62,7 +62,11 @@ function UserButton({ link }) {
         </Link>
       </Navbar.Brand>
     );
-  } else if (link === "/register" || (link === "/" && userLogined == null)) {
+  } else if (
+    link === "/register" ||
+    link === "/resetPass" ||
+    (link === "/" && userLogined == null)
+  ) {
     return (
       <Navbar.Brand className="d-flex">
         <Link to="/login">

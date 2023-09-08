@@ -12,6 +12,36 @@ const searchUsers = async (params = {}) => {
     });
 };
 
+const resetPass = async (email, codeResetPass, confirmPassword) => {
+  console.log("email truyền vào", email);
+  return await api
+    .put("/users/resetpass", {
+      email: email,
+      code: codeResetPass,
+      password: confirmPassword,
+    })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
+const sendCodeResetPass = async (email) => {
+  console.log("email truyền vào", email);
+  return await api
+    .put("/users/getcode", { email: email })
+    .then((response) => {
+      return response.data;
+    })
+    .catch((error) => {
+      console.error(error);
+      throw error;
+    });
+};
+
 // const createUser = async (requestBody) => {
 //   return await api
 //     .postForm("/users", requestBody, { headers: getHeaders() })
@@ -65,6 +95,8 @@ const updateUser = async (userId, requestBody) => {
 export default {
   searchUsers,
   updateUser,
+  sendCodeResetPass,
+  resetPass,
   // deleteUser,
   // createUser,
   // getUserByUserId,

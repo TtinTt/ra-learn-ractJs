@@ -21,13 +21,14 @@ import "../css/Cart.css";
 import { clearCart } from "../actions/userAction";
 function CartList() {
   let userLogined = useSelector((state) => state.userReducer.userLogined);
+  const navigate = useNavigate();
+
   if (userLogined == null) {
     navigate("/login");
   }
-  let cart = userLogined.cart;
+  let cart = userLogined?.cart || [];
   // userLogined.cart && cart=userLogined.cart
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   let total = 0;
   cart.forEach((product) => {
@@ -89,9 +90,9 @@ function CartList() {
   const handleShow = () => setShow(true);
 
   const [address, setAddress] = useState({
-    name: userLogined.name,
-    address: userLogined.add_address,
-    phoneNumber: userLogined.phone,
+    name: userLogined?.name,
+    address: userLogined?.add_address,
+    phoneNumber: userLogined?.phone,
     note: "",
   });
 

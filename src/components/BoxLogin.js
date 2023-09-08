@@ -120,8 +120,24 @@ export default function BoxLogin() {
           />
         </div>
         <div className="mb-3">
-          <label for="password" className="form-label">
-            Mật khẩu
+          <label
+            for="password"
+            className="form-label"
+            style={{
+              width: "100%",
+            }}
+          >
+            Mật khẩu{" "}
+            <strong
+              style={{
+                color: "Black",
+                paddingLeft: "5px",
+                cursor: "pointer",
+                float: "right",
+              }}
+            >
+              <Link to="/resetPass">Quên mật khẩu ?</Link>
+            </strong>
           </label>
           <input
             onChange={(event) => handleGetInput(event)}
@@ -133,11 +149,12 @@ export default function BoxLogin() {
         <h6 style={{ color: "Grey", textAlign: "center" }}>
           Nếu bạn chưa có tài khoản, vui lòng
           <Link to="/register">
-            <span
+            <strong
               style={{ color: "Black", paddingLeft: "5px", cursor: "pointer" }}
             >
               đăng ký
-            </span>
+            </strong>
+            .
           </Link>
         </h6>
         {error.isShowStatus == true && error.status == true && (

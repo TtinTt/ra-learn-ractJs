@@ -12,6 +12,8 @@ import Admin from "./pages/admin/admin";
 import AdminLogin from "./pages/admin/adminLogin";
 import AboutUsPage from "./pages/AboutUsPage";
 import QnAPage from "./pages/QnAPage";
+import ResetPass from "./pages/ResetPass";
+
 import AboutProductPage from "./pages/AboutProductPage";
 import "react-bootstrap-range-slider/dist/react-bootstrap-range-slider.css";
 import Profile from "./pages/Profile";
@@ -82,6 +84,7 @@ function App() {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/changePass" element={<ChangePass />} />
+      <Route path="/resetPass" element={<ResetPass />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/order" element={<Order />} />

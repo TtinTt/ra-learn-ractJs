@@ -45,10 +45,24 @@ function NavbarTop() {
         // Kiểm tra nếu response có user
         if (response.user?.user_id && response.user?.status == 1) {
           dispatch(loginUser(response.user));
+          if (link == "/login" || link == "/register" || link == "/resetPass") {
+            navigate("/");
+          }
         } else {
           // window.location.reload();
           // Xóa X-API-Key nếu không có user trong phản hồi
           clearLogined("user");
+
+          console.log("link is", link);
+
+          if (
+            link == "/cart" ||
+            link == "/profile" || //
+            link == "/changePass" || //
+            link == "/order"
+          ) {
+            navigate("/login");
+          }
         }
 
         // Kiểm tra nếu response có admin
@@ -64,12 +78,28 @@ function NavbarTop() {
         console.log("Lỗi là", error);
         if (error.response.data.error == "Không thể xác thực người dùng.") {
           clearLogined("user");
+          if (
+            link == "/cart" ||
+            link == "/profile" || //
+            link == "/changePass" || //
+            link == "/order"
+          ) {
+            navigate("/login");
+          }
         } else if (
           error.response.data.error == "Không thể xác thực quản trị viên."
         ) {
           clearLogined("admin");
         } else {
           clearLogined("all");
+          if (
+            link == "/cart" ||
+            link == "/profile" || //
+            link == "/changePass" || //
+            link == "/order"
+          ) {
+            navigate("/login");
+          }
         }
 
         // localStorage.removeItem("X-API-Key");

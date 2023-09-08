@@ -32,29 +32,29 @@ function BuyerInfo() {
 
   const [isCanEdit, setIsCanEdit] = useState(true);
   const [info, setInfo] = useState({
-    user_id: userLogined.user_id,
-    email: userLogined.email,
-    name: userLogined.name,
-    bday: userLogined.bday,
-    // status: userLogined.status,
-    add_address: userLogined.add_address,
-    note: userLogined.note,
-    phone: userLogined.phone,
-    img: userLogined.img,
+    user_id: userLogined?.user_id,
+    email: userLogined?.email,
+    name: userLogined?.name,
+    bday: userLogined?.bday,
+    // status: userLogined?.status,
+    add_address: userLogined?.add_address,
+    note: userLogined?.note,
+    phone: userLogined?.phone,
+    img: userLogined?.img,
   });
 
   useEffect(() => {
     setInfo({
       ...info,
-      user_id: userLogined.user_id,
-      email: userLogined.email,
-      name: userLogined.name,
-      bday: userLogined.bday,
-      // status: userLogined.status,
-      add_address: userLogined.add_address,
-      note: userLogined.note,
-      phone: userLogined.phone,
-      img: userLogined.img,
+      user_id: userLogined?.user_id,
+      email: userLogined?.email,
+      name: userLogined?.name,
+      bday: userLogined?.bday,
+      // status: userLogined?.status,
+      add_address: userLogined?.add_address,
+      note: userLogined?.note,
+      phone: userLogined?.phone,
+      img: userLogined?.img,
     });
   }, [userLogined]);
   // modal
@@ -62,13 +62,13 @@ function BuyerInfo() {
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
   const [errors, setErrors] = useState(new Map());
-  const [imgScr, setImgScr] = useState(prependLocalhost(userLogined.img));
+  const [imgScr, setImgScr] = useState(prependLocalhost(userLogined?.img));
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   useEffect(() => {
-    setImgScr(prependLocalhost(userLogined.img));
+    setImgScr(prependLocalhost(userLogined?.img));
   }, [userLogined]);
 
   // const handleLogout = () => {
@@ -126,7 +126,7 @@ function BuyerInfo() {
       }
       //
       userApi
-        .updateUser(userLogined.user_id, formData)
+        .updateUser(userLogined?.user_id, formData)
         .then(() => {
           // for (let pair of formData.entries()) {
           //   console.log("FormData2:", pair[0] + ", " + pair[1]);
@@ -135,7 +135,7 @@ function BuyerInfo() {
           authApi
             .getAuth()
             .then((response) => {
-              // let user = { ...response.user, cart: userLogined.cart };
+              // let user = { ...response.user, cart: userLogined?.cart };
               // dispatch(loginUser(user));
 
               dispatch(loginUser(response.user));
@@ -223,7 +223,7 @@ function BuyerInfo() {
                 aria-label="email"
                 aria-describedby="basic-addon1"
                 type="email"
-                value={userLogined.email}
+                value={userLogined?.email}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -234,7 +234,7 @@ function BuyerInfo() {
                 aria-label="name"
                 aria-describedby="basic-addon1"
                 type="text"
-                value={userLogined.name}
+                value={userLogined?.name}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -245,7 +245,7 @@ function BuyerInfo() {
                 aria-label="bday"
                 aria-describedby="basic-addon1"
                 type="date"
-                value={userLogined.bday}
+                value={userLogined?.bday}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -257,7 +257,7 @@ function BuyerInfo() {
                 aria-describedby="basic-addon1"
                 type="text"
                 // as="textarea"
-                value={userLogined.add_address}
+                value={userLogined?.add_address}
               />
             </InputGroup>
             <InputGroup className="mb-3">
@@ -269,7 +269,7 @@ function BuyerInfo() {
                 aria-describedby="basic-addon1"
                 type="number"
                 // as="textarea"
-                value={userLogined.phone}
+                value={userLogined?.phone}
               />
             </InputGroup>
             {/* <InputGroup className="mb-3">

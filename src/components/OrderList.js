@@ -19,6 +19,8 @@ import "../css/Cart.css";
 import orderApi from "../apis/order.api";
 import { clearCart } from "../actions/userAction";
 function CartList() {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   let userLogined = useSelector((state) => state.userReducer.userLogined);
   if (userLogined == null) {
@@ -43,7 +45,6 @@ function CartList() {
         setLoading(false); // Cập nhật trạng thái loading nếu có lỗi
       });
   };
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (userLogined) {

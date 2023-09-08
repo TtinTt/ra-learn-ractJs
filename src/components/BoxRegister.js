@@ -23,9 +23,9 @@ export default function BoxRegister() {
 
   let usersDB = useSelector((state) => state.userReducer.users);
 
-  useEffect(() => {
-    userLogined !== null && navigate("/");
-  }, [usersDB]);
+  // useEffect(() => {
+  //   userLogined !== null && navigate("/");
+  // }, [usersDB]);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
