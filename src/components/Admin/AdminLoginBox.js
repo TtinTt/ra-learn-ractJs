@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -129,7 +130,18 @@ function AdminLoginBox() {
             />
           </div>
           <h6 style={{ color: "Grey", textAlign: "center" }}>
-            Nếu bạn chưa có tài khoản, vui lòng liên hệ người quản trị.
+            Nếu bạn quên mật khẩu, vui lòng
+            <Link to="/contactUs">
+              <span
+                style={{
+                  color: "Black",
+                  paddingLeft: "5px",
+                  cursor: "pointer",
+                }}
+              >
+                liên hệ người quản trị.
+              </span>
+            </Link>
           </h6>
           {error.isShowStatus == true && error.status == true && (
             <p

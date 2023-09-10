@@ -443,6 +443,11 @@ function ManageOrder() {
                             <strong>Cập nhật trạng thái đơn hàng</strong>
                           </p>
                           <Form.Select
+                            disabled={
+                              !(getDaysDifference(orderShowing.date) > 4)
+                                ? true
+                                : false
+                            }
                             aria-label="Default select example"
                             onChange={(event) => {
                               handleUpdateStatusOrder(event);
@@ -480,8 +485,8 @@ function ManageOrder() {
                               className="text-center"
                               style={{ color: "#dc3545" }}
                             >
-                              Đơn hàng đang được xử lý và còn trong thời gian có
-                              thể huỷ bởi khách hàng
+                              Đơn hàng đang trong thời gian có thể huỷ bởi khách
+                              hàng và không thể cập nhật trạng thái.
                             </p>
                           </>
                         )}

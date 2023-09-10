@@ -124,7 +124,7 @@ function CartList() {
       setIsValidateError(true);
       setErrorValidateMsg("Số điện thoại không hợp lệ.");
       return false;
-    } else if (address && address.length < 10) {
+    } else if (address && address.length < 20) {
       setIsValidateError(true);
       setErrorValidateMsg(
         "Địa chỉ không hợp lệ. Vui lòng điền địa chỉ chi tiết hơn"
@@ -153,24 +153,11 @@ function CartList() {
         .createOrder(order)
         .then((response) => {
           // dispatch(register(response.token));
-          // handleClearCart();
+          handleClearCart();
           handleClose();
           navigate("/order");
         })
         .catch((error) => {
-          // if (error.response?.statusText == "Forbidden") {
-          //   setError({
-          //     isShowStatus: true,
-          //     status: true,
-          //     errorMsg:
-          //       "Email đã tồn tại, vui lòng đăng nhập hoặc đăng ký bằng một email khác",
-          //   });
-
-          //   console.log("trùng lặp user");
-          // } else {
-          //   alert(error.response?.statusText);
-          // }
-
           console.log(error.response?.statusText);
         });
 

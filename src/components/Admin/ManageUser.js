@@ -359,11 +359,18 @@ function ManageUser() {
     // debugger;
     return (
       <div className="text-center">
-        <img
+        {/* <img
           id="user-img"
           className="text-center"
           src={prependLocalhost(info.img)}
-        />
+        /> */}
+        {info.img == "" ? null : (
+          <img
+            id="user-img"
+            className="text-center"
+            src={prependLocalhost(info.img)}
+          />
+        )}
 
         <InputGroup id="user-info" className="mb-3 mx-auto">
           <InputGroup className="mb-3">

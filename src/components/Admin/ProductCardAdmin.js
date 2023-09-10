@@ -398,8 +398,8 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
           placement={"right"}
           overlay={
             <Tooltip id={`tooltip-right`}>
-              Xem trước hiển thị
-              <strong>thông tin sản phẩm</strong> trên trang bán hàng.
+              Xem trước
+              <strong> thông tin sản phẩm</strong> hiển thị trên trang mua hàng.
             </Tooltip>
           }
         >
@@ -814,7 +814,7 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
                   </p>
                 )}
                 <Modal.Footer>
-                  <Button variant="secondary" onClick={handleClose}>
+                  <Button variant="light" onClick={handleClose}>
                     Huỷ
                   </Button>
 
@@ -833,7 +833,7 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
                     }
                   >
                     <Button
-                      variant="dark"
+                      variant="secondary"
                       onClick={
                         render == "productCard"
                           ? handleSaveProduct
@@ -991,7 +991,7 @@ function ProductCardAdmin({ render, i, product, setLoading }) {
               {showConfirmDeleProduct == false ? (
                 <>
                   <Button
-                    variant="primary"
+                    variant="secondary"
                     onClick={handleShow}
                     style={{ marginRight: "5px" }}
                   >
