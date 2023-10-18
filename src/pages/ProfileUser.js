@@ -14,7 +14,7 @@ function Register() {
       <div className="navbar">
         <NavbarTop />
       </div>
-      <UserInfo />
+      {/* <UserInfo /> */}
       <FooterBot />
     </Container>
   );

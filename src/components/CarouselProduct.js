@@ -54,9 +54,6 @@ function CarouselProduct() {
       .getTag({})
       .then((data) => {
         console.log("1-lấy các tag", data.tags);
-        // setValue(data.maxPrice);
-        // setMinPrice(data.minPrice);
-        // setMaxPrice(data.maxPrice);
         setTagsProducts(data.tags);
         fetchProductsByTags(data.tags);
         console.log("data.tags", data.tags);
@@ -66,28 +63,16 @@ function CarouselProduct() {
         console.log(error);
         if (error.response?.status === 401) {
           console.log(error.response?.statusText);
-          // navigate("/products");
         } else {
           console.log(error.response?.statusText);
         }
       });
-
-    // setSelectedProductIds([]);
   };
   const [tagsProducts, setTagsProducts] = useState([]);
 
   useEffect(() => {
     getTag();
   }, []);
-
-  // useEffect(() => {
-  //   fetchProductsByTags();
-  // }, [tagsProducts]);
-
-  // lấy list không trùng lặp tag đầu tiên của mỗi sản phẩm
-  // let tagsProducts = useGetTagsProducts();
-
-  // lấy ra các array là list product từ products trên store theo từng tag
 
   const fetchProductsByTags = async (listCatalogueByTag) => {
     console.log("listCatalogueByTag", listCatalogueByTag);
@@ -189,9 +174,6 @@ function CarouselProduct() {
                   </>
                 )}
               </h4>
-              {/* <p className="CarouselProductText">
-                {TruncateString(productShow.description, 100)}
-              </p> */}
             </Carousel.Caption>
           </Carousel.Item>
         );

@@ -31,6 +31,7 @@ function NavbarTop() {
   let APIKey = localStorage.getItem("X-API-Key");
   let APIKeyAdmin = localStorage.getItem("X-API-Key-Admin");
   console.log(APIKey, APIKeyAdmin);
+ 
   useEffect(() => {
     if ((APIKey = null)) {
       dispatch(loginUser(null));
@@ -38,6 +39,7 @@ function NavbarTop() {
     if ((APIKeyAdmin = null)) {
       dispatch(loginAdmin(null));
     }
+    
     authApi
       .getAuth()
       .then((response) => {
@@ -101,11 +103,6 @@ function NavbarTop() {
             navigate("/login");
           }
         }
-
-        // localStorage.removeItem("X-API-Key");
-        // dispatch(loginUser(null));
-        // localStorage.removeItem("X-API-Key-Admin");
-        // dispatch(loginAdmin(null));
       });
   }, [link]);
 

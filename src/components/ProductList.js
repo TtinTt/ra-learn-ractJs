@@ -102,46 +102,16 @@ export default function ProductList() {
   let priceFromValue =
     useSelector((state) => state.productReducer.priceFrom) ?? null;
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await setMaxPrice(priceFromValue);
-  //     await setSortType(sortOption);
-  //     await setSearchFilterInput(searchFilter);
-  //     await fetchProducts(
-  //       searchFilterInput,
-  //       currentPage,
-  //       productsPerPage,
-  //       priceFromValue,
-  //       sortOption
-  //     );
-  //     await console.log(searchFilter, currentPage, maxPrice, sortType);
-  //   };
-  //   fetchData();
-  // }, [searchFilter, currentPage, priceFromValue, sortOption]);
+
   useEffect(() => {
     fetchProducts();
     console.log(searchFilter, currentPage, priceFromValue, sortOption, link);
   }, [searchFilter, currentPage, priceFromValue, sortOption, link]);
 
-  // // chạy HandleFilter
-  // const { totalProductsDB, productList } = HandleFilter(
-  //   // productListDraft,
-  //   currentPage,
-  //   productsPerPage
-  // );
-
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
 
-  // const [currentProducts, setcurrentProducts] = useState(
-  //   productList.slice(indexOfFirstProduct, indexOfLastProduct)
-  // );
-
-  // const currentProducts = productList
-  // .slice(
-  //   indexOfFirstProduct,
-  //   indexOfLastProduct
-  // );
+  
 
   const renderProducts =
     // currentProducts
